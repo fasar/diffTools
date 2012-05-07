@@ -1,6 +1,5 @@
 package fsart.diffTools.model
 
-import model.{CsvBuilder, CsvData}
 import org.apache.commons.logging.{LogFactory, Log}
 import org.junit.Test
 import org.junit.Assert._
@@ -19,10 +18,37 @@ class CsvBuilderTest {
   @Test
   def csvFile_test1 {
     val cvsBuilder = new CsvBuilder()
-    assertTrue(cvsBuilder.getCvsData().array.size == 0)
+    var csv:CsvData = cvsBuilder.getCvsData
+    assertTrue(csv.array.size == 0)
+
     cvsBuilder.appendLine("1;2;3;4")
-    assertTrue(cvsBuilder.getCvsData().array.size == 1)
-    assertTrue(cvsBuilder.getCvsData().array(0).size == 4)
+    csv = cvsBuilder.getCvsData
+    assertTrue(csv.array.size == 1)
+    assertTrue(csv.array(0).size == 4)
+
+    cvsBuilder.appendLine("1;2;3;4")
+    assertTrue(csv.array.size == 1)
+    csv = cvsBuilder.getCvsData
+    assertTrue(csv.array.size == 2)
+    assertTrue(csv.array(0).size == 4)
+    assertTrue(csv.array(1).size == 4)
+
+    cvsBuilder.appendLine("1;2;3;4;5")
+    assertTrue(csv.array.size == 2)
+    csv = cvsBuilder.getCvsData
+    assertTrue(csv.array.size == 3)
+    assertTrue(csv.array(0).size == 5)
+    assertTrue(csv.array(1).size == 5)
+    assertTrue(csv.array(2).size == 5)
+  }
+  @Test
+  def csvFile_test2 {
+    val cvsBuilder = new CsvBuilder()
+    cvsBuilder.setHeaders("a;b;c;d")
+
+    var csv:CsvData = cvsBuilder.getCvsData
+    assertTrue(csv.array.size == 0)
+    assertTrue(csv.headers == List("a", "b", "c", "d"))
   }
 
 

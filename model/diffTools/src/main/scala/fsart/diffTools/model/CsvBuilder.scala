@@ -1,7 +1,5 @@
 package fsart.diffTools.model
 
-import fsart.diffTools.model.CsvData
-
 /**
  *
  * User: fabien
@@ -10,7 +8,7 @@ import fsart.diffTools.model.CsvData
  *
  */
 
-class CsvBuilder(var separator:String = ";")  {
+class CsvBuilder(var separator:String = ";")  {myObj=>
 
   var headers:List[String] = List.empty
 
@@ -21,17 +19,43 @@ class CsvBuilder(var separator:String = ";")  {
     array :+= split
   }
 
-  def appendLines(list:List[String]) {
-    for(line <- list) {
+  def appendLines(lines:List[String], firstLineAsHeader:Boolean = true) {
+    if(firstLineAsHeader) {
+      appendLinesWithHeaders(lines)
+    }else {
+      appendLinesWithoutHeaders(lines)
+    }
+  }
+  def appendLinesWithoutHeaders(lines:List[String]) {
+    for(line <- lines) {
+      appendLine(line)
+    }
+  }
+  def appendLinesWithHeaders(lines:List[String]) {
+    setHeaders(lines(0))
+    for(line <- lines.drop(1)) {
       appendLine(line)
     }
   }
 
-  def getCvsData(csvData: CsvData) = {
+  def setHeaders(line:String) {
+    headers = line.split(separator).toList
+  }
+
+
+  def getCvsData(): CsvData = {
+    val nbMaxCol = array.foldLeft(0) {
+      (nbCol, elem) => scala.math.max(nbCol, elem.size)
+    }
+    val resArray = array.map {
+      elem => elem ++ List.fill[String](nbMaxCol - elem.size) {
+        ""
+      }
+    }
     new CsvData() {
-      override val headers = this.headers
-      override val array = this.array
-      override val separator = this.separator
+      override val headers = myObj.headers
+      override val array = resArray
+      override val separator = myObj.separator
     }
   }
 }
