@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>fsart.diffTools</groupId>
+    <artifactId>diffTools</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version><!--APP_VERSION-->
+    <name>Diff tools main pom</name>
+    <url>http://www.s2ih.fr</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <scala.version>2.9.2</scala.version>
+        <java.version.build>1.5</java.version.build>
+        <java.version.target>1.5</java.version.target>
+    </properties>
+
+
+    <modules>
+        <module>core/console</module>
+        <module>core/gui</module>
+        <module>model/diffTools</module>
+        <module>core/helper</module>
+        <module>core/diffMatcher</module>
+        <module>core/scriptEngine</module>
+        <module>application/gui</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skipTests>false</skipTests>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <build>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-idea-plugin</artifactId>
+                    <version>2.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-idea-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <version>2.15.2</version>
+            </plugin>
+
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <source>${java.version.build}</source>
+                    <target>${java.version.target}</target>
+                    <!--<mainClass>fsart.diffTools.DiffTools</mainClass>-->
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <ajdtVersion>none</ajdtVersion>
+                    <sourceIncludes>
+                        <sourceInclude>**/*.scala</sourceInclude>
+                        <sourceInclude>**/*.java</sourceInclude>
+                    </sourceIncludes>
+                    <projectnatures>
+                        <projectnature>org.scala-ide.sdt.core.scalanature</projectnature>
+                        <projectnature>org.eclipse.jdt.core.javanature</projectnature>
+                    </projectnatures>
+                    <buildcommands>
+                        <buildcommand>org.scala-ide.sdt.core.scalabuilder</buildcommand>
+                    </buildcommands>
+                </configuration>
+
+                <version>2.8</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>false</skipTests>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Implementation-Title>${pom.name}</Implementation-Title>
+                            <Implementation-Version>${pom.version}</Implementation-Version>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>fsart.diffTools</groupId>
+                <artifactId>diffTools-model</artifactId>
+                <version>1.0-SNAPSHOT</version> <!--IOSTS_VERSION-->
+            </dependency>
+            <dependency>
+                <groupId>fsart.diffTools</groupId>
+                <artifactId>diffTools-console</artifactId>
+                <version>1.0-SNAPSHOT</version> <!--IOSTS_VERSION-->
+            </dependency>
+            <dependency>
+                <groupId>fsart.diffTools</groupId>
+                <artifactId>diffTools-gui</artifactId>
+                <version>1.0-SNAPSHOT</version> <!--IOSTS_VERSION-->
+            </dependency>
+            <dependency>
+                <groupId>fsart.lib</groupId>
+                <artifactId>helper</artifactId>
+                <version>1.0-SNAPSHOT</version> <!--IOSTS_VERSION-->
+            </dependency>
+            <dependency>
+                <groupId>fsart.lib</groupId>
+                <artifactId>diffMatcher</artifactId>
+                <version>1.0-SNAPSHOT</version> <!--IOSTS_VERSION-->
+            </dependency>
+            <dependency>
+                <groupId>fsart.lib</groupId>
+                <artifactId>scripEngine</artifactId>
+                <version>1.0-SNAPSHOT</version> <!--IOSTS_VERSION-->
+            </dependency>
+
+            <!-- Application deployer -->
+            <dependency>
+                <groupId>fsart.diffTools.application</groupId>
+                <artifactId>gui</artifactId>
+                <version>1.0-SNAPSHOT</version> <!--IOSTS_VERSION-->
+            </dependency>
+
+            <!-- To have script possibilities -->
+            <dependency>
+                <groupId>org.apache.bsf</groupId>
+                <artifactId>bsf-api</artifactId>
+                <version>3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jruby</groupId>
+                <artifactId>jruby</artifactId>
+                <version>1.6.7.2</version>
+            </dependency>
+
+            <dependency> <!-- To create sweet gui with intellij idea -->
+                <groupId>jgoodies</groupId>
+                <artifactId>forms</artifactId>
+                <version>1.0.5</version>
+            </dependency>
+            <dependency>
+                <groupId>com.intellij</groupId>
+                <artifactId>forms_rt</artifactId>
+                <version>6.0.5</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.1.1</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>avalon-framework</groupId>
+                        <artifactId>avalon-framework</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>servlet-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>logkit</groupId>
+                        <artifactId>logkit</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.16</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.10</version>
+            </dependency>
+
+            <!-- scala compiler -->
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${scala.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-compiler</artifactId>
+                <version>${scala.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>scala-tools.org</id>
+            <name>Scala-Tools Maven2 Repository</name>
+            <url>http://scala-tools.org/repo-releases</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>scala-tools.org</id>
+            <name>Scala-Tools Maven2 Repository</name>
+            <url>http://scala-tools.org/repo-releases</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <!--<distributionManagement>
+       <repository>
+         <id>s2ih</id>
+         <name>S2IH Maven Repository</name>
+         <url>ftp://maven.private.s2ih/repository</url>
+         <layout>default</layout>
+       </repository>
+    </distributionManagement>-->
+
+</project>

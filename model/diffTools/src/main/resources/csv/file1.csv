@@ -1,0 +1,172 @@
+Client Test ID;Client Test Code;Client Test Name;Client Test Description;Client Test Category;Client Test Subcategory;Client Specimen Type;Client Test Method;Client Conventional Units;Client SI Units
+1009;ACANT;Acanthocytes;Acanthocytosis;HEMATOLOGY;0;0;0;0;0
+1020;APTT;Activated Partial Thromboplastin Time;Activated Partial Thromboplastin Time;HEMATOLOGY;0;0;0;s;s
+1040;BASO;Basophils;Basophils;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1045;BASOIM;Immature Basophils;Basophils, Immature;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1050;BASOLE;Basophils/Leukocytes;Basophils (%);HEMATOLOGY;0;0;0;%;%
+1060;BLAST;Blasts;Blasts;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1070;BLASTLE;Blasts/Leukocytes;Blasts (%);HEMATOLOGY;0;0;0;%;%
+1100;EOS;Eosinophils;Eosinophils;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1105;EOSIM;Immature Eosinophils;Eosinophils, Immature;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1106;EOSIMLE;Immature Eosinophils/Leukocytes;Immature Eosinophils (%);HEMATOLOGY;0;0;0;%;%
+1110;EOSLE;Eosinophils/Leukocytes;<it>Eosinophils (%);HEMATOLOGY;0;0;0;%;%
+1120;MCHC;Ery. Mean Corpuscular HGB Concentration;Ery. Mean Corpuscular HGB Concentration;HEMATOLOGY;0;0;0;g/dL;g/L
+1130;MCH;Ery. Mean Corpuscular Hemoglobin;Ery. Mean Corpuscular Hemoglobin;HEMATOLOGY;0;0;0;pg;pg
+1140;MCV;Ery. Mean Corpuscular Volume;Ery. Mean Corpuscular Volume;HEMATOLOGY;0;0;0;fL;fL
+1146;BASOIMLE;Immature Basophils/Leukocytes;Immature Basophils (%);HEMATOLOGY;0;0;0;%;%
+1160;RBC;Erythrocytes;Erythrocytes;HEMATOLOGY;0;0;0;x10E6/uL;x10E12/L
+1185;HAIRYCE;Hairy Cells;Hairy Cells;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1190;HCT;Hematocrit;Hematocrit;HEMATOLOGY;0;0;0;%;fraction
+1200;HGB;Hemoglobin;Hemoglobin;HEMATOLOGY;0;0;0;g/dL;g/L
+1228;BLASTLM;Leukemic Blasts;Lymphocytes, Immunoblastic OR Lymphoblast OR Leukemic Blasts;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1228;BLASTLM;Leukemic Blasts;Lymphocytes, Immunoblastic OR Lymphoblast OR Leukemic Blasts;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1230;WBC;Leukocytes;Leukocytes;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1240;LYM;Lymphocytes;Lymphocytes;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1250;LYMAT;Lymphocytes Atypical;Lymphocytes Atypical;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1260;LYMATLE;Lymphocytes Atypical/Leukocytes;Lymphocytes Atypical (%);HEMATOLOGY;0;0;0;%;%
+1270;LYMLE;Lymphocytes/Leukocytes;Lymphocytes (%);HEMATOLOGY;0;0;0;%;%
+1271;LYMPL;Plasmacytoid Lymphocytes;Lymphocytes, Plasmacytoid OR Plymphocytes;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1272;LYMRCT;Reactive Lymphocytes;Lymphocytes, Reactive;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1273;LYMMCE;Lymphoma Cells;Lymphoma Cells;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1285;MLIGCE;Malignant Cells, NOS;Malignant Cells, NOS;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1295;METAMY;Metamyelocytes;Metamyelocytes;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1296;METAMYLE;Metamyelocytes/Leukocytes;Metamyelocytes (%);HEMATOLOGY;0;0;0;%;%
+1308;MONOBL;Monoblasts;Monoblasts;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1309;MONOBLLE;Monoblasts/Leukocytes;Monoblasts (%);HEMATOLOGY;0;0;0;%;%
+1310;MONO;Monocytes;Monocytes;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1311;MONOLE;Monocytes/Leukocytes;Monocytes (%);HEMATOLOGY;0;0;0;%;%
+1312;MONOIM;Immature Monocytes;Monocytes, Immature;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1313;MONOIMLE;Immature Monocytes/Leukocytes;Immature Monocytes (%);HEMATOLOGY;0;0;0;%;%
+1318;MYBLA;Myeloblasts;Myeloblasts;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1319;MYBLALE;Myeloblasts/Leukocytes;Myeloblasts (%);HEMATOLOGY;0;0;0;%;%
+1320;MYCY;Myelocytes;Myelocytes;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1330;MYCYLE;Myelocytes/Leukocytes;Myelocytes (%);HEMATOLOGY;0;0;0;%;%
+1337;RBCNURBC;Nucleated Erythrocytes/Erythrocytes;Nucleated Red Blood Cells/Erythrocytes OR Nucleated Erythrocytes/Erythrocytes;HEMATOLOGY;0;0;0;%;%
+1337;RBCNURBC;Nucleated Erythrocytes/Erythrocytes;Nucleated Red Blood Cells/Erythrocytes OR Nucleated Erythrocytes/Erythrocytes;HEMATOLOGY;0;0;0;%;%
+1337;RBCNURBC;Nucleated Erythrocytes/Erythrocytes2;Nucleated Red Blood Cells/Erythrocytes OR Nucleated Erythrocytes/Erythrocytes;HEMATOLOGY;0;0;0;%;%
+1337;RBCNURBC;Nucleated Erythrocytes/Erythrocytes2;Nucleated Red Blood Cells/Erythrocytes OR Nucleated Erythrocytes/Erythrocytes;HEMATOLOGY;0;0;0;%;%
+1341;NEUTSG;Neutrophils, Segmented;Segmented Neutrophils;HEMATOLOGY;0;0;0;x10E3/mm3;x10E9/L
+1342;NEUTSGLE;Neutrophils, Segmented/Leukocytes;Neutrophils, Segmented/Leukocytes (%);HEMATOLOGY;0;0;0;%;%
+1343;NEUTPR;Neutrophils and Precursors;Neutrophils and Myeloblasts and Promyelocytes and Myelocytes and Metamyelocytes;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1350;NEUTB;Neutrophils Band Form;Neutrophils Band Form;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1360;NEUTBLE;Neutrophils Band Form/Leukocytes;Neutrophils Band Form (%);HEMATOLOGY;0;0;0;%;%
+1380;PLAT;Platelets;Platelets;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1380;PLAT;Platelets;Mes Platelets de feu;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1380;PLAT;Platelets;;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1382;PLSIMCE;Immature Plasma Cells;Plasma Cells, Immature;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1383;PLSMCE;Mature Plasma Cells;Plasma Cell, Mature OR Plasmacytes;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1384;PLSPCE;Precursor Plasma Cells;Plasma Cells Precursor OR Plasmablasts;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1410;PROLYM;Prolymphocytes;Prolymphocytes;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1421;PRLYMLE;Prolymphocytes/Leukocytes;Prolymphocytes/Leukocytes;HEMATOLOGY;0;0;0;%;%
+1424;PROMONO;Promonocytes;Promonocytes;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1425;PROMONLE;Promonocytes/Leukocytes;Promonocytes (%);HEMATOLOGY;0;0;0;%;%
+1426;PROMY;Promyelocytes;Promyelocytes;HEMATOLOGY;0;0;0;x10E3/mm3;x10E9/L
+1427;PROMYLE;Promyelocytes/Leukocytes;Promyelocytes/Leucocytes;HEMATOLOGY;0;0;0;%;%
+1430;INR;Prothrombin Intl. Normalized Ratio;Prothrombin Intl. Normalized Ratio;HEMATOLOGY;0;0;0;ratio;ratio
+1440;PT;Prothrombin Time;Prothrombin Time;HEMATOLOGY;0;0;0;s;s
+1470;SEZCE;Sezary Cells;Sezary Cells;HEMATOLOGY;0;0;0;x10E3/uL;x10E9/L
+1560;LYMMCELE;Lymphoma Cells/Leukocytes;Lymphoma Cells/Leukocytes (%);HEMATOLOGY;0;0;0;%;%
+1561;LYMPLLE;Plasmacytoid Lymphocytes/Leukocytes;Plasmacytoid Lymphocytes/Leukocytes (%);HEMATOLOGY;0;0;0;%;%
+1562;LYMRCTLE;Reactive Lymphocytes/Leukocytes;Reactive Lymphocytes/Leukocytes (%);HEMATOLOGY;0;0;0;%;%
+1563;PLSPCELE;Precursor Plasma Cells/Leukocytes;Precursor Plasma Cells/Leukocytes (%);HEMATOLOGY;0;0;0;%;%
+1564;PLSMCELE;Mature Plasma Cells/Leukocytes;Mature Plasma Cells/Leukocytes (%);HEMATOLOGY;0;0;0;%;%
+1565;HRYCELE;Hairy Cells/Leukocytes;Hairy Cells/Leukocytes (%);HEMATOLOGY;0;0;0;%;%
+1566;PLSICELE;Immature Plasma Cells/Leukocytes;Immature Plasma Cells/Leukocytes (%);HEMATOLOGY;0;0;0;%;%
+1567;BLSTLMLE;Leukemic Blasts/Leukocytes;Leukemic Blasts/Leukocytes (%);HEMATOLOGY;0;0;0;%;%
+1567;BLSTLMLE;Leukemic Blasts/Leukocytes;Leukemic Blasts/Leukocytes (%);HEMATOLOGY;0;0;0;%;%
+1568;SEZCELE;Sezary Cells/Leukocytes;Sezary Cells/Leukocytes (%);HEMATOLOGY;0;0;0;%;%
+1569;MLIGCELE;Malignant Cells, NOS/Leukocytes;Malignant Cells, NOS/Leukocytes (%);HEMATOLOGY;0;0;0;%;%
+2022;AFP;Alpha Fetoprotein;Alpha Fetoprotein;CHEMISTRY;0;0;0;ng/mL;ug/L
+2070;ALT;Alanine Aminotransferase;Alanine Aminotransferase;CHEMISTRY;0;0;0;U/L;U/L
+2090;ALB;Albumin;Albumin;CHEMISTRY;0;0;0;g/dL;g/L
+2130;ALP;Alkaline Phosphatase;Alkaline Phosphatase;CHEMISTRY;0;0;0;U/L;U/L
+2140;AMYLASE;Amylase;Amylase;CHEMISTRY;0;0;0;U/L;U/L
+2160;AST;Aspartate Aminotransferase;Aspartate Aminotransferase;CHEMISTRY;0;0;0;U/L;U/L
+2190;BILI;Bilirubin;Bilirubin;CHEMISTRY;0;0;0;mg/dL;umol/L
+2200;BUN;Blood Urea Nitrogen;Blood Urea Nitrogen;CHEMISTRY;0;0;0;mg/dL;mmol/L
+2220;CA;Calcium;Calcium;CHEMISTRY;0;0;0;mg/dL;mmol/L
+2230;CACOR;Calcium Corrected;Calcium Corrected;CHEMISTRY;0;0;0;mg/dL;mmol/L
+2260;CL;Chloride;Chloride;CHEMISTRY;0;0;0;mEq/L;mmol/L
+2270;CHOL;Cholesterol;Cholesterol;CHEMISTRY;0;0;0;mg/dL;mmol/L
+2279;HCG;Choriogonadotropin Beta;Choriogonadotropin Beta Serum Qualitative;CHEMISTRY;0;SERUM;0;0;0
+2380;CREAT;Creatinine;Creatinine;CHEMISTRY;0;0;0;mg/dL;umol/L
+2400;BILDIR;Direct Bilirubin;Direct Bilirubin;CHEMISTRY;0;0;0;mg/dL;umol/L
+2430;FSH;Follicle Stimulating Hormone;Follicle Stimulating Hormone (FSH) OR Follicle Stimulating Hormone;CHEMISTRY;0;0;0;mIU/mL;IU/L
+2440;T4FR;Thyroxine, Free;Free Thyroxine (Free T4);CHEMISTRY;0;0;0;ng/dL;pmol/L
+2450;T3FR;Triiodothyronine, Free;Free Triiodothyronine (Free T3);CHEMISTRY;0;0;0;pg/dL;pmol/L
+2460;GGT;Gamma Glutamyl Transferase;Gamma Glutamyl Transferase;CHEMISTRY;0;0;0;U/L;U/L
+2480;GLUC;Glucose;Glucose;CHEMISTRY;0;SERUM;0;mg/dL;mmol/L
+2481;GLUC;Glucose;Glucose Plasma;CHEMISTRY;0;PLASMA;0;mg/dL;mmol/L
+2486;GFRCR;Glomerular Filtration Rate Corrected;Glomerular Filtration Rate Corrected;CHEMISTRY;0;0;0;mL/min/1.73m2;mL/s/1.73m2
+2490;HDL;HDL Cholesterol;HDL Cholesterol OR Alpha Lipoprotein;CHEMISTRY;0;0;0;mg/dL;mmol/L
+2530;BILIND;Indirect Bilirubin;Indirect Bilirubin;CHEMISTRY;0;0;0;mg/dL;umol/L
+2540;INSULIN;Insulin;Insulin;CHEMISTRY;0;0;0;uIU/mL;pmol/L
+2549;LDL;LDL Cholesterol;LDL Cholesterol Calculated;CHEMISTRY;0;0;CALCULATED;mg/dL;mmol/L
+2560;LDH;Lactate Dehydrogenase;Lactate Dehydrogenase;CHEMISTRY;0;0;0;U/L;U/L
+2580;MG;Magnesium;Magnesium;CHEMISTRY;0;0;0;mg/dL;mmol/L
+2580;MG;Magnesium2;Magnesium;CHEMISTRY;0;0;0;mg/dL;mmol/L
+2590;PHOS;Phosphate;Phosphate OR Inorganic Phosphate OR Phosphorus;CHEMISTRY;0;0;0;mg/dL;mmol/L
+2600;K;Potassium;Potassium;CHEMISTRY;0;0;0;mEq/L;mmol/L
+2610;PROT;Protein;Protein;CHEMISTRY;0;0;0;g/dL;g/L
+2620;SODIUM;Sodium;Sodium;CHEMISTRY;0;0;0;mEq/L;mmol/L
+2650;TSH;Thyrotropin;Thyrotropin OR Thyroid Stimulating Hormone;CHEMISTRY;0;0;0;uIU/mL;mIU/L
+2670;LIPASE;Triacylglycerol Lipase;Triacylglycerol Lipase;CHEMISTRY;0;0;0;U/L;U/L
+2680;TRIG;Triglycerides;Triglycerides;CHEMISTRY;0;0;0;mg/dL;mmol/L
+2710;URATE;Urate;Urate OR Uric Acid;CHEMISTRY;0;SERUM;0;mg/dL;umol/L
+2806;HCVVLD;HCV Viral Load;HCVPCR Cobas TaqMan;CHEMISTRY;0;0;COBAS TAQMAN V2;IU/mL;kIU/L
+2806;HCVVLD;HCV Viral Load;HCVPCR Cobas TaqMan;CHEMISTRY;0;0;COBAS TAQMAN V2;IU/mL;kIU/L
+2815;HOMAIR;HOMA Insulin Resistance;Homeostatic Model Assessment Insulin Resistance;CHEMISTRY;0;0;0;0;0
+2947;HBA1C;Hemoglobin A1C;Hemoglobin A1C;CHEMISTRY;0;0;0;%;fraction
+3053;ANA;Antinuclear Antibodies;Antinuclear Antibodies;IMMUNOLOGY;0;0;0;0;0
+3149;HIV12AB;HIV-1/2 Antibody;HIV-1/2 Antibody confirmation by Western Blot;IMMUNOLOGY;0;0;WESTERN BLOT;0;0
+3150;HIV12AB;HIV-1/2 Antibody;HIV-1/2 Antibody;IMMUNOLOGY;0;0;0;0;0
+3153;HIV1AB;HIV-1 Antibody;HIV-1 Antibody Western Blot;IMMUNOLOGY;0;0;WESTERN BLOT;0;0
+3154;HIV2AB;HIV-2 Antibody;HIV-2 Antibody Western Blot;IMMUNOLOGY;0;0;WESTERN BLOT;0;0
+3157;HAABIGM;Hepatitis A Virus Antibody IgM;Hepatitis A Antibody IGM;IMMUNOLOGY;0;SERUM;0;0;0
+3171;HCAB;Hepatitis C Virus Antibody;Hepatitis C Antibody;IMMUNOLOGY;0;0;0;0;0
+3813;HBSAG;Hepatitis B Virus Surface Antigen;Hepatitis B Virus Surface Antigen;IMMUNOLOGY;0;0;0;0;0
+4107;CYAMMBIU;Ammonium Biurate Crystals;Urine Ammonium Biurate Crystals;URINALYSIS;0;URINE;0;0;0
+4110;CYAMORPH;Amorphous Crystals;Urine Amorphous Crystals;URINALYSIS;0;URINE;0;0;0
+4120;AMPHET;Amphetamine;Urine Amphetamine;URINALYSIS;0;URINE;0;0;0
+4120;AMPHET;Amphetamine;Urine Amphetamine;URINALYSIS;0;URINE;0;0;0
+4130;BACT;Bacteria;Urine Bacteria;URINALYSIS;0;URINE;0;0;0
+4143;CSBROAD;Broad Casts;Urine Broad Casts Per LPF;URINALYSIS;0;URINE;LPF MICROSCOPY;/LPF;/LPF
+4150;BARB;Barbiturates;Urine Barbiturate;URINALYSIS;0;URINE;0;0;0
+4150;BARB;Barbiturates;Urine Barbiturate;URINALYSIS;0;URINE;0;0;0
+4150;BARB;Barbiturates2;Urine Barbiturate;URINALYSIS;0;URINE;0;0;0
+4170;CYBILI;Bilirubin Crystals;Urine Bilirubin Crystals;URINALYSIS;0;URINE;0;0;0
+4200;CYCACAR;Calcium Carbonate Crystals;Urine Calcium Carbonate Crystals;URINALYSIS;0;URINE;0;0;0
+4210;CYCAOXA;Calcium Oxalate Crystals;Urine Calcium Oxalate Crystals;URINALYSIS;0;URINE;0;0;0
+4220;CYCAPHOS;Calcium Phosphate Crystals;Urine Calcium Phosphate Crystals;URINALYSIS;0;URINE;0;0;0
+4290;COCAINE;Cocaine;Urine Cocaine;URINALYSIS;0;URINE;0;0;0
+4290;COCAINE;Cocaine;Urine Cocaine;URINALYSIS;0;URINE;0;0;0
+4330;CYCYSTIN;Cystine Crystals;Urine Cystine Crystals;URINALYSIS;0;URINE;0;0;0
+4341;CSCELL;Cellular Casts;Urine Cellular Casts Per LPF;URINALYSIS;0;URINE;LPF MICROSCOPY;/LPF;/LPF
+4352;CSEPI;Epithelial Casts;Urine Epithelial Casts Per LPF;URINALYSIS;0;URINE;LPF MICROSCOPY;/LPF;/LPF
+4360;RBC;Erythrocytes;Urine Erythrocytes;URINALYSIS;0;URINE;0;0;0
+4361;EPITCE;Transitional Epithelial Cells;Urine Transitional Epithelial Cells Per HPF;URINALYSIS;0;URINE;HPF MICROSCOPY;/HPF;/HPF
+4369;FAT;Fat;Urine Fat;URINALYSIS;0;URINE;0;0;0
+4371;CSFAT;Fatty Casts;Urine Fatty Casts Per LPF;URINALYSIS;0;URINE;LPF MICROSCOPY;/LPF;/LPF
+4401;CSGRAN;Granular Casts;Urine Granular Casts Per LPF;URINALYSIS;0;URINE;LPF MICROSCOPY;/LPF;/LPF
+4421;CSHYAL;Hyaline Casts;Urine Hyaline Casts Per LPF;URINALYSIS;0;URINE;LPF MICROSCOPY;/LPF;/LPF
+4440;CYLEUC;Leucine Crystals;Urine Leucine Crystals;URINALYSIS;0;URINE;0;0;0
+4460;WBC;Leukocytes;Urine Leukocytes;URINALYSIS;0;URINE;0;0;0
+4480;MUCTHR;Mucous Threads;Urine Mucous Threads;URINALYSIS;0;URINE;0;0;0
+4510;OPIATE;Opiate;Urine Opiate;URINALYSIS;0;URINE;0;0;0
+4510;OPIATE;Opiate;Urine Opiate;URINALYSIS;0;URINE;0;0;0
+4518;FATBODOV;Fat Bodies, Oval;Urine Oval Fat Body;URINALYSIS;0;URINE;0;0;0
+4551;CSRBC;RBC Casts;Urine RBC Casts Per LPF;URINALYSIS;0;URINE;LPF MICROSCOPY;/LPF;/LPF
+4552;RBCCLMP;Erythrocyte Cell Clumps;Urine RBC Clumps;URINALYSIS;0;URINE;0;0;0
+4590;SPERM;Spermatozoa;Urine Spermatozoa;URINALYSIS;0;URINE;0;0;0
+4601;EPISQCE;Squamous Epithelial Cells;Urine Squamous Epithelial Cells Per HPF;URINALYSIS;0;URINE;HPF MICROSCOPY;/HPF;/HPF
+4628;TRICH;Trichomonas;Urine Trichomonas;URINALYSIS;0;URINE;0;0;0
+4630;CYTRPHOS;Triple Phosphate Crystals;Urine Triple Phosphate Crystals;URINALYSIS;0;URINE;0;0;0
+4641;EPITUCE;Tubular Epithelial Cells;Urine Tubular Epithelial Cells Per HPF;URINALYSIS;0;URINE;HPF MICROSCOPY;/HPF;/HPF
+4660;CYTYRO;Tyrosine Crystals;Urine Tyrosine Crystals;URINALYSIS;0;URINE;0;0;0
+4669;CASTS;Casts;Urine Casts;URINALYSIS;0;URINE;0;0;0
+4690;CYURIAC;Uric Acid Crystals;Uric Acid Crystals;URINALYSIS;0;URINE;0;0;0
+4711;CSWBC;WBC Casts;Urine WBC Casts Per LPF;URINALYSIS;0;URINE;LPF MICROSCOPY;/LPF;/LPF
+4712;WBCCLMP;Leukocyte Cell Clumps;Urine WBC Clumps;URINALYSIS;0;URINE;0;0;0
+4721;CSWAX;Waxy Casts;Urine Waxy Casts Per LPF;URINALYSIS;0;URINE;LPF MICROSCOPY;/LPF;/LPF
+4731;YEASTBUD;Yeast Budding;Urine Yeast Budding;URINALYSIS;0;URINE;0;0;0
+4732;YEASTHYP;Yeast HYPHAE;Urine Yeast HYPHAE;URINALYSIS;0;URINE;0;0;0
