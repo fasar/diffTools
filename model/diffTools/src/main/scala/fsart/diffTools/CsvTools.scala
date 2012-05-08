@@ -27,6 +27,14 @@ object CsvTools {
     csv1
   }
 
+  def concat(csv1: CsvData, csv2: CsvData): CsvData = {
+    new CsvData() {
+      override val headers = csv1.headers
+      override val array = csv1.array ++ csv2.array
+      override val separator = csv1.separator
+    }
+  }
+
 
   def getDifferenceLines(csv1: CsvData, csv2: CsvData): CsvData = {
     log.debug("Generate list of difference between file1 and file2")

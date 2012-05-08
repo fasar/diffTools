@@ -15,7 +15,7 @@ abstract class CsvData {
 
   def separator:String;
 
-
+  //lazy because val are initialised before abstract field are herited from inner class
   lazy val getKeys: List[String] = {
     (for (line <- array)
     yield {

@@ -8,9 +8,9 @@ import name.fraser.neil.plaintext.diff_match_patch
 import scala.collection.JavaConversions._
 import java.net.URL
 import fsart.helper.{TextTools, Loader}
-import fsart.diffTools.helper.HtmlPages
 import java.io._
 import fsart.diffTools.model.{CsvTools, CsvFactory}
+import fsart.diffTools.helper.{CsvView, HtmlPages}
 
 
 /**
@@ -55,107 +55,82 @@ object DiffToolsCalc {
     val csv1 = CsvFactory.getCsvFile(file1URL, firstLineAsHeader)
     val csv2 = CsvFactory.getCsvFile(file2URL, firstLineAsHeader)
 
-
-
-    log.debug("Process duplicate lines in file1")
-    val dupLineF1 = csv1.getDuplicatedKeys
-    if (dupLineF1.size > 0) {
-      println("Duplicated lines in file1 are ")
-    }
-    for ((key, nbDup) <- dupLineF1.toList.sortWith {
-      (elem1, elem2) => elem1._1 < elem2._1
-    }) {
-      print("   ")
-      print(key + "   duplicated " + nbDup + " times")
-      val distinctLines = csv1.getLinesOfKey(key).distinct
-      if (distinctLines.size > 1) {
-        print(" with " + distinctLines.size + " different lines")
-      }
-      print("\n")
-      for (line <- distinctLines) {
-        println("     " + line.mkString(csv1.separator))
-      }
-      if (distinctLines.size >= 2)
-        println("  Differences are : ")
-      for (line <- distinctLines.drop(1)) {
-        val resDiffs = TextTools.diffText(distinctLines(0).mkString(csv1.separator), line.mkString(csv1.separator))
-        println(TextTools.toHtml(resDiffs))
-      }
-
-    }
-
-
-
-
-    log.debug("Process duplicate lines in file2")
-    val dupLineF2 = csv2.getDuplicatedKeys
-    if (dupLineF2.size > 0)
-      println("Duplicated lines in file2 are ")
-    for ((key, nbDup) <- dupLineF2.toList.sortWith {
-      (elem1, elem2) => elem1._1 < elem2._1
-    }) {
-      print("   ")
-      print(key + "   duplicated " + nbDup + " times")
-      val distinctLines2 = csv2.getLinesOfKey(key).distinct
-      if (distinctLines2.size > 1) {
-        print(" with " + distinctLines2.size + " different lines")
-      }
-      print("\n")
-      for (line <- distinctLines2) {
-        println("     " + line.mkString(csv2.separator))
-      }
-      if (distinctLines2.size >= 2)
-        println("  Differences are : ")
-      for (line <- distinctLines2.drop(1)) {
-        val resDiffs = TextTools.diffText(distinctLines2(0).mkString(csv1.separator), line.mkString(csv1.separator))
-        println(TextTools.toHtml(resDiffs))
-      }
-    }
+//
+//
+//    log.debug("Process duplicate lines in file1")
+//    val dupLineF1 = csv1.getDuplicatedKeys
+//    if (dupLineF1.size > 0) {
+//      println("Duplicated lines in file1 are ")
+//    }
+//    for ((key, nbDup) <- dupLineF1.toList.sortWith {
+//      (elem1, elem2) => elem1._1 < elem2._1
+//    }) {
+//      print("   ")
+//      print(key + "   duplicated " + nbDup + " times")
+//      val distinctLines = csv1.getLinesOfKey(key).distinct
+//      if (distinctLines.size > 1) {
+//        print(" with " + distinctLines.size + " different lines")
+//      }
+//      print("\n")
+//      for (line <- distinctLines) {
+//        println("     " + line.mkString(csv1.separator))
+//      }
+//      if (distinctLines.size >= 2)
+//        println("  Differences are : ")
+//      for (line <- distinctLines.drop(1)) {
+//        val resDiffs = TextTools.diffText(distinctLines(0).mkString(csv1.separator), line.mkString(csv1.separator))
+//        println(TextTools.toHtml(resDiffs))
+//      }
+//
+//    }
+//
+//
+//
+//
+//    log.debug("Process duplicate lines in file2")
+//    val dupLineF2 = csv2.getDuplicatedKeys
+//    if (dupLineF2.size > 0)
+//      println("Duplicated lines in file2 are ")
+//    for ((key, nbDup) <- dupLineF2.toList.sortWith {
+//      (elem1, elem2) => elem1._1 < elem2._1
+//    }) {
+//      print("   ")
+//      print(key + "   duplicated " + nbDup + " times")
+//      val distinctLines2 = csv2.getLinesOfKey(key).distinct
+//      if (distinctLines2.size > 1) {
+//        print(" with " + distinctLines2.size + " different lines")
+//      }
+//      print("\n")
+//      for (line <- distinctLines2) {
+//        println("     " + line.mkString(csv2.separator))
+//      }
+//      if (distinctLines2.size >= 2)
+//        println("  Differences are : ")
+//      for (line <- distinctLines2.drop(1)) {
+//        val resDiffs = TextTools.diffText(distinctLines2(0).mkString(csv1.separator), line.mkString(csv1.separator))
+//        println(TextTools.toHtml(resDiffs))
+//      }
+//    }
 
     log.debug("Generate differences between two files")
-
     val csvDiff = CsvTools.getDifferenceLines(csv1, csv2)
-    val listDiffLines: List[List[String]] = csvDiff.array
-
-
-    log.debug("Generate list of added lines in file1")
     val csvAdd = CsvTools.getAddedLines(csv1, csv2)
-    val listAddedLines: List[List[String]] = csvAdd.array
-
-    log.debug("Generate list of supprimed lines in file1")
     val csvSuppr = CsvTools.getASupprimedLines(csv1, csv2)
-    val listSupprimedLines: List[List[String]] = csvSuppr.array
 
     log.debug("Generate the output")
-    val htmlPage = new HtmlPages()
-    htmlPage.body.append("  <TABLE id=\"id_table1\" cellpadding='0' cellspacing='0' >")
-    if (firstLineAsHeader) {
-      htmlPage.body.append(" <thead>\n  <TR>\n")
-      for (elem <- csv1.headers) {
-        htmlPage.body.append("  <TD>")
-        htmlPage.appendToBodyEscapeChar(elem)
-        htmlPage.body.append("</TD>\n")
-      }
-      htmlPage.body.append("  </TR>\n </thead>\n")
-    }
-    htmlPage.body.append(" <tbody>\n")
-    for (lines <- listAddedLines ::: listSupprimedLines ::: listDiffLines) {
-      htmlPage.body.append("  <TR>\n")
-      for (col <- lines) {
-        htmlPage.body.append("    <TD>")
-        if (col.size > 0)
-          htmlPage.body.append(col)
-        else
-          htmlPage.body.append("&nbsp;")
-        htmlPage.body.append("</TD>\n")
-      }
-      htmlPage.body.append("  </TR>\n")
-    }
-    htmlPage.body.append(" </tbody>\n")
-    htmlPage.body.append("</Table>")
-    out.print(htmlPage.toHtml)
+    val csvRes = CsvTools.concat(CsvTools.concat(csvDiff, csvSuppr ), csvAdd)
+    val htmlPage = CsvView.getHtmlView(csvRes)
+    out.print(htmlPage)
+
     out.close
   }
+
+
+
+
+
+
+
 
   private def loadPrivateProperties() {
     try {
@@ -167,8 +142,14 @@ object DiffToolsCalc {
 
       // set the system properties
       System.setProperties(p);
-      System.getProperties().list(System.out); // display new properties
+
+      val out = new ByteArrayOutputStream();
+      val pout = new PrintWriter(out);
+      System.getProperties().list(pout); // display new properties
       log.debug("System properties diffTools.properties is loaded.")
+      pout.flush
+      val str = new String(out.toByteArray)
+      log.trace("New System properties is " + str)
     } catch {
       case e: java.io.FileNotFoundException =>
         log.warn("Can't find diffTools.properties\n" + e.toString + "\n" + e.getStackTraceString)

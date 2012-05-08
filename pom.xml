@@ -26,6 +26,7 @@
         <module>core/diffMatcher</module>
         <module>core/scriptEngine</module>
         <module>application/gui</module>
+        <module>thirdParty/apachepoi</module>
     </modules>
 
     <profiles>
@@ -259,6 +260,47 @@
                 <groupId>org.scala-lang</groupId>
                 <artifactId>scala-compiler</artifactId>
                 <version>${scala.version}</version>
+            </dependency>
+
+            <!-- DataNucleus -->
+            <!-- <dependency> -->
+            <!--   <groupId>javax.jdo</groupId> -->
+            <!--   <artifactId>jdo-api</artifactId> -->
+            <!--   <version>3.0</version> -->
+            <!-- </dependency> -->
+            <!-- <dependency> -->
+            <!--   <groupId>org.apache.geronimo.specs</groupId> -->
+            <!--   <artifactId>geronimo-jpa_2.0_spec</artifactId> -->
+            <!--   <version>1.1</version> -->
+            <!-- </dependency> -->
+            <!-- <dependency> -->
+            <!--   <groupId>org.datanucleus</groupId> -->
+            <!--   <artifactId>datanucleus-core</artifactId> -->
+            <!--   <version>[3.0, 3.0.99)</version> -->
+            <!--   <scope>runtime</scope> -->
+            <!-- </dependency> -->
+            <!-- <dependency> -->
+            <!--   <groupId>org.datanucleus</groupId> -->
+            <!--   <artifactId>datanucleus-api-jpa</artifactId> -->
+            <!--   <version>3.0.3</version> -->
+            <!-- </dependency> -->
+            <!-- <dependency> -->
+            <!--   <groupId>org.datanucleus</groupId> -->
+            <!--   <artifactId>datanucleus-excel</artifactId> -->
+            <!--   <version>[3.0, 3.0.3)</version> -->
+            <!--   <scope>runtime</scope> -->
+            <!-- </dependency> -->
+
+            <!-- Apache POI for Excel document -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>3.8</version>
+            </dependency>
+            <dependency>
+                <groupId>fsart.thridParty</groupId>
+                <artifactId>apachePoi-test</artifactId>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
 
         </dependencies>
