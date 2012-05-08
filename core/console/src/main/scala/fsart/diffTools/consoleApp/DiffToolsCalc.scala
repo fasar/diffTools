@@ -12,7 +12,7 @@ import java.io._
 import fsart.diffTools.model.CsvFactory
 import fsart.diffTools.model.helper.CsvTools
 import fsart.diffTools.helper.{CsvView, HtmlPages}
-import fsart.diffTools.helper.Impl.CsvHtmlView
+import fsart.diffTools.helper.Impl.{CsvExcelView, CsvHtmlView}
 
 
 /**
@@ -45,6 +45,13 @@ object DiffToolsCalc {
 
     val outFic = getOutFic(prop)
     val out = new FileOutputStream(outFic)
+    val tbOutFic = outFic.getName.split('.')
+    val extOutFic =
+      if(tbOutFic.size>1) {
+        tbOutFic(tbOutFic.size - 1)
+      } else {
+        "html"
+      }
 
 
     val file1URL = Loader.getFile(prop.getProperty("file1"))
@@ -120,12 +127,23 @@ object DiffToolsCalc {
     val csvAdd = CsvTools.getAddedLines(csv1, csv2)
     val csvSuppr = CsvTools.getASupprimedLines(csv1, csv2)
 
-    log.debug("Generate the output")
+
     val csvRes = CsvTools.concat(CsvTools.concat(csvDiff, csvSuppr ), csvAdd)
-    val htmlPage = CsvHtmlView.getView(csvRes)
-    out.write(htmlPage)
+    if(extOutFic == "html") {
+      log.debug("Generate the html output")
+      val htmlPage = CsvHtmlView.getView(csvRes)
+      out.write(htmlPage)
+    }else if (extOutFic == "xls") {
+      log.debug("Generate the excel output")
+      val excelView = new CsvExcelView
+      val excelData = excelView.getView(csvRes)
+      out.write(excelData)
+    } else {
+      log.error("No output selected")
+    }
 
     out.close
+
   }
 
 
@@ -199,9 +217,13 @@ object DiffToolsCalc {
     System.out.println("Usage :  [OPTION] file1 file2")
     System.out.println("Compare two cvs file\n")
     System.out.println("  -h, -help             print this message")
-    System.out.println("  -o, --output          output file")
+    System.out.println("  -o, --output          output file (can be file.html or file.xls)")
+    System.out.println("                         if the output is not set, it uses 'outputDefault' in properties file" )
     System.out.println("  -nh, --noheaders      if csv files doesn't have headers")
     System.out.println("  -h, --headers         if csv files have headers")
+    System.out.println("                         if the header is not set, it uses 'firstLineIsHeader' in properties file")
+    System.out.println("\n\n" +
+                       " properties file is conf/diffTools.properties file")
   }
 
   private def parseCommandLine(args: Seq[String]): Properties = {

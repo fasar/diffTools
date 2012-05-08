@@ -26,7 +26,6 @@ object TextTools {
 
   def toHtml(diffs: List[diff_match_patch.Diff]): String = {
     val html: StringBuilder = new StringBuilder
-    import scala.collection.JavaConversions._
     for (aDiff <- diffs) {
       val text: String = escapeHTML(aDiff.text)
       aDiff.operation match {

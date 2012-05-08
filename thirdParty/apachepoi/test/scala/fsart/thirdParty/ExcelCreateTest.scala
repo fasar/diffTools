@@ -115,6 +115,7 @@ class ExcelCreateTest {
     cell.setCellValue(content);
 
 
+
     // Orange "foreground", foreground being the fill foreground not the font color.
     val style = wb.createCellStyle();
     style.setFillForegroundColor(IndexedColors.ORANGE.getIndex());
