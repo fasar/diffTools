@@ -9,6 +9,7 @@ import fsart.diffTools.helper.CsvView
 import java.io.{OutputStream, ByteArrayOutputStream}
 import org.apache.poi.ss.usermodel._
 import org.apache.poi.hssf.util.HSSFColor
+import scala.collection.JavaConversions._
 
 /**
  *
@@ -68,6 +69,16 @@ class CsvExcelView extends CsvView {
         cellPos+=1
       }
     }
+
+    // adjust row
+    for (i <- 0 until csv.array.size ) {
+      sheet.autoSizeColumn(i)
+    }
+    //adjust line
+    for (row:Row <- sheet.rowIterator() ) {
+      row.setHeightInPoints((2*sheet.getDefaultRowHeightInPoints()));
+    }
+
 
     wb.write(out)
     out.flush()

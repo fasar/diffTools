@@ -7,12 +7,13 @@ import io.Source
 import name.fraser.neil.plaintext.diff_match_patch
 import scala.collection.JavaConversions._
 import java.net.URL
-import fsart.helper.{TextTools, Loader}
 import java.io._
 import fsart.diffTools.model.CsvFactory
 import fsart.diffTools.model.helper.CsvTools
 import fsart.diffTools.helper.{CsvView, HtmlPages}
 import fsart.diffTools.helper.Impl.{CsvExcelView, CsvHtmlView}
+import fsart.helper.{TextTools, Loader}
+import fsart.helper.ToCSV
 
 
 /**
@@ -48,22 +49,44 @@ object DiffToolsCalc {
     val tbOutFic = outFic.getName.split('.')
     val extOutFic =
       if(tbOutFic.size>1) {
-        tbOutFic(tbOutFic.size - 1)
+        tbOutFic(tbOutFic.size - 1).toLowerCase
       } else {
         "html"
       }
 
-
-    val file1URL = Loader.getFile(prop.getProperty("file1"))
-    val file2URL = Loader.getFile(prop.getProperty("file2"))
+    val file1String = prop.getProperty("file1")
+    val file1Type = getType(file1String)
+    val file1URL = getFile(file1String)
+    val file2String = prop.getProperty("file2")
+    val file2Type = getType(file2String)
+    val file2URL = getFile(file2String)
     log.trace("file 1 is " + file1URL)
     log.trace("file 2 is " + file2URL)
 
     testFile(file1URL)
     testFile(file2URL)
 
-    val csv1 = CsvFactory.getCsvFile(file1URL, firstLineAsHeader)
-    val csv2 = CsvFactory.getCsvFile(file2URL, firstLineAsHeader)
+    val csv1 =
+    if(file1Type == "xls") {
+      val toCsv = new ToCSV()
+      toCsv.openWorkbook(file1URL)
+      var sheetName = getSheetName(file1String)
+      toCsv.convertToCSV(sheetName)
+      CsvFactory.getCsvData(toCsv.getCsvData.map{_.toList}.toList, firstLineAsHeader)
+    } else {
+      CsvFactory.getCsvFile(file1URL, firstLineAsHeader)
+    }
+    val csv2 =
+    if(file2Type == "xls") {
+      val toCsv = new ToCSV()
+      toCsv.openWorkbook(file2URL)
+      var sheetName = getSheetName(file2String)
+      toCsv.convertToCSV(sheetName)
+      CsvFactory.getCsvData(toCsv.getCsvData.map{_.toList}.toList, firstLineAsHeader)
+    } else {
+      CsvFactory.getCsvFile(file2URL, firstLineAsHeader)
+    }
+
 
 //
 //
@@ -222,6 +245,11 @@ object DiffToolsCalc {
     System.out.println("  -nh, --noheaders      if csv files doesn't have headers")
     System.out.println("  -h, --headers         if csv files have headers")
     System.out.println("                         if the header is not set, it uses 'firstLineIsHeader' in properties file")
+    System.out.println("   ")
+    System.out.println(" fileX   in case of csv file, put the path of the file ")
+    System.out.println("         in case of xls file, put the path of the file and add double dots and the sheet name")
+    System.out.println("          if you don't specify sheet name, the first in the sheet file is taken")
+    System.out.println("         ex1 -> myCsv1.csv  ;  ex2 -> myExcel.xls:Sheet3")
     System.out.println("\n\n" +
                        " properties file is conf/diffTools.properties file")
   }
@@ -266,6 +294,34 @@ object DiffToolsCalc {
       System.err.println("Can't get file1 " + fileURL.getFile)
       usage(Array(""))
       throw new DiffToolsApplicationException("Can't get file1 " + fileURL.getFile)
+    }
+  }
+
+
+  private def getFile(str:String):URL = {
+    val file = str.split(':')(0)
+    Loader.getFile(file)
+  }
+
+
+  private def getType(str:String): String = {
+    val file = str.split(':')(0)
+    val tbFic = file.split('.')
+    val extFic =
+      if(tbFic.size>1) {
+        tbFic(tbFic.size - 1).toLowerCase
+      } else {
+        ""
+      }
+    extFic
+  }
+
+  private def getSheetName(str:String): String = {
+    val sep = str.split(':')
+    if(sep.size >= 2 ) {
+      sep(1)
+    } else {
+      null
     }
   }
 }

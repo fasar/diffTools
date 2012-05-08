@@ -35,5 +35,19 @@ object CsvFactory {
     builder.getCvsData()
   }
 
+  def getCsvData(data:List[List[String]], firstLineAsHeader:Boolean): CsvData[String] = {
+    var header:List[String] = null
+    var datas:List[List[String]] = data
 
+    if(datas.size > 0 && firstLineAsHeader) {
+      header = datas(0)
+      datas = datas.drop(1)
+    }
+
+    new CsvData[String]() {
+      override val headers = header
+      override val array = datas
+      override val separator = ";"
+    }
+  }
 }
