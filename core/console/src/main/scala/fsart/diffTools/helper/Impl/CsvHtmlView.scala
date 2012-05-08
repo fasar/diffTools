@@ -1,20 +1,24 @@
-package fsart.diffTools.helper
+package fsart.diffTools.helper.Impl
 
 import fsart.diffTools.model.CsvData
+import fsart.diffTools.helper.{HtmlPages, CsvView}
+import name.fraser.neil.plaintext.diff_match_patch
+import name.fraser.neil.plaintext.diff_match_patch.{Operation, Diff}
+import fsart.helper.TextTools
 
 /**
  *
  * User: fabien
- * Date: 07/05/12
- * Time: 23:53
+ * Date: 08/05/12
+ * Time: 17:21
  *
  */
 
-object CsvView {
+object CsvHtmlView extends CsvView {
 
-  def getHtmlView(csv:CsvData[String]): String = {
+  def getView(csv:CsvData[List[diff_match_patch.Diff]]): Array[Byte] = {
     val htmlPage = new HtmlPages()
-    htmlPage.body.append("  <TABLE id=\"id_table1\" cellpadding='0' cellspacing='0' >")
+    htmlPage.body.append("  <TABLE id=\"id_table1\" cellpadding='0' cellspacing='0' border='1'>")
     if (csv.headers != null) {
       htmlPage.body.append(" <thead>\n  <TR>\n")
       for (elem <- csv.headers) {
@@ -30,7 +34,7 @@ object CsvView {
       for (col <- lines) {
         htmlPage.body.append("    <TD>")
         if (col.size > 0)
-          htmlPage.body.append(col)
+          htmlPage.body.append(TextTools.toHtml(col))
         else
           htmlPage.body.append("&nbsp;")
         htmlPage.body.append("</TD>\n")
@@ -40,6 +44,9 @@ object CsvView {
     htmlPage.body.append(" </tbody>\n")
     htmlPage.body.append("</Table>")
 
-    htmlPage.toHtml
+    var resString = htmlPage.toHtml
+    resString.getBytes
   }
+
+
 }

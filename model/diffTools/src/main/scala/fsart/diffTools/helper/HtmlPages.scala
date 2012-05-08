@@ -25,12 +25,16 @@ class HtmlPages {
 
   val foot = "</body></html>\n"
 
-  val body = new StringBuilder("  <script>\n  window.addEvent(\"domready\", function(){\n          " +
-    "    obj = new MooTable( $(\"id_table1\"), {sortable: true, resizable: true, height: '500px', footer:true,  filter:'' });\n  " +
-    "    //obj.div.setStyle('height', obj.tbody.getSize().scrollSize.y + obj.thead.getSize().scrollSize.y ); \n" +
-    "    //obj.tbody.setStyle('height', obj.tbody.getSize().scrollSize.y); // don't show a frame inside the windows\n" +
-    "    //obj.div.setStyle('width', obj.tbody.getSize().scrollSize.x);\n" +
-    "})\n  </script>\n")
+  val body = {
+//    new StringBuilder("  <script>\n  window.addEvent(\"domready\", function(){\n          " +
+//    "    obj = new MooTable( $(\"id_table1\"), {sortable: true, resizable: true, height: '500px', footer:true,  filter:'' });\n  " +
+//    "    //obj.div.setStyle('height', obj.tbody.getSize().scrollSize.y + obj.thead.getSize().scrollSize.y ); \n" +
+//    "    //obj.tbody.setStyle('height', obj.tbody.getSize().scrollSize.y); // don't show a frame inside the windows\n" +
+//    "    //obj.div.setStyle('width', obj.tbody.getSize().scrollSize.x);\n" +
+//    "})\n  </script>\n")
+    new StringBuilder
+  }
+
 
 
   def toHtml: String = {

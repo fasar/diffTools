@@ -9,7 +9,7 @@ package fsart.diffTools.model
  */
 
 abstract class CsvData[E] {
-  def headers:List[E];
+  def headers:List[String];
 
   def array:List[List[E]];
 

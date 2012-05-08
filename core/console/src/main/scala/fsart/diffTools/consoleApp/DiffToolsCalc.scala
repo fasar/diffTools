@@ -9,8 +9,10 @@ import scala.collection.JavaConversions._
 import java.net.URL
 import fsart.helper.{TextTools, Loader}
 import java.io._
-import fsart.diffTools.model.{CsvTools, CsvFactory}
+import fsart.diffTools.model.CsvFactory
+import fsart.diffTools.model.helper.CsvTools
 import fsart.diffTools.helper.{CsvView, HtmlPages}
+import fsart.diffTools.helper.Impl.CsvHtmlView
 
 
 /**
@@ -42,7 +44,8 @@ object DiffToolsCalc {
       prop.getProperty("firstLineIsHeader", System.getProperty("firstLineIsHeader", "true")) == "true"
 
     val outFic = getOutFic(prop)
-    val out: PrintWriter = new PrintWriter(new BufferedWriter(new FileWriter(outFic)));
+    val out = new FileOutputStream(outFic)
+
 
     val file1URL = Loader.getFile(prop.getProperty("file1"))
     val file2URL = Loader.getFile(prop.getProperty("file2"))
@@ -119,8 +122,8 @@ object DiffToolsCalc {
 
     log.debug("Generate the output")
     val csvRes = CsvTools.concat(CsvTools.concat(csvDiff, csvSuppr ), csvAdd)
-    val htmlPage = CsvView.getHtmlView(csvRes)
-    out.print(htmlPage)
+    val htmlPage = CsvHtmlView.getView(csvRes)
+    out.write(htmlPage)
 
     out.close
   }

@@ -1,9 +1,8 @@
 package fsart.helper
 
 import name.fraser.neil.plaintext.diff_match_patch
-import java.util.LinkedList
 import name.fraser.neil.plaintext.diff_match_patch.Operation
-
+import scala.collection.JavaConversions._
 
 /**
  *
@@ -25,7 +24,7 @@ object TextTools {
   //def toHtml(diffs: LinkedList[diff_match_patch.Diff]): String = dmp.diff_prettyHtml(diffs)
 
 
-  def toHtml(diffs: LinkedList[diff_match_patch.Diff]): String = {
+  def toHtml(diffs: List[diff_match_patch.Diff]): String = {
     val html: StringBuilder = new StringBuilder
     import scala.collection.JavaConversions._
     for (aDiff <- diffs) {
