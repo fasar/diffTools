@@ -15,7 +15,7 @@ object CsvTools {
   private val log: Log = LogFactory.getLog(this.getClass)
 
 
-  def compare(csv1: CsvData, csv2: CsvData): CsvData = {
+  def compare(csv1: CsvData[String], csv2: CsvData[String]): CsvData[String] = {
     val arrayRes =
       for (lineF1 <- csv1.array)
       yield {
@@ -27,8 +27,8 @@ object CsvTools {
     csv1
   }
 
-  def concat(csv1: CsvData, csv2: CsvData): CsvData = {
-    new CsvData() {
+  def concat(csv1: CsvData[String], csv2: CsvData[String]): CsvData[String] = {
+    new CsvData[String]() {
       override val headers = csv1.headers
       override val array = csv1.array ++ csv2.array
       override val separator = csv1.separator
@@ -36,7 +36,7 @@ object CsvTools {
   }
 
 
-  def getDifferenceLines(csv1: CsvData, csv2: CsvData): CsvData = {
+  def getDifferenceLines(csv1: CsvData[String], csv2: CsvData[String]): CsvData[String] = {
     log.debug("Generate list of difference between file1 and file2")
     val listDiffLines: List[List[String]] =
       for (line1 <- csv1.array;
@@ -55,14 +55,14 @@ object CsvTools {
           }).toList
         res
       }
-    new CsvData() {
+    new CsvData[String]() {
       override val headers = csv1.headers
       override val array = listDiffLines
       override val separator = csv1.separator
     }
   }
 
-  def getAddedLines(csv1: CsvData, csv2: CsvData): CsvData = {
+  def getAddedLines(csv1: CsvData[String], csv2: CsvData[String]): CsvData[String] = {
     log.debug("Generate list of added lines in file1")
     val listAddedLines: List[List[String]] =
       for (line1 <- csv1.array;
@@ -80,14 +80,14 @@ object CsvTools {
           }).toList
         res
       }
-    new CsvData() {
+    new CsvData[String]() {
       override val headers = csv1.headers
       override val array = listAddedLines
       override val separator = csv1.separator
     }
   }
 
-  def getASupprimedLines(csv1: CsvData, csv2: CsvData): CsvData = {
+  def getASupprimedLines(csv1: CsvData[String], csv2: CsvData[String]): CsvData[String] = {
     log.debug("Generate list of supprimed lines in file1")
     val listSupprimedLines: List[List[String]] =
       for (line2 <- csv2.array;
@@ -105,7 +105,7 @@ object CsvTools {
           }).toList
         res
       }
-    new CsvData() {
+    new CsvData[String]() {
       override val headers = csv1.headers
       override val array = listSupprimedLines
       override val separator = csv1.separator

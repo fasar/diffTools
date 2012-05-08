@@ -18,7 +18,7 @@ class CsvBuilderTest {
   @Test
   def csvFile_test1 {
     val cvsBuilder = new CsvBuilder()
-    var csv:CsvData = cvsBuilder.getCvsData
+    var csv:CsvData[String] = cvsBuilder.getCvsData
     assertTrue(csv.array.size == 0)
 
     cvsBuilder.appendLine("1;2;3;4")
@@ -46,7 +46,7 @@ class CsvBuilderTest {
     val cvsBuilder = new CsvBuilder()
     cvsBuilder.setHeaders("a;b;c;d")
 
-    var csv:CsvData = cvsBuilder.getCvsData
+    var csv:CsvData[String] = cvsBuilder.getCvsData
     assertTrue(csv.array.size == 0)
     assertTrue(csv.headers == List("a", "b", "c", "d"))
   }

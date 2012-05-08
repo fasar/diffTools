@@ -15,20 +15,20 @@ import fsart.helper.Loader
 
 object CsvFactory {
 
-  def getCsvFile(file:String, firstLineAsHeader:Boolean):CsvData = {
+  def getCsvFile(file:String, firstLineAsHeader:Boolean):CsvData[String] = {
     //val file1URL = Loader.getFile(file)
     val bufSrc:Source = Source.fromString(file)
     getCsvFile(bufSrc, firstLineAsHeader)
   }
-  def getCsvFile(file:URL, firstLineAsHeader:Boolean):CsvData = {
+  def getCsvFile(file:URL, firstLineAsHeader:Boolean):CsvData[String] = {
     val bufSrc:Source = Source.fromURL(file)
     getCsvFile(bufSrc, firstLineAsHeader)
   }
-  def getCsvFile(file:File, firstLineAsHeader:Boolean):CsvData = {
+  def getCsvFile(file:File, firstLineAsHeader:Boolean):CsvData[String] = {
     val bufSrc:Source = Source.fromFile(file)
     getCsvFile(bufSrc, firstLineAsHeader)
   }
-  def getCsvFile(src:Source, firstLineAsHeader:Boolean):CsvData = {
+  def getCsvFile(src:Source, firstLineAsHeader:Boolean):CsvData[String] = {
     val lines = src.getLines.toList
     val builder = new CsvBuilder
     builder.appendLines(lines, firstLineAsHeader)

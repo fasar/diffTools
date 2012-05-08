@@ -8,15 +8,15 @@ package fsart.diffTools.model
  *
  */
 
-abstract class CsvData {
-  def headers:List[String];
+abstract class CsvData[E] {
+  def headers:List[E];
 
-  def array:List[List[String]];
+  def array:List[List[E]];
 
   def separator:String;
 
   //lazy because val are initialised before abstract field are herited from inner class
-  lazy val getKeys: List[String] = {
+  lazy val getKeys: List[E] = {
     (for (line <- array)
     yield {
       line(0)
@@ -25,16 +25,16 @@ abstract class CsvData {
 
 
     // get duplicated key and number of there apparition
-  def getDuplicatedKeys: Map[String, Int] = {
+  def getDuplicatedKeys: Map[E, Int] = {
     val res =
       (getKeys.collect {
         case key if (getKeys.count {
           _ == key
         } > 1) =>
           key
-      }).toList.sorted
+      }).toList
 
-    var mapRes = Map.empty[String, Int]
+    var mapRes = Map.empty[E, Int]
     for (key <- res) {
       mapRes += (key -> (mapRes.getOrElse(key, 0) + 1))
     }
@@ -42,7 +42,7 @@ abstract class CsvData {
   }
 
     // get duplicated lines and number of there apparition
-  def getKeysOfDuplicatedLines: Map[String, Int] = {
+  def getKeysOfDuplicatedLines: Map[E, Int] = {
     val res =
       (array.collect {
         case line
@@ -52,14 +52,14 @@ abstract class CsvData {
           line
       }).toList
 
-    var mapRes = Map.empty[String, Int]
+    var mapRes = Map.empty[E, Int]
     for (lineArr <- res) {
       mapRes += (lineArr(0) -> (mapRes.getOrElse(lineArr(0), 0) + 1))
     }
     mapRes
   }
 
-  def getLinesOfKey(key: String): List[List[String]] = {
+  def getLinesOfKey(key: E): List[List[E]] = {
     array.collect {
       case lineF2 if (lineF2(0) == key) => lineF2
     }

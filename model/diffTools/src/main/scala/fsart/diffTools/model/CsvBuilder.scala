@@ -43,7 +43,7 @@ class CsvBuilder(var separator:String = ";")  {myObj=>
   }
 
 
-  def getCvsData(): CsvData = {
+  def getCvsData(): CsvData[String] = {
     val nbMaxCol = array.foldLeft(0) {
       (nbCol, elem) => scala.math.max(nbCol, elem.size)
     }
@@ -52,7 +52,7 @@ class CsvBuilder(var separator:String = ";")  {myObj=>
         ""
       }
     }
-    new CsvData() {
+    new CsvData[String]() {
       override val headers = myObj.headers
       override val array = resArray
       override val separator = myObj.separator

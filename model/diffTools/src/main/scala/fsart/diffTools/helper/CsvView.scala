@@ -12,7 +12,7 @@ import fsart.diffTools.model.CsvData
 
 object CsvView {
 
-  def getHtmlView(csv:CsvData): String = {
+  def getHtmlView(csv:CsvData[String]): String = {
     val htmlPage = new HtmlPages()
     htmlPage.body.append("  <TABLE id=\"id_table1\" cellpadding='0' cellspacing='0' >")
     if (csv.headers != null) {
