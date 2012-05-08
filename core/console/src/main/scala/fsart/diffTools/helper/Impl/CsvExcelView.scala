@@ -10,6 +10,7 @@ import java.io.{OutputStream, ByteArrayOutputStream}
 import org.apache.poi.ss.usermodel._
 import org.apache.poi.hssf.util.HSSFColor
 import scala.collection.JavaConversions._
+import collection.immutable.Queue
 
 /**
  *
@@ -87,18 +88,18 @@ class CsvExcelView extends CsvView {
 
 
   def toExcelCell(diffs: List[diff_match_patch.Diff]): RichTextString = {
-    var resSuppr: List[diff_match_patch.Diff] = List.empty
-    var resAdded: List[diff_match_patch.Diff] = List.empty
+    var resSuppr: Queue[diff_match_patch.Diff] = Queue.empty
+    var resAdded: Queue[diff_match_patch.Diff] = Queue.empty
     for (aDiff <- diffs) {
       val text: String = aDiff.text
       aDiff.operation match {
         case Operation.INSERT =>
-          resAdded ::= aDiff
+          resAdded :+= aDiff
         case Operation.DELETE =>
-          resSuppr ::= aDiff
+          resSuppr :+= aDiff
         case Operation.EQUAL =>
-          resSuppr ::= aDiff
-          resAdded ::= aDiff
+          resSuppr :+= aDiff
+          resAdded :+= aDiff
       }
     }
     val resSupprString = resSuppr.map{_.text}.mkString("")
@@ -114,8 +115,8 @@ class CsvExcelView extends CsvView {
       createHelper.createRichTextString(resSupprString + "\n" + resAddedString)
     }
 
-    setFont(res, resSuppr, 0)
-    setFont(res, resAdded, res.length() - resAddedString.size)
+    setFont(res, resSuppr.toList, 0)
+    setFont(res, resAdded.toList, res.length() - resAddedString.size)
     res
   }
 
