@@ -1,7 +1,19 @@
 
-Entrée et sortie excel.
 
-Tableau java script.
+Sortir les lignes duppliqué d'un fichier et de l'autre.
+
+Améliorer l'interface graphique pour qu'elle donne le nom des sheets lorsqu'un fichier excel est selectionné.
+Faire la doc.
+
+Mettre le fichier de sortie dans l'interface graphique.
+
+Mettre plus de tests unitaires.
+
+Faire une meilleur gestion de fichiers avec les extensions.
+Par exemple getTypeOfFile se retrouve 3 fois.
+
+Revoir la gestion des fichiers d'entrées et de sortie.
+
 
 DSL.
         https://github.com/jruby/jruby/wiki/RedBridge#wiki-Download

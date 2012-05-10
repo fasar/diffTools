@@ -1,60 +1,61 @@
 <assembly>
 
-  <id>dist</id>
-  <formats>
-    <format>zip</format>
-  </formats>
-  <includeBaseDirectory>true</includeBaseDirectory>
+    <id>dist</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>true</includeBaseDirectory>
 
-  <dependencySets>
-    <dependencySet>
-      <includes>
-        <include>log4j:log4j</include>
-	<include>commons-logging:commons-logging</include>
- 
-        <include>fsart.diffTools:diffTools-gui</include>
-        <include>fsart.lib:helper</include>
-        <include>com.intellij:forms_rt</include>
-        <include>junit:junit</include>
-        <include>org.hamcrest:hamcrest-core</include>
-        <include>log4j:log4j</include>
-        <include>com.jgoodies:forms</include>
-        <include>commons-logging:commons-logging</include>
-        <include>jdom:jdom</include>
-        <include>asm:asm-commons</include>
-        <include>jgoodies:forms</include>
-        <include>fsart.diffTools:diffTools-model</include>
-        <include>asm:asm-tree</include>
-        <include>asm:asm</include>
-        <include>org.scala-lang:scala-library</include>
-        <include>fsart.diffTools:diffTools-console</include>
-        <include>fsart.diffTools:diffTools-console</include>
-        <include>fsart.lib:diffMatcher</include>
-      </includes>
-      <outputDirectory>lib</outputDirectory>
-    </dependencySet>
+    <dependencySets>
+        <dependencySet>
+            <includes>
+                <include>log4j:log4j</include>
+                <include>commons-logging:commons-logging</include>
+
+                <include>fsart.diffTools:diffTools-gui</include>
+                <include>fsart.lib:helper</include>
+                <include>com.intellij:forms_rt</include>
+                <include>junit:junit</include>
+                <include>org.hamcrest:hamcrest-core</include>
+                <include>log4j:log4j</include>
+                <include>com.jgoodies:forms</include>
+                <include>commons-logging:commons-logging</include>
+                <include>jdom:jdom</include>
+                <include>asm:asm-commons</include>
+                <include>jgoodies:forms</include>
+                <include>fsart.diffTools:diffTools-model</include>
+                <include>asm:asm-tree</include>
+                <include>asm:asm</include>
+                <include>org.scala-lang:scala-library</include>
+                <include>fsart.diffTools:diffTools-console</include>
+                <include>fsart.diffTools:diffTools-console</include>
+                <include>fsart.lib:diffMatcher</include>
+                <include>org.apache.poi:poi</include>
+            </includes>
+            <outputDirectory>lib</outputDirectory>
+        </dependencySet>
 
 
-  </dependencySets>
+    </dependencySets>
 
-  <fileSets>
-    <fileSet>
-      <directory>src/main/resources</directory>
-      <outputDirectory></outputDirectory>
-    </fileSet>
-    <fileSet>
-      <directory>src/main/resources/bin</directory>
-      <outputDirectory>bin</outputDirectory>
-      <fileMode>0755</fileMode>
-    </fileSet>
-    <fileSet>
-      <directory>src/main/resources/conf</directory>
-      <includes>
-        <include>*.properties</include>
-        <include>*.xml</include>
-      </includes>
-      <outputDirectory>conf</outputDirectory>
-    </fileSet>
-  </fileSets>
+    <fileSets>
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory></outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/resources/bin</directory>
+            <outputDirectory>bin</outputDirectory>
+            <fileMode>0755</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/resources/conf</directory>
+            <includes>
+                <include>*.properties</include>
+                <include>*.xml</include>
+            </includes>
+            <outputDirectory>conf</outputDirectory>
+        </fileSet>
+    </fileSets>
 
 </assembly>
