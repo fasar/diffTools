@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="fsart.diffTools.gui.DiffToolsMainPanel">
+  <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="91" y="47" width="638" height="289"/>
+    </constraints>
+    <properties>
+      <minimumSize width="500" height="226"/>
+      <opaque value="true"/>
+      <preferredSize width="500" height="226"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <hspacer id="3b791">
+        <constraints border-constraint="West"/>
+      </hspacer>
+      <hspacer id="8b00b">
+        <constraints border-constraint="East"/>
+      </hspacer>
+      <vspacer id="6687a">
+        <constraints border-constraint="South"/>
+      </vspacer>
+      <vspacer id="5a993">
+        <constraints border-constraint="North"/>
+      </vspacer>
+      <grid id="90590" layout-manager="FormLayout">
+        <rowspec value="top:d:grow"/>
+        <rowspec value="top:4dlu:noGrow"/>
+        <rowspec value="top:d:noGrow"/>
+        <rowspec value="top:4dlu:noGrow"/>
+        <rowspec value="center:max(d;25px):noGrow"/>
+        <rowspec value="top:6dlu:noGrow"/>
+        <rowspec value="top:max(d;4px):noGrow"/>
+        <rowspec value="top:4dlu:noGrow"/>
+        <rowspec value="top:max(d;25px):noGrow"/>
+        <rowspec value="top:7dlu:noGrow"/>
+        <rowspec value="center:max(d;4px):noGrow"/>
+        <rowspec value="top:4dlu:noGrow"/>
+        <rowspec value="bottom:d:grow"/>
+        <colspec value="left:max(d;4px):noGrow"/>
+        <colspec value="left:4dlu:noGrow"/>
+        <colspec value="center:max(m;150px):grow"/>
+        <colspec value="left:4dlu:noGrow"/>
+        <colspec value="fill:max(d;60px):noGrow"/>
+        <colspec value="left:5dlu:noGrow"/>
+        <colspec value="fill:max(d;4px):noGrow"/>
+        <constraints border-constraint="Center"/>
+        <properties>
+          <minimumSize width="500" height="198"/>
+          <opaque value="true"/>
+          <preferredSize width="500" height="198"/>
+        </properties>
+        <clientProperties>
+          <html.disable class="java.lang.Boolean" value="false"/>
+        </clientProperties>
+        <border type="none"/>
+        <children>
+          <vspacer id="7967">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+              <forms defaultalign-vert="false"/>
+            </constraints>
+          </vspacer>
+          <component id="10144" class="javax.swing.JButton" binding="browseButton" default-binding="true">
+            <constraints>
+              <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <forms/>
+            </constraints>
+            <properties>
+              <text value="Browse"/>
+            </properties>
+          </component>
+          <component id="bc893" class="javax.swing.JLabel" binding="comparedFileLabel" default-binding="true">
+            <constraints>
+              <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="9" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="50"/>
+              </grid>
+              <forms defaultalign-horz="false" defaultalign-vert="false"/>
+            </constraints>
+            <properties>
+              <text value="Compared file :"/>
+            </properties>
+          </component>
+          <component id="cf2a3" class="javax.swing.JButton" binding="browseButton1" default-binding="true">
+            <constraints>
+              <grid row="8" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+              <forms defaultalign-vert="false"/>
+            </constraints>
+            <properties>
+              <text value="Browse"/>
+            </properties>
+          </component>
+          <vspacer id="d9370">
+            <constraints>
+              <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+              <forms defaultalign-vert="false"/>
+            </constraints>
+          </vspacer>
+          <hspacer id="3bcd4">
+            <constraints>
+              <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+          </hspacer>
+          <hspacer id="30b9a">
+            <constraints>
+              <grid row="6" column="6" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+          </hspacer>
+          <grid id="5b27f" layout-manager="FormLayout">
+            <rowspec value="center:d:grow"/>
+            <colspec value="fill:d:grow"/>
+            <constraints>
+              <grid row="10" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <forms defaultalign-horz="false" defaultalign-vert="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="48340" class="javax.swing.JButton" binding="compareButton" default-binding="true">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="200"/>
+                  </grid>
+                  <forms defaultalign-horz="false" defaultalign-vert="false"/>
+                </constraints>
+                <properties>
+                  <preferredSize width="100" height="29"/>
+                  <text value="Compare"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <component id="d3139" class="javax.swing.JLabel" binding="baseFileLabel" default-binding="true">
+            <constraints>
+              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="50"/>
+              </grid>
+              <forms defaultalign-horz="false" defaultalign-vert="false"/>
+            </constraints>
+            <properties>
+              <text value="Base file :"/>
+            </properties>
+          </component>
+          <component id="79bc" class="javax.swing.JTextField" binding="baseFileTxt">
+            <constraints>
+              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties>
+              <minimumSize width="350" height="27"/>
+              <preferredSize width="350" height="27"/>
+            </properties>
+            <clientProperties>
+              <caretAspectRatio class="java.lang.Float" value="0.04"/>
+            </clientProperties>
+          </component>
+          <component id="55c8f" class="javax.swing.JTextField" binding="comparedFileTxt">
+            <constraints>
+              <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties>
+              <minimumSize width="50" height="27"/>
+              <preferredSize width="100" height="27"/>
+            </properties>
+            <clientProperties>
+              <caretAspectRatio class="java.lang.Float" value="0.04"/>
+            </clientProperties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

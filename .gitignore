@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.class
 *.log
 
@@ -11,3 +12,15 @@ project/plugins/project/
 
 # Scala-IDE specific
 .scala_dependencies
+=======
+*.eml
+js/
+output.html
+*.*~
+target/
+.idea/
+*.log
+.classpath
+.project
+*.iml
+>>>>>>> cc41ba285a1daa3923b68212cf9c6a36d28cf4cb
