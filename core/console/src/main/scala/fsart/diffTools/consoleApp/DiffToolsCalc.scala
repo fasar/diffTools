@@ -13,7 +13,7 @@ import fsart.diffTools.model.helper.CsvTools
 import fsart.diffTools.helper.{CsvView, HtmlPages}
 import fsart.diffTools.helper.Impl.{CsvExcelView, CsvHtmlView}
 import fsart.helper.{TextTools, Loader}
-import fsart.helper.ToCSV
+import fsart.diffTools.converter.ToCSV
 
 
 /**
