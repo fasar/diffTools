@@ -53,7 +53,7 @@ public class DiffToolsGui {
 
     public static void main(String[] args) {
         //Create and set up the window.
-        JFrame frame = new JFrame("FileChooserDemo");
+        JFrame frame = new JFrame("DiffTools");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         log.debug("Demarrage de l'application");
@@ -62,7 +62,7 @@ public class DiffToolsGui {
 
         frame.add(gui.getPanel());
         frame.pack();
-        frame.setMinimumSize(gui.getPanel().getMinimumSize());
+        //frame.setMinimumSize(gui.getPanel().getMinimumSize());
         frame.setLocationRelativeTo(frame.getParent());
         frame.setVisible(true);
         //System.exit(0);

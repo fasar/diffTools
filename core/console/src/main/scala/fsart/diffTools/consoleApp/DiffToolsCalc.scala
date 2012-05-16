@@ -186,11 +186,11 @@ object DiffToolsCalc {
 
     val csvRes = CsvTools.concat(CsvTools.concat(csvDiff, csvSuppr ), csvAdd)
     if(extOutFic == "html") {
-      log.debug("Generate the html output")
+      log.debug("Generate the html output at "  + outFic.getCanonicalPath)
       val htmlPage = CsvHtmlView.getView(csvRes)
       out.write(htmlPage)
     }else if (extOutFic == "xls") {
-      log.debug("Generate the excel output")
+      log.debug("Generate the excel output at " + outFic.getCanonicalPath)
       val excelView = new CsvExcelView
       val excelData = excelView.getView(csvRes)
       out.write(excelData)

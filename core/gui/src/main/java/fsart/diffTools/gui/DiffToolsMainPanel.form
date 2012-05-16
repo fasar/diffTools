@@ -24,7 +24,7 @@
         <rowspec value="center:4dlu:noGrow"/>
         <rowspec value="top:30px:grow"/>
         <rowspec value="top:7dlu:noGrow"/>
-        <rowspec value="center:max(m;30px):noGrow"/>
+        <rowspec value="center:m:noGrow"/>
         <colspec value="left:max(d;4px):noGrow"/>
         <colspec value="left:4dlu:noGrow"/>
         <colspec value="center:max(m;350px):grow"/>
@@ -34,7 +34,7 @@
         <colspec value="fill:max(d;4px):noGrow"/>
         <constraints border-constraint="Center"/>
         <properties>
-          <minimumSize width="500" height="300"/>
+          <minimumSize width="500" height="320"/>
           <opaque value="true"/>
           <preferredSize width="500" height="300"/>
         </properties>
@@ -85,9 +85,7 @@
             </constraints>
           </hspacer>
           <grid id="5b27f" layout-manager="FormLayout">
-            <rowspec value="center:max(m;35px):noGrow"/>
-            <rowspec value="top:5dlu:noGrow"/>
-            <rowspec value="center:4dlu:noGrow"/>
+            <rowspec value="center:35px:noGrow"/>
             <colspec value="fill:d:grow"/>
             <constraints>
               <grid row="12" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -108,12 +106,6 @@
                   <text value="Compare"/>
                 </properties>
               </component>
-              <vspacer id="e00ef">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                  <forms defaultalign-vert="false"/>
-                </constraints>
-              </vspacer>
             </children>
           </grid>
           <component id="d3139" class="javax.swing.JLabel" binding="baseFileLabel" default-binding="true">
