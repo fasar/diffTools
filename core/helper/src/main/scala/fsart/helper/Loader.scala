@@ -1,5 +1,3 @@
-package fsart.helper
-
 
 /**
  * Source org.apache.log4j.helpers.Loader
@@ -8,6 +6,9 @@ package fsart.helper
  *
  * Transformed in scala by fabien sartor.
  */
+
+package fsart.helper
+
 
 import java.lang.reflect.{Method, InvocationTargetException}
 import java.net.URL

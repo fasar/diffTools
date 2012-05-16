@@ -168,12 +168,7 @@
               <enabled value="true"/>
               <layoutOrientation value="2"/>
               <minimumSize width="200" height="30"/>
-              <model>
-                <item value="un"/>
-                <item value="deux"/>
-                <item value="trois "/>
-                <item value="quatre"/>
-              </model>
+              <model/>
               <preferredSize width="30" height="30"/>
               <selectionMode value="0"/>
               <visible value="true"/>

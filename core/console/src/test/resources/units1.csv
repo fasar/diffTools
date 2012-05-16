@@ -1,0 +1,51 @@
+id;name;nameAbv;plural;pluralAbrv;cunitType
+1;kilo gramme;kg;kilo grammes;kg;1
+2;gramme;g;grammes;g;1
+3;litre;L;litres;L;2
+4;millilitre;mL;millilitres;mL;2
+5;pound;lb;pounds;lbs;1
+6;pint;pt;pints;pt;2
+7;unit;;units;;0
+8;cuillère à soupe;cs;cuillières à soupe;cs;2
+9;pincée;;pincées;;0
+10;à goût;;à goût;;0
+11;ounce liquide;fl oz;ounces liquide;fl oz;2
+12;gousse;;gousses;;0
+13;centimètre cube;cc;centimètres cube;cc;2
+14;botte;;bottes;;0
+15;coupe;c;coupes;c;2
+16;bouteille;;bouteilles;;0
+17;petit;;petit;;0
+18;bâton;;bâtons;;0
+19;cuillère à café;cc;cuillères à café;cc;2
+20;quart;qt;quarts;qt;2
+21;gallon;gal;gallons;gal;2
+22;ounce;oz;ounces;oz;1
+23;carré;sq;carrés;sq;0
+24;milligramme;mg;milligrammes;mg;1
+25;boîte;;boîtes;;0
+26;container;;container;;0
+27;large;;large;;0
+28;paquet;;paquets;;0
+29;tranche;;tranches;;0
+30;cube;;cube;;0
+31;moyen;;moyen;;0
+32;pack;;pack;;0
+33;brin;;brins;;0
+34;feuille;;feuilles;;0
+35;pièce;;pièces;;0
+36;paquet;;paquets;;0
+37;sac;;sac;;0
+38;par service;;par service;;0
+39;slices;;slices;;0
+40;pincée;;pincées;;0
+41;chaque;;chaque;;0
+42;goutte;;gouttes;;0
+43;centilitre;cL;centilitres;cL;2
+44;boîte;;boîtes;;0
+45;tête;;têtes;;0
+46;pied;;pieds;;0
+47;pot;;pots;;0
+48;enveloppes;;enveloppes;;0
+49;décilitre;dL;décilitres;dL;2
+50;tout;;tous;;0
