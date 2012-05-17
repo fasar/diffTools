@@ -34,56 +34,55 @@
  *  knowledge of the CeCILL license and that you accept its terms. 
  * 
  */
-package fsart.diffTools.model
+package fsart.diffTools.helper.Impl
 
-import java.net.URL
-import java.io.File
-import io.Source
-import fsart.helper.Loader
+import fsart.diffTools.model.CsvData
+import fsart.diffTools.helper.{HtmlPages, CsvView}
+import name.fraser.neil.plaintext.diff_match_patch
+import name.fraser.neil.plaintext.diff_match_patch.{Operation, Diff}
+import fsart.helper.TextTools
 
 /**
  *
  * User: fabien
- * Date: 04/05/12
- * Time: 09:34
+ * Date: 08/05/12
+ * Time: 17:21
  *
  */
 
-object CsvFactory {
+object CsvHtmlView extends CsvView {
 
-  def getCsvFile(file:String, firstLineAsHeader:Boolean):CsvData[String] = {
-    //val file1URL = Loader.getFile(file)
-    val bufSrc:Source = Source.fromString(file)
-    getCsvFile(bufSrc, firstLineAsHeader)
-  }
-  def getCsvFile(file:URL, firstLineAsHeader:Boolean):CsvData[String] = {
-    val bufSrc:Source = Source.fromURL(file)
-    getCsvFile(bufSrc, firstLineAsHeader)
-  }
-  def getCsvFile(file:File, firstLineAsHeader:Boolean):CsvData[String] = {
-    val bufSrc:Source = Source.fromFile(file)
-    getCsvFile(bufSrc, firstLineAsHeader)
-  }
-  def getCsvFile(src:Source, firstLineAsHeader:Boolean):CsvData[String] = {
-    val lines = src.getLines.toList
-    val builder = new CsvBuilder
-    builder.appendLines(lines, firstLineAsHeader)
-    builder.getCvsData()
-  }
-
-  def getCsvData(data:List[List[String]], firstLineAsHeader:Boolean): CsvData[String] = {
-    var header:List[String] = null
-    var datas:List[List[String]] = data
-
-    if(datas.size > 0 && firstLineAsHeader) {
-      header = datas(0)
-      datas = datas.drop(1)
+  def getView(csv:CsvData[List[diff_match_patch.Diff]]): Array[Byte] = {
+    val htmlPage = new HtmlPages()
+    htmlPage.body.append("  <TABLE id=\"id_table1\" cellpadding='0' cellspacing='0' border='1'>")
+    if (csv.headers != null) {
+      htmlPage.body.append(" <thead>\n  <TR>\n")
+      for (elem <- csv.headers) {
+        htmlPage.body.append("  <TD>")
+        htmlPage.appendToBodyEscapeChar(elem)
+        htmlPage.body.append("</TD>\n")
+      }
+      htmlPage.body.append("  </TR>\n </thead>\n")
     }
-
-    new CsvData[String]() {
-      override val headers = header
-      override val array = datas
-      override val separator = ";"
+    htmlPage.body.append(" <tbody>\n")
+    for (lines <- csv.array ) {
+      htmlPage.body.append("  <TR>\n")
+      for (col <- lines) {
+        htmlPage.body.append("    <TD>")
+        if (col.size > 0)
+          htmlPage.body.append(TextTools.toHtml(col))
+        else
+          htmlPage.body.append("&nbsp;")
+        htmlPage.body.append("</TD>\n")
+      }
+      htmlPage.body.append("  </TR>\n")
     }
+    htmlPage.body.append(" </tbody>\n")
+    htmlPage.body.append("</Table>")
+
+    var resString = htmlPage.toHtml
+    resString.getBytes
   }
+
+
 }

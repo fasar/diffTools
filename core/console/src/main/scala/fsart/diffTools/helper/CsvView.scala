@@ -34,56 +34,23 @@
  *  knowledge of the CeCILL license and that you accept its terms. 
  * 
  */
-package fsart.diffTools.model
+package fsart.diffTools.helper
 
-import java.net.URL
-import java.io.File
-import io.Source
-import fsart.helper.Loader
+import fsart.diffTools.model.CsvData
+import name.fraser.neil.plaintext.diff_match_patch.Diff
+import name.fraser.neil.plaintext.diff_match_patch
 
 /**
  *
  * User: fabien
- * Date: 04/05/12
- * Time: 09:34
+ * Date: 07/05/12
+ * Time: 23:53
  *
  */
 
-object CsvFactory {
+trait CsvView {
 
-  def getCsvFile(file:String, firstLineAsHeader:Boolean):CsvData[String] = {
-    //val file1URL = Loader.getFile(file)
-    val bufSrc:Source = Source.fromString(file)
-    getCsvFile(bufSrc, firstLineAsHeader)
-  }
-  def getCsvFile(file:URL, firstLineAsHeader:Boolean):CsvData[String] = {
-    val bufSrc:Source = Source.fromURL(file)
-    getCsvFile(bufSrc, firstLineAsHeader)
-  }
-  def getCsvFile(file:File, firstLineAsHeader:Boolean):CsvData[String] = {
-    val bufSrc:Source = Source.fromFile(file)
-    getCsvFile(bufSrc, firstLineAsHeader)
-  }
-  def getCsvFile(src:Source, firstLineAsHeader:Boolean):CsvData[String] = {
-    val lines = src.getLines.toList
-    val builder = new CsvBuilder
-    builder.appendLines(lines, firstLineAsHeader)
-    builder.getCvsData()
-  }
+  def getView(csv:CsvData[List[diff_match_patch.Diff]]): Array[Byte];
 
-  def getCsvData(data:List[List[String]], firstLineAsHeader:Boolean): CsvData[String] = {
-    var header:List[String] = null
-    var datas:List[List[String]] = data
 
-    if(datas.size > 0 && firstLineAsHeader) {
-      header = datas(0)
-      datas = datas.drop(1)
-    }
-
-    new CsvData[String]() {
-      override val headers = header
-      override val array = datas
-      override val separator = ";"
-    }
-  }
 }

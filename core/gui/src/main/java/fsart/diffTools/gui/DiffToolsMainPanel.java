@@ -1,3 +1,39 @@
+/**
+ * Copyright Fabien Sartor 
+ * Contributors: Fabien Sartor (fabien.sartor@gmail.com)
+ *  
+ * This software is a computer program whose purpose to compate two 
+ * files.
+ *
+ */
+/**
+ *  This software is governed by the CeCILL license under French law and
+ *  abiding by the rules of distribution of free software.  You can  use, 
+ *  modify and/ or redistribute the software under the terms of the CeCILL
+ *  license as circulated by CEA, CNRS and INRIA at the following URL: 
+ *  "http://www.cecill.info". 
+ *  
+ *  As a counterpart to the access to the source code and  rights to copy,
+ *  modify and redistribute granted by the license, users are provided only
+ *  with a limited warranty  and the software's author,  the holder of the
+ *  economic rights,  and the successive licensors  have only  limited
+ *  liability. 
+ *  
+ *  In this respect, the user's attention is drawn to the risks associated
+ *  with loading,  using,  modifying and/or developing or reproducing the
+ *  software by the user in light of its specific status of free software,
+ *  that may mean  that it is complicated to manipulate,  and  that  also
+ *  therefore means  that it is reserved for developers  and  experienced
+ *  professionals having in-depth computer knowledge. Users are therefore
+ *  encouraged to load and test the software's suitability as regards their
+ *  requirements in conditions enabling the security of their systems and/or 
+ *  data to be ensured and,  more generally, to use and operate it in the 
+ *  same conditions as regards security. 
+ *  
+ *  The fact that you are presently reading this means that you have had
+ *  knowledge of the CeCILL license and that you accept its terms. 
+ * 
+ */
 package fsart.diffTools.gui;
 
 import com.intellij.uiDesigner.core.Spacer;
@@ -10,8 +46,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Vector;
 
 import fsart.diffTools.consoleApp.*;
+import fsart.helper.Loader;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
 
 // to work with it must add some intellij libs.
 //     <pathelement location="${idea.lib}/javac2.jar"/>
@@ -35,6 +78,8 @@ public class DiffToolsMainPanel {
     private JLabel baseFileLabel;
     private JTextField baseFileTxt;
     private JTextField comparedFileTxt;
+    private JList listfic1;
+    private JList listfic2;
 
     private JFileChooser fc = new JFileChooser();
 
@@ -43,21 +88,44 @@ public class DiffToolsMainPanel {
     public DiffToolsMainPanel() {
         browseButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                baseFileTxt.setText(getFileGui());
+                String res = getFileGui();
+                if(Helper.isGoodFile(res)) {
+                    baseFileTxt.setText(res);
+                    appendExcelSheet(res, listfic1);
+                }
             }
         });
 
         browseButton1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                comparedFileTxt.setText(getFileGui());
+                String res = getFileGui();
+                if(Helper.isGoodFile(res)) {
+                    comparedFileTxt.setText(res);
+                    appendExcelSheet(res, listfic2);
+                }
             }
 
         });
         compareButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent actionEvent) {
-                String[] args = ("" +  baseFileTxt.getText() + ";" + comparedFileTxt.getText()).split(";");
-                launchDiffTools(args);
+                StringBuilder args = new StringBuilder();
+                args.append("-o;output.xls;" );
+                args.append(baseFileTxt.getText() );
+                if(!listfic1.isSelectionEmpty()) {
+                    args.append(":");
+                    String sheetName = (String)listfic1.getSelectedValue();
+                    args.append(sheetName);
+                }
+                args.append(";");
+                args.append(comparedFileTxt.getText() );
+                if(!listfic2.isSelectionEmpty()) {
+                    args.append(":");
+                    String sheetName = (String)listfic2.getSelectedValue();
+                    args.append(sheetName);
+                }
+                log.debug("launching DiffTools console with args : " +args.toString() );
+                launchDiffTools(args.toString().split(";"));
             }
         });
     }
@@ -89,8 +157,6 @@ public class DiffToolsMainPanel {
         return panel1;
     }
 
-
-
     private String getFileGui() {
 
         int returnVal = fc.showOpenDialog(panel1);
@@ -105,6 +171,34 @@ public class DiffToolsMainPanel {
         return "";
     }
 
+    private void appendExcelSheet(String excelFile, JList listfic)  {
+        System.out.println("Entre append excel shhe with " + excelFile);
+        String type = Helper.getTypeOfFile(excelFile);
+        Vector<String> emptyList = new Vector<String>();
+        listfic.setListData(emptyList);
+        System.out.println("type of file : " + type);
+        if(type.equals("xls")) {
+            System.out.println("ok1");
+            InputStream inp = null;
+            try {
+                inp = new FileInputStream(excelFile);
+                HSSFWorkbook wb = new HSSFWorkbook(inp);
+                int sheetNb = wb.getNumberOfSheets();
+                if(sheetNb > 0 ) {
+                    System.out.println("ok2");
+                    Vector<String> sheetnames = new Vector<String>();
+                    for(int i = 0; i< sheetNb; i++) {
+                        Sheet sheet = wb.getSheetAt(i);
+                        sheetnames.addElement(sheet.getSheetName());
+                        System.out.println("J'ai trouvé : " + sheet.getSheetName());
+                    }
+                    listfic.setListData(sheetnames);
+                }
+            } catch (Exception e) {}
+
+        }
+
+    }
 
     {
 // GUI initializer generated by IntelliJ IDEA GUI Designer

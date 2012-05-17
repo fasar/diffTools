@@ -68,6 +68,18 @@
                     <artifactId>maven-idea-plugin</artifactId>
                     <version>2.2</version>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.scala-tools</groupId>
+                    <artifactId>maven-scala-plugin</artifactId>
+                    <version>2.15.2</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -77,14 +89,9 @@
                 <artifactId>maven-idea-plugin</artifactId>
             </plugin>
 
-            <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
-                <version>2.15.2</version>
-            </plugin>
-
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <inherited>true</inherited>
                 <configuration>
@@ -101,8 +108,8 @@
                     <downloadSources>true</downloadSources>
                     <ajdtVersion>none</ajdtVersion>
                     <sourceIncludes>
-                        <sourceInclude>**/*.scala</sourceInclude>
                         <sourceInclude>**/*.java</sourceInclude>
+                        <sourceInclude>**/*.scala</sourceInclude>
                     </sourceIncludes>
                     <projectnatures>
                         <projectnature>org.scala-ide.sdt.core.scalanature</projectnature>

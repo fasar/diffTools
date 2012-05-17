@@ -34,56 +34,31 @@
  *  knowledge of the CeCILL license and that you accept its terms. 
  * 
  */
-package fsart.diffTools.model
+package fsart.diffTools.gui;
 
-import java.net.URL
-import java.io.File
-import io.Source
-import fsart.helper.Loader
+import java.io.File;
 
 /**
- *
  * User: fabien
- * Date: 04/05/12
- * Time: 09:34
- *
+ * Date: 10/05/12
+ * Time: 19:28
  */
+public class Helper {
 
-object CsvFactory {
-
-  def getCsvFile(file:String, firstLineAsHeader:Boolean):CsvData[String] = {
-    //val file1URL = Loader.getFile(file)
-    val bufSrc:Source = Source.fromString(file)
-    getCsvFile(bufSrc, firstLineAsHeader)
-  }
-  def getCsvFile(file:URL, firstLineAsHeader:Boolean):CsvData[String] = {
-    val bufSrc:Source = Source.fromURL(file)
-    getCsvFile(bufSrc, firstLineAsHeader)
-  }
-  def getCsvFile(file:File, firstLineAsHeader:Boolean):CsvData[String] = {
-    val bufSrc:Source = Source.fromFile(file)
-    getCsvFile(bufSrc, firstLineAsHeader)
-  }
-  def getCsvFile(src:Source, firstLineAsHeader:Boolean):CsvData[String] = {
-    val lines = src.getLines.toList
-    val builder = new CsvBuilder
-    builder.appendLines(lines, firstLineAsHeader)
-    builder.getCvsData()
-  }
-
-  def getCsvData(data:List[List[String]], firstLineAsHeader:Boolean): CsvData[String] = {
-    var header:List[String] = null
-    var datas:List[List[String]] = data
-
-    if(datas.size > 0 && firstLineAsHeader) {
-      header = datas(0)
-      datas = datas.drop(1)
+    public static String getTypeOfFile(String file) {
+        String[] filetb = file.split("\\.");
+        if(filetb.length > 1) {
+            return filetb[filetb.length - 1];
+        } else {
+            return "";
+        }
     }
 
-    new CsvData[String]() {
-      override val headers = header
-      override val array = datas
-      override val separator = ";"
+    public static Boolean isGoodFile(String file) {
+        File fic = new File(file);
+        if(fic!=null && fic.exists() && fic.isFile() && fic.canRead()) {
+            return true;
+        }
+        return false;
     }
-  }
 }

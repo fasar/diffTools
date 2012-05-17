@@ -1,3 +1,39 @@
+/**
+ * Copyright Fabien Sartor 
+ * Contributors: Fabien Sartor (fabien.sartor@gmail.com)
+ *  
+ * This software is a computer program whose purpose to compate two 
+ * files.
+ *
+ */
+/**
+ *  This software is governed by the CeCILL license under French law and
+ *  abiding by the rules of distribution of free software.  You can  use, 
+ *  modify and/ or redistribute the software under the terms of the CeCILL
+ *  license as circulated by CEA, CNRS and INRIA at the following URL: 
+ *  "http://www.cecill.info". 
+ *  
+ *  As a counterpart to the access to the source code and  rights to copy,
+ *  modify and redistribute granted by the license, users are provided only
+ *  with a limited warranty  and the software's author,  the holder of the
+ *  economic rights,  and the successive licensors  have only  limited
+ *  liability. 
+ *  
+ *  In this respect, the user's attention is drawn to the risks associated
+ *  with loading,  using,  modifying and/or developing or reproducing the
+ *  software by the user in light of its specific status of free software,
+ *  that may mean  that it is complicated to manipulate,  and  that  also
+ *  therefore means  that it is reserved for developers  and  experienced
+ *  professionals having in-depth computer knowledge. Users are therefore
+ *  encouraged to load and test the software's suitability as regards their
+ *  requirements in conditions enabling the security of their systems and/or 
+ *  data to be ensured and,  more generally, to use and operate it in the 
+ *  same conditions as regards security. 
+ *  
+ *  The fact that you are presently reading this means that you have had
+ *  knowledge of the CeCILL license and that you accept its terms. 
+ * 
+ */
 package fsart.diffTools.consoleApp
 
 import org.apache.commons.logging.{Log, LogFactory}
@@ -7,16 +43,16 @@ import io.Source
 import name.fraser.neil.plaintext.diff_match_patch
 import scala.collection.JavaConversions._
 import java.net.URL
-import fsart.helper.{TextTools, Loader}
 import java.io._
-import fsart.diffTools.model.{CsvTools, CsvFactory}
+import fsart.diffTools.model.CsvFactory
+import fsart.diffTools.model.helper.CsvTools
 import fsart.diffTools.helper.{CsvView, HtmlPages}
+import fsart.diffTools.helper.Impl.{CsvExcelView, CsvHtmlView}
+import fsart.helper.{TextTools, Loader}
+import fsart.diffTools.converter.ToCSV
 
 
-/**
- * Hello world!
- *
- */
+
 object DiffToolsCalc {
   private val log: Log = LogFactory.getLog(this.getClass)
 
@@ -42,18 +78,48 @@ object DiffToolsCalc {
       prop.getProperty("firstLineIsHeader", System.getProperty("firstLineIsHeader", "true")) == "true"
 
     val outFic = getOutFic(prop)
-    val out: PrintWriter = new PrintWriter(new BufferedWriter(new FileWriter(outFic)));
+    val out = new FileOutputStream(outFic)
+    val tbOutFic = outFic.getName.split('.')
+    val extOutFic =
+      if(tbOutFic.size>1) {
+        tbOutFic(tbOutFic.size - 1).toLowerCase
+      } else {
+        "html"
+      }
 
-    val file1URL = Loader.getFile(prop.getProperty("file1"))
-    val file2URL = Loader.getFile(prop.getProperty("file2"))
+    val file1String = prop.getProperty("file1")
+    val file1Type = getType(file1String)
+    val file1URL = getFile(file1String)
+    val file2String = prop.getProperty("file2")
+    val file2Type = getType(file2String)
+    val file2URL = getFile(file2String)
     log.trace("file 1 is " + file1URL)
     log.trace("file 2 is " + file2URL)
 
     testFile(file1URL)
     testFile(file2URL)
 
-    val csv1 = CsvFactory.getCsvFile(file1URL, firstLineAsHeader)
-    val csv2 = CsvFactory.getCsvFile(file2URL, firstLineAsHeader)
+    val csv1 =
+    if(file1Type == "xls") {
+      val toCsv = new ToCSV()
+      toCsv.openWorkbook(file1URL)
+      var sheetName = getSheetName(file1String)
+      toCsv.convertToCSV(sheetName)
+      CsvFactory.getCsvData(toCsv.getCsvData.map{_.toList}.toList, firstLineAsHeader)
+    } else {
+      CsvFactory.getCsvFile(file1URL, firstLineAsHeader)
+    }
+    val csv2 =
+    if(file2Type == "xls") {
+      val toCsv = new ToCSV()
+      toCsv.openWorkbook(file2URL)
+      var sheetName = getSheetName(file2String)
+      toCsv.convertToCSV(sheetName)
+      CsvFactory.getCsvData(toCsv.getCsvData.map{_.toList}.toList, firstLineAsHeader)
+    } else {
+      CsvFactory.getCsvFile(file2URL, firstLineAsHeader)
+    }
+
 
 //
 //
@@ -117,12 +183,23 @@ object DiffToolsCalc {
     val csvAdd = CsvTools.getAddedLines(csv1, csv2)
     val csvSuppr = CsvTools.getASupprimedLines(csv1, csv2)
 
-    log.debug("Generate the output")
+
     val csvRes = CsvTools.concat(CsvTools.concat(csvDiff, csvSuppr ), csvAdd)
-    val htmlPage = CsvView.getHtmlView(csvRes)
-    out.print(htmlPage)
+    if(extOutFic == "html") {
+      log.debug("Generate the html output at "  + outFic.getCanonicalPath)
+      val htmlPage = CsvHtmlView.getView(csvRes)
+      out.write(htmlPage)
+    }else if (extOutFic == "xls") {
+      log.debug("Generate the excel output at " + outFic.getCanonicalPath)
+      val excelView = new CsvExcelView
+      val excelData = excelView.getView(csvRes)
+      out.write(excelData)
+    } else {
+      log.error("No output selected")
+    }
 
     out.close
+
   }
 
 
@@ -196,9 +273,18 @@ object DiffToolsCalc {
     System.out.println("Usage :  [OPTION] file1 file2")
     System.out.println("Compare two cvs file\n")
     System.out.println("  -h, -help             print this message")
-    System.out.println("  -o, --output          output file")
+    System.out.println("  -o, --output          output file (can be file.html or file.xls)")
+    System.out.println("                         if the output is not set, it uses 'outputDefault' in properties file" )
     System.out.println("  -nh, --noheaders      if csv files doesn't have headers")
     System.out.println("  -h, --headers         if csv files have headers")
+    System.out.println("                         if the header is not set, it uses 'firstLineIsHeader' in properties file")
+    System.out.println("   ")
+    System.out.println(" fileX   in case of csv file, put the path of the file ")
+    System.out.println("         in case of xls file, put the path of the file and add double dots and the sheet name")
+    System.out.println("          if you don't specify sheet name, the first in the sheet file is taken")
+    System.out.println("         ex1 -> myCsv1.csv  ;  ex2 -> myExcel.xls:Sheet3")
+    System.out.println("\n\n" +
+                       " properties file is conf/diffTools.properties file")
   }
 
   private def parseCommandLine(args: Seq[String]): Properties = {
@@ -241,6 +327,34 @@ object DiffToolsCalc {
       System.err.println("Can't get file1 " + fileURL.getFile)
       usage(Array(""))
       throw new DiffToolsApplicationException("Can't get file1 " + fileURL.getFile)
+    }
+  }
+
+
+  private def getFile(str:String):URL = {
+    val file = str.split(':')(0)
+    Loader.getFile(file)
+  }
+
+
+  private def getType(str:String): String = {
+    val file = str.split(':')(0)
+    val tbFic = file.split('.')
+    val extFic =
+      if(tbFic.size>1) {
+        tbFic(tbFic.size - 1).toLowerCase
+      } else {
+        ""
+      }
+    extFic
+  }
+
+  private def getSheetName(str:String): String = {
+    val sep = str.split(':')
+    if(sep.size >= 2 ) {
+      sep(1)
+    } else {
+      null
     }
   }
 }
