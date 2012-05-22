@@ -2,12 +2,13 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="fsart.diffTools.gui.DiffToolsMainPanel">
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="91" y="47" width="638" height="305"/>
+      <xy x="74" y="47" width="655" height="350"/>
     </constraints>
     <properties>
-      <minimumSize width="500" height="250"/>
+      <minimumSize width="600" height="350"/>
       <opaque value="true"/>
-      <preferredSize width="500" height="250"/>
+      <preferredSize width="600" height="350"/>
+      <visible value="true"/>
     </properties>
     <border type="none"/>
     <children>
@@ -23,7 +24,11 @@
         <rowspec value="top:max(m;30px):noGrow"/>
         <rowspec value="center:4dlu:noGrow"/>
         <rowspec value="top:30px:grow"/>
-        <rowspec value="top:7dlu:noGrow"/>
+        <rowspec value="top:5dlu:noGrow"/>
+        <rowspec value="center:25px:noGrow"/>
+        <rowspec value="top:5dlu:noGrow"/>
+        <rowspec value="top:max(m;30px):noGrow"/>
+        <rowspec value="center:5dlu:noGrow"/>
         <rowspec value="center:m:noGrow"/>
         <colspec value="left:max(d;4px):noGrow"/>
         <colspec value="left:4dlu:noGrow"/>
@@ -34,9 +39,9 @@
         <colspec value="fill:max(d;4px):noGrow"/>
         <constraints border-constraint="Center"/>
         <properties>
-          <minimumSize width="500" height="320"/>
+          <minimumSize width="600" height="350"/>
           <opaque value="true"/>
-          <preferredSize width="500" height="300"/>
+          <preferredSize width="600" height="350"/>
         </properties>
         <clientProperties>
           <html.disable class="java.lang.Boolean" value="false"/>
@@ -85,10 +90,10 @@
             </constraints>
           </hspacer>
           <grid id="5b27f" layout-manager="FormLayout">
-            <rowspec value="center:35px:noGrow"/>
+            <rowspec value="top:max(m;35px):noGrow"/>
             <colspec value="fill:d:grow"/>
             <constraints>
-              <grid row="12" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="16" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
               <forms defaultalign-horz="false" defaultalign-vert="false"/>
             </constraints>
             <properties/>
@@ -182,6 +187,36 @@
               <selectionMode value="0"/>
               <visible value="true"/>
               <visibleRowCount value="0"/>
+            </properties>
+          </component>
+          <component id="d093a" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties>
+              <text value="Output file :"/>
+            </properties>
+          </component>
+          <component id="f23d1" class="javax.swing.JTextField" binding="outputField">
+            <constraints>
+              <grid row="14" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="3" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+              <forms defaultalign-horz="false" defaultalign-vert="false"/>
+            </constraints>
+            <properties/>
+            <clientProperties>
+              <caretAspectRatio class="java.lang.Float" value="0.04"/>
+            </clientProperties>
+          </component>
+          <component id="ccfe2" class="javax.swing.JButton" binding="browseButtonOut">
+            <constraints>
+              <grid row="14" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+              <forms defaultalign-vert="false"/>
+            </constraints>
+            <properties>
+              <text value="Browse"/>
             </properties>
           </component>
         </children>

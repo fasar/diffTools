@@ -54,9 +54,17 @@ public class Helper {
         }
     }
 
-    public static Boolean isGoodFile(String file) {
+    public static Boolean isGoodFileToRead(String file) {
         File fic = new File(file);
         if(fic!=null && fic.exists() && fic.isFile() && fic.canRead()) {
+            return true;
+        }
+        return false;
+    }
+
+    public static Boolean isGoodFileToWrite(String file) {
+        File fic = new File(file);
+        if(fic!=null &&  (fic.isFile() && fic.canWrite() || !fic.exists() && fic.getParentFile().canWrite()) ) {
             return true;
         }
         return false;
