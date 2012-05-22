@@ -40,6 +40,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * User: fabien
@@ -61,6 +62,7 @@ public class DiffToolsGui {
         DiffToolsMainPanel gui = new DiffToolsMainPanel();
 
         frame.add(gui.getPanel());
+        frame.setMinimumSize(gui.getPanel().getMinimumSize());
         frame.pack();
         //frame.setMinimumSize(gui.getPanel().getMinimumSize());
         frame.setLocationRelativeTo(frame.getParent());

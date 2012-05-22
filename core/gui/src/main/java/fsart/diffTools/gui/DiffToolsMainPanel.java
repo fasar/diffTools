@@ -46,13 +46,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Vector;
 
 import fsart.diffTools.consoleApp.*;
-import fsart.helper.Loader;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -80,18 +78,22 @@ public class DiffToolsMainPanel {
     private JTextField comparedFileTxt;
     private JList listfic1;
     private JList listfic2;
+    private JTextField outputField;
+    private JButton browseButtonOut;
 
     private JFileChooser fc = new JFileChooser();
 
     private Log log = LogFactory.getLog(this.getClass());
 
     public DiffToolsMainPanel() {
+        outputField.setText(System.getProperty("user.dir") + "/output.xls");
+
         browseButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 String res = getFileGui();
-                if(Helper.isGoodFile(res)) {
+                if (Helper.isGoodFileToRead(res)) {
                     baseFileTxt.setText(res);
-                    appendExcelSheet(res, listfic1);
+                    appendExcelSheetInJList(res, listfic1);
                 }
             }
         });
@@ -99,35 +101,55 @@ public class DiffToolsMainPanel {
         browseButton1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 String res = getFileGui();
-                if(Helper.isGoodFile(res)) {
+                if(Helper.isGoodFileToRead(res)) {
                     comparedFileTxt.setText(res);
-                    appendExcelSheet(res, listfic2);
+                    appendExcelSheetInJList(res, listfic2);
                 }
             }
 
+        });
+
+        browseButtonOut.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                String res = getFileGui();
+                if(Helper.isGoodFileToWrite(res)) {
+                    outputField.setText(res);
+                } else { outputField.setText("error"); }
+            }
         });
         compareButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent actionEvent) {
-                StringBuilder args = new StringBuilder();
-                args.append("-o;output.xls;" );
-                args.append(baseFileTxt.getText() );
-                if(!listfic1.isSelectionEmpty()) {
-                    args.append(":");
-                    String sheetName = (String)listfic1.getSelectedValue();
-                    args.append(sheetName);
+                if(!Helper.isGoodFileToRead(baseFileTxt.getText())) {
+                    JOptionPane.showMessageDialog((Component) panel1, "Can't get base file");
+                } else if(!Helper.isGoodFileToRead(comparedFileTxt.getText())) {
+                    JOptionPane.showMessageDialog((Component) panel1, "Can't get compared file");
+                } else if(!Helper.isGoodFileToWrite(outputField.getText())) {
+                    JOptionPane.showMessageDialog((Component) panel1, "Can't write output file");
+                } else {
+                    StringBuilder args = new StringBuilder();
+                    args.append("-o;" );
+                    args.append(outputField.getText() );
+                    args.append(";" );
+                    args.append(baseFileTxt.getText() );
+                    if(!listfic1.isSelectionEmpty()) {
+                        args.append(":");
+                        String sheetName = (String)listfic1.getSelectedValue();
+                        args.append(sheetName);
+                    }
+                    args.append(";");
+                    args.append(comparedFileTxt.getText() );
+                    if(!listfic2.isSelectionEmpty()) {
+                        args.append(":");
+                        String sheetName = (String)listfic2.getSelectedValue();
+                        args.append(sheetName);
+                    }
+                    log.debug("launching DiffTools console with args : " +args.toString() );
+                    launchDiffTools(args.toString().split(";"));
                 }
-                args.append(";");
-                args.append(comparedFileTxt.getText() );
-                if(!listfic2.isSelectionEmpty()) {
-                    args.append(":");
-                    String sheetName = (String)listfic2.getSelectedValue();
-                    args.append(sheetName);
-                }
-                log.debug("launching DiffTools console with args : " +args.toString() );
-                launchDiffTools(args.toString().split(";"));
             }
         });
+
     }
 
     private void launchDiffTools(String[] args) {
@@ -171,26 +193,24 @@ public class DiffToolsMainPanel {
         return "";
     }
 
-    private void appendExcelSheet(String excelFile, JList listfic)  {
-        System.out.println("Entre append excel shhe with " + excelFile);
+    private void appendExcelSheetInJList(String excelFile, JList listfic)  {
+        System.out.println("Entre append excel sheet with " + excelFile);
         String type = Helper.getTypeOfFile(excelFile);
         Vector<String> emptyList = new Vector<String>();
         listfic.setListData(emptyList);
         System.out.println("type of file : " + type);
         if(type.equals("xls")) {
-            System.out.println("ok1");
             InputStream inp = null;
             try {
                 inp = new FileInputStream(excelFile);
                 HSSFWorkbook wb = new HSSFWorkbook(inp);
                 int sheetNb = wb.getNumberOfSheets();
                 if(sheetNb > 0 ) {
-                    System.out.println("ok2");
                     Vector<String> sheetnames = new Vector<String>();
                     for(int i = 0; i< sheetNb; i++) {
                         Sheet sheet = wb.getSheetAt(i);
                         sheetnames.addElement(sheet.getSheetName());
-                        System.out.println("J'ai trouvé : " + sheet.getSheetName());
+                        System.out.println("I find : " + sheet.getSheetName());
                     }
                     listfic.setListData(sheetnames);
                 }
