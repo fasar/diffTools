@@ -1,12 +1,13 @@
-/**
+/****************************************************************************
  * Copyright Fabien Sartor 
  * Contributors: Fabien Sartor (fabien.sartor@gmail.com)
+ *               http://fasar.fr
  *  
- * This software is a computer program whose purpose to compate two 
- * files.
+ * This software is a computer program whose purpose to compute differences 
+ * between two files.
  *
- */
-/**
+ ****************************************************************************
+ *
  *  This software is governed by the CeCILL license under French law and
  *  abiding by the rules of distribution of free software.  You can  use, 
  *  modify and/ or redistribute the software under the terms of the CeCILL
@@ -32,66 +33,66 @@
  *  
  *  The fact that you are presently reading this means that you have had
  *  knowledge of the CeCILL license and that you accept its terms. 
- * 
- */
-package fsart.diffTools.model
-
-/**
  *
- * User: fabien
- * Date: 07/05/12
- * Time: 17:28
- *
+ ****************************************************************************
  */
 
-class CsvBuilder(var separator:String = ";")  {myObj=>
+package fsart.diffTools.CsvDsl
 
-  var headers:List[String] = List.empty
+import fsart.diffTools.csvModel._
 
-  private var array:List[List[String]] = List.empty
 
-  def appendLine(line:String) {
-    val split:List[String] = line.split(separator).toList
-    array :+= split
-  }
 
-  def appendLines(lines:List[String], firstLineAsHeader:Boolean = true) {
-    if(firstLineAsHeader) {
-      appendLinesWithHeaders(lines)
-    }else {
-      appendLinesWithoutHeaders(lines)
-    }
-  }
-  def appendLinesWithoutHeaders(lines:List[String]) {
-    for(line <- lines) {
-      appendLine(line)
-    }
-  }
-  def appendLinesWithHeaders(lines:List[String]) {
-    setHeaders(lines(0))
-    for(line <- lines.drop(1)) {
-      appendLine(line)
+object CsvBuilderDsl {
+
+  type Data[E] = List[List[E]]
+  type Res[E] = CsvData[E]
+
+  class DataHelper[E](val data:Data[E]) {
+    def toCsv(): Res[E] = {
+      new CsvDataImpl[E] (data, null,null)
     }
   }
 
-  def setHeaders(line:String) {
-    headers = line.split(separator).toList
+
+  class ResHelper[E](val res:Res[E]) {
+    def ignoreDuplicatedLines(): Res[E] = {
+      CsvDataIgnoreDuplicatedImpl[E](res)
+    }
+
+    def firstLineAsHeader(): Res[E] = {
+      firstLineAsHeader(true)
+    }
+
+    def firstLineAsHeader(isFirstLineAsHeader:Boolean = true): Res[E] = {
+      if(isFirstLineAsHeader) {
+        CsvDataFirstLineAsHeaderImpl[E](res)
+      }else { res }
+    }
+
+    def firstLineAsData(): Res[E] = {
+      res
+    }
+
+    def withKeysCol( cols:Int* ): Res[E] = {
+      CsvDataSpecialKeyImpl[E](res, cols.toList)
+    }
+
+    def concatWith( toAdd:Res[E]) : Res[E] = {
+      CsvDataConcatenedImpl[E](res, toAdd)
+    }
+  }
+
+  class ResSortedHelper[E <% Ordered[E]](val res:Res[E]) {
+    def sortedByCol( cols:Int* ): Res[E] = {
+      CsvDataSortedImpl[E](res, cols.toList)
+    }
   }
 
 
-  def getCvsData(): CsvData[String] = {
-    val nbMaxCol = array.foldLeft(0) {
-      (nbCol, elem) => scala.math.max(nbCol, elem.size)
-    }
-    val resArray = array.map {
-      elem => elem ++ List.fill[String](nbMaxCol - elem.size) {
-        ""
-      }
-    }
-    new CsvData[String]() {
-      override val headers = myObj.headers
-      override val array = resArray
-      override val separator = myObj.separator
-    }
-  }
+  implicit def Data2DataHelper[E](value: Data[E]) = new DataHelper(value)
+  implicit def Res2ResHelper[E](value:Res[E]) = new ResHelper(value)
+  implicit def Res2ResSortedHelper[E <% Ordered[E]](value:Res[E]) = new ResSortedHelper(value)
+
+
 }

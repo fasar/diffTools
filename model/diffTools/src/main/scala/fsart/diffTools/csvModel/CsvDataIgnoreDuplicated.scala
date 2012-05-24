@@ -37,27 +37,38 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.consoleApp
+package fsart.diffTools.csvModel
 
-/**
- *
- * User: fabien
- * Date: 28/04/12
- * Time: 15:07
- *
- */
+import scala.collection.immutable.Queue
 
-class DiffToolsApplicationException(message: String, cause: Throwable) extends Exception(message, cause)  {
-  def this(s: String) {
-    this(s, null)
+
+trait CsvDataIgnoreDuplicated[E] extends CsvData[E] {
+
+  val semantics: CsvData[E]
+
+  def headers:List[String] = semantics.headers
+
+  def separator:String = semantics.separator
+
+  override def array = {
+    filterDuplicatedLine(semantics.array)
   }
 
-  def this(cause: Throwable) {
-    this("", cause)
+  private def filterDuplicatedLine[E](array:List[List[E]]): List[List[E]] = {
+    array.foldRight(Queue.empty[List[E]]) {
+      (elem:List[E], newList:Queue[List[E]]) =>
+        if(newList.contains(elem)) newList else { newList :+ elem }
+    }.toList
+
   }
 
-  def this() {
-    this("", null)
-  }
-
+  def getKeys = semantics.getKeys
+  def getDuplicatedKeys_map = semantics.getDuplicatedKeys_map
+  def getDuplicatedKeys = semantics.getDuplicatedKeys
+  def getKeysOfDuplicatedLines_map = semantics.getKeysOfDuplicatedLines_map
+  def getDuplicatedLines = semantics.getDuplicatedLines
+  def getLinesOfKey(key: CsvKey[E]) = semantics.getLinesOfKey(key)
 }
+
+
+case class CsvDataIgnoreDuplicatedImpl[E](val semantics: CsvData[E]) extends CsvDataIgnoreDuplicated[E]

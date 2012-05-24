@@ -37,27 +37,77 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.consoleApp
+package fsart.diffTools.csvModel
 
-/**
- *
- * User: fabien
- * Date: 28/04/12
- * Time: 15:07
- *
- */
 
-class DiffToolsApplicationException(message: String, cause: Throwable) extends Exception(message, cause)  {
-  def this(s: String) {
-    this(s, null)
+trait CsvDataSpecialKey[E] extends CsvData[E] {
+
+  def semantics: CsvData[E]
+
+  def keysCol: List[Int]
+
+  def headers:List[String] = semantics.headers
+
+  def separator:String = semantics.separator
+
+  def array = semantics.array
+
+
+    //lazy because otherwise, val are initialised before abstract field inherits from inner class
+  override lazy val getKeys: List[CsvKey[E]] = {
+    (for (line <- array)
+    yield {
+      CsvKeySpecial.getKeyOfLine(line, keysCol)
+    }).toList
   }
 
-  def this(cause: Throwable) {
-    this("", cause)
+  override def getLinesOfKey(key: CsvKey[E]): List[List[E]] = {
+    array.foreach{ case elem =>
+      val key2 = CsvKeySpecial.getKeyOfLine(elem, keysCol)
+    }
+    array.collect {
+      case lineF2 if (key == CsvKeySpecial.getKeyOfLine(lineF2, keysCol) ) => lineF2
+    }
   }
 
-  def this() {
-    this("", null)
-  }
-
+  def getDuplicatedKeys_map = semantics.getDuplicatedKeys_map
+  def getDuplicatedKeys = semantics.getDuplicatedKeys
+  def getKeysOfDuplicatedLines_map = semantics.getKeysOfDuplicatedLines_map
+  def getDuplicatedLines = semantics.getDuplicatedLines
 }
+
+case class CsvDataSpecialKeyImpl[E](val semantics: CsvData[E], val keysCol: List[Int]) extends CsvDataSpecialKey[E] {
+  {
+    if(!semantics.isEmpty) {
+      val sizeLine = semantics.array(0).size
+      val keysColCantReach = keysCol.collect{ case keyCol if sizeLine <= keyCol => keyCol }
+      if(keysColCantReach.size > 0) {
+          throw new CsvDataColNumberException("Key(s) col " + keysColCantReach.mkString(",") + " can't be reached")
+      }
+    }
+  }
+}
+
+
+case class CsvKeySpecial[E](key:List[E], keysCol: List[Int]) extends CsvKey[E] {
+
+  override def equals(obj: Any) =  {
+    obj match {
+      case that:CsvKeySpecial[E] if that.isInstanceOf[CsvKeySpecial[E]] =>
+        this.key == that.key
+      case _ => false
+    }
+  }
+}
+
+object CsvKeySpecial {
+  def getKeyOfLine[E](line:List[E], keysCol: List[Int]):CsvKey[E] = {
+    val keys = (for(keyCol <- keysCol)
+      yield {
+        line(keyCol)
+      }).toList
+    CsvKeySpecial(keys, keysCol)
+  }
+}
+
+

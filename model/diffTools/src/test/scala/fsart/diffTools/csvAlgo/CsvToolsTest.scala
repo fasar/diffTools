@@ -1,12 +1,13 @@
-/**
+/****************************************************************************
  * Copyright Fabien Sartor 
  * Contributors: Fabien Sartor (fabien.sartor@gmail.com)
+ *               http://fasar.fr
  *  
- * This software is a computer program whose purpose to compate two 
- * files.
+ * This software is a computer program whose purpose to compute differences 
+ * between two files.
  *
- */
-/**
+ ****************************************************************************
+ *
  *  This software is governed by the CeCILL license under French law and
  *  abiding by the rules of distribution of free software.  You can  use, 
  *  modify and/ or redistribute the software under the terms of the CeCILL
@@ -32,28 +33,22 @@
  *  
  *  The fact that you are presently reading this means that you have had
  *  knowledge of the CeCILL license and that you accept its terms. 
- * 
- */
-package fsart.diffTools.model
-
-/**
  *
- * User: fabien
- * Date: 23/04/12
- * Time: 19:36
- *
+ ****************************************************************************
  */
 
-class CsvFileNotGoodException(message: String, cause: Throwable) extends Exception(message, cause) {
-  def this(s: String) {
-    this(s, null)
-  }
+package fsart.diffTools.csvAlgo
 
-  def this(cause: Throwable) {
-    this("", cause)
-  }
+import org.apache.commons.logging.{LogFactory, Log}
+import org.junit.Test
+import org.junit.Assert._
+import fsart.diffTools.CsvBuilder.CsvBuilder
+import fsart.diffTools.csvModel.CsvData
 
-  def this() {
-    this("", null)
-  }
+
+
+class CsvToolsTest {
+  val data1 = List(List(4,5,6,7), List(2,3,4,5), List(1,2,3,4), List(2,3,4,5)).map{_.map{_.toString}}
+  val data2 = List(List(4,5,6,7), List(2,3,4,5), List(1,2,3,4), List(2,3,4,5)).map{_.map{_.toString}}
+
 }

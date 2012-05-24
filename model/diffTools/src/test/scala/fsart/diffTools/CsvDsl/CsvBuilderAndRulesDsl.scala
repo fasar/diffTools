@@ -1,12 +1,13 @@
-/**
+/****************************************************************************
  * Copyright Fabien Sartor 
  * Contributors: Fabien Sartor (fabien.sartor@gmail.com)
+ *               http://fasar.fr
  *  
- * This software is a computer program whose purpose to compate two 
- * files.
+ * This software is a computer program whose purpose to compute differences 
+ * between two files.
  *
- */
-/**
+ ****************************************************************************
+ *
  *  This software is governed by the CeCILL license under French law and
  *  abiding by the rules of distribution of free software.  You can  use, 
  *  modify and/ or redistribute the software under the terms of the CeCILL
@@ -32,56 +33,55 @@
  *  
  *  The fact that you are presently reading this means that you have had
  *  knowledge of the CeCILL license and that you accept its terms. 
- * 
+ *
+ ****************************************************************************
  */
-package fsart.diffTools.helper.Impl
 
-import fsart.diffTools.model.CsvData
-import fsart.diffTools.helper.{HtmlPages, CsvView}
-import name.fraser.neil.plaintext.diff_match_patch
-import name.fraser.neil.plaintext.diff_match_patch.{Operation, Diff}
-import fsart.helper.TextTools
+package fsart.diffTools.CsvDsl
+
+import org.junit.Test
+import org.junit.Assert._
+import fsart.diffTools.CsvDsl.CsvRulesDsl.modificationsMade
+import fsart.diffTools.csvModel.CsvDataSpecialKey
 
 /**
  *
  * User: fabien
- * Date: 08/05/12
- * Time: 17:21
+ * Date: 25/05/12
+ * Time: 11:03
  *
  */
 
-object CsvHtmlView extends CsvView {
+class CsvBuilderAndRulesDsl {
 
-  def getView(csv:CsvData[List[diff_match_patch.Diff]]): Array[Byte] = {
-    val htmlPage = new HtmlPages()
-    htmlPage.body.append("  <TABLE id=\"id_table1\" cellpadding='0' cellspacing='0' border='1'>")
-    if (csv.headers != null) {
-      htmlPage.body.append(" <thead>\n  <TR>\n")
-      for (elem <- csv.headers) {
-        htmlPage.body.append("  <TD>")
-        htmlPage.appendToBodyEscapeChar(elem)
-        htmlPage.body.append("</TD>\n")
-      }
-      htmlPage.body.append("  </TR>\n </thead>\n")
-    }
-    htmlPage.body.append(" <tbody>\n")
-    for (lines <- csv.array ) {
-      htmlPage.body.append("  <TR>\n")
-      for (col <- lines) {
-        htmlPage.body.append("    <TD>")
-        if (col.size > 0)
-          htmlPage.body.append(TextTools.toHtml(col))
-        else
-          htmlPage.body.append("&nbsp;")
-        htmlPage.body.append("</TD>\n")
-      }
-      htmlPage.body.append("  </TR>\n")
-    }
-    htmlPage.body.append(" </tbody>\n")
-    htmlPage.body.append("</Table>")
 
-    var resString = htmlPage.toHtml
-    resString.getBytes
+  private val datasA = List(List(4,4,4,4), List(2,2,2,2), List(1,1,1,1), List(1,1,1,1),  List(5,5,5,5),  List(8,8,8,8)).map{_.map{_.toString}}
+  private val datasB = List(List(4,5,4,5), List(2,3,3,3), List(1,1,1,1), List(1,2,1,1),  List(5,6,6,6),  List(7,7,7,7)).map{_.map{_.toString}}
+
+
+  @Test
+  def modifiedWithMultipleColAsKeyTest {
+    import CsvBuilderDsl._
+    import CsvRulesDsl._
+
+    val csv3 = datasB toCsv() withKeysCol (0,2)
+    println("class name : " + csv3.getClass.getName)
+    assertTrue(csv3.isInstanceOf[CsvDataSpecialKey[_]])
+
+    val csv1 = datasA toCsv() withKeysCol (0,2) ignoreDuplicatedLines()
+    val csv2 = csv3 ignoreDuplicatedLines()
+
+    var res2 = modificationsMade by csv2 withRef csv1
+
+    var res = modificationsMade by csv2 withRef csv1 mapValuesDuringComparison (
+      List(
+      ("10", "11")
+    ))
+    println("tb : " + res)
+    assertTrue(res.array.size > 0)
+
+
+
   }
 
 

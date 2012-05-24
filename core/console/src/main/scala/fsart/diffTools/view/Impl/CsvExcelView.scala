@@ -1,12 +1,13 @@
-/**
+/****************************************************************************
  * Copyright Fabien Sartor 
  * Contributors: Fabien Sartor (fabien.sartor@gmail.com)
+ *               http://fasar.fr
  *  
- * This software is a computer program whose purpose to compate two 
- * files.
+ * This software is a computer program whose purpose to compute differences 
+ * between two files.
  *
- */
-/**
+ ****************************************************************************
+ *
  *  This software is governed by the CeCILL license under French law and
  *  abiding by the rules of distribution of free software.  You can  use, 
  *  modify and/ or redistribute the software under the terms of the CeCILL
@@ -32,16 +33,18 @@
  *  
  *  The fact that you are presently reading this means that you have had
  *  knowledge of the CeCILL license and that you accept its terms. 
- * 
+ *
+ ****************************************************************************
  */
+
 package fsart.diffTools.helper.Impl
 
-import fsart.diffTools.model.CsvData
+import fsart.diffTools.csvModel.CsvData
 import name.fraser.neil.plaintext.diff_match_patch
 import name.fraser.neil.plaintext.diff_match_patch.{Operation, Diff}
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.util.WorkbookUtil
-import fsart.diffTools.helper.CsvView
+import fsart.diffTools.view.CsvView
 import java.io.{OutputStream, ByteArrayOutputStream}
 import org.apache.poi.ss.usermodel._
 import org.apache.poi.hssf.util.HSSFColor

@@ -1,12 +1,13 @@
-/**
+/****************************************************************************
  * Copyright Fabien Sartor 
  * Contributors: Fabien Sartor (fabien.sartor@gmail.com)
+ *               http://fasar.fr
  *  
- * This software is a computer program whose purpose to compate two 
- * files.
+ * This software is a computer program whose purpose to compute differences 
+ * between two files.
  *
- */
-/**
+ ****************************************************************************
+ *
  *  This software is governed by the CeCILL license under French law and
  *  abiding by the rules of distribution of free software.  You can  use, 
  *  modify and/ or redistribute the software under the terms of the CeCILL
@@ -32,58 +33,15 @@
  *  
  *  The fact that you are presently reading this means that you have had
  *  knowledge of the CeCILL license and that you accept its terms. 
- * 
- */
-package fsart.diffTools.model
-
-import java.net.URL
-import java.io.File
-import io.Source
-import fsart.helper.Loader
-
-/**
  *
- * User: fabien
- * Date: 04/05/12
- * Time: 09:34
- *
+ ****************************************************************************
  */
 
-object CsvFactory {
+package fsart.diffTools.csvModel
 
-  def getCsvFile(file:String, firstLineAsHeader:Boolean):CsvData[String] = {
-    //val file1URL = Loader.getFile(file)
-    val bufSrc:Source = Source.fromString(file)
-    getCsvFile(bufSrc, firstLineAsHeader)
-  }
-  def getCsvFile(file:URL, firstLineAsHeader:Boolean):CsvData[String] = {
-    val bufSrc:Source = Source.fromURL(file)
-    getCsvFile(bufSrc, firstLineAsHeader)
-  }
-  def getCsvFile(file:File, firstLineAsHeader:Boolean):CsvData[String] = {
-    val bufSrc:Source = Source.fromFile(file)
-    getCsvFile(bufSrc, firstLineAsHeader)
-  }
-  def getCsvFile(src:Source, firstLineAsHeader:Boolean):CsvData[String] = {
-    val lines = src.getLines.toList
-    val builder = new CsvBuilder
-    builder.appendLines(lines, firstLineAsHeader)
-    builder.getCvsData()
-  }
 
-  def getCsvData(data:List[List[String]], firstLineAsHeader:Boolean): CsvData[String] = {
-    var header:List[String] = null
-    var datas:List[List[String]] = data
-
-    if(datas.size > 0 && firstLineAsHeader) {
-      header = datas(0)
-      datas = datas.drop(1)
-    }
-
-    new CsvData[String]() {
-      override val headers = header
-      override val array = datas
-      override val separator = ";"
-    }
-  }
+trait CsvKey[E] {
+  override def toString:String
 }
+
+

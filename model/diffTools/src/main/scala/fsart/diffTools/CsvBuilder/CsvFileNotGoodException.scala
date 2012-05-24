@@ -1,12 +1,13 @@
-/**
+/****************************************************************************
  * Copyright Fabien Sartor 
  * Contributors: Fabien Sartor (fabien.sartor@gmail.com)
+ *               http://fasar.fr
  *  
- * This software is a computer program whose purpose to compate two 
- * files.
+ * This software is a computer program whose purpose to compute differences 
+ * between two files.
  *
- */
-/**
+ ****************************************************************************
+ *
  *  This software is governed by the CeCILL license under French law and
  *  abiding by the rules of distribution of free software.  You can  use, 
  *  modify and/ or redistribute the software under the terms of the CeCILL
@@ -32,56 +33,30 @@
  *  
  *  The fact that you are presently reading this means that you have had
  *  knowledge of the CeCILL license and that you accept its terms. 
- * 
+ *
+ ****************************************************************************
  */
-package fsart.diffTools.helper
 
-import scala.collection.mutable.StringBuilder
-import fsart.helper.TextTools
+package fsart.diffTools.CsvBuilder
 
 /**
  *
  * User: fabien
- * Date: 24/04/12
- * Time: 00:28
+ * Date: 23/04/12
+ * Time: 19:36
  *
  */
 
-class HtmlPages {
-
-  val headers = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n" +
-    "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
-    "<html>\n" +
-    "<head>\n" +
-    "  <script type=\"text/javascript\" src=\"js/mootools.v1.11.js\"></script>\n" +
-    "  <script type=\"text/javascript\" src=\"js/mootable.js\"></script>\n" +
-    "  <link rel=\"stylesheet\" type=\"text/css\" href=\"js/mootable.css\">\n"
-
-  val endHeader = "</head><body>"
-
-  val foot = "</body></html>\n"
-
-  val body = {
-//    new StringBuilder("  <script>\n  window.addEvent(\"domready\", function(){\n          " +
-//    "    obj = new MooTable( $(\"id_table1\"), {sortable: true, resizable: true, height: '500px', footer:true,  filter:'' });\n  " +
-//    "    //obj.div.setStyle('height', obj.tbody.getSize().scrollSize.y + obj.thead.getSize().scrollSize.y ); \n" +
-//    "    //obj.tbody.setStyle('height', obj.tbody.getSize().scrollSize.y); // don't show a frame inside the windows\n" +
-//    "    //obj.div.setStyle('width', obj.tbody.getSize().scrollSize.x);\n" +
-//    "})\n  </script>\n")
-    new StringBuilder
+class CsvFileNotGoodException(message: String, cause: Throwable) extends Exception(message, cause) {
+  def this(s: String) {
+    this(s, null)
   }
 
-
-
-  def toHtml: String = {
-    headers + endHeader + body.toString() + foot
+  def this(cause: Throwable) {
+    this("", cause)
   }
 
-  def appendToBodyEscapeChar(str: String) {
-    body.append(TextTools.escapeHTML(str))
-  }
-
-  def appendToBodyDirect(str: String) {
-    body.append(str)
+  def this() {
+    this("", null)
   }
 }

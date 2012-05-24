@@ -1,12 +1,57 @@
-/**
+
+import java.io._
+
+object MakeEntete {
+  def main(argsa: Array[String]): Unit = {
+    if(argsa.size==0) { 
+      println("Can't get params")
+      sys.exit(1)
+    }
+
+    val ficIn = new File(argsa(0))
+    val ficOut = new File(argsa(0)+".new")
+    val ficOrig = new File(argsa(0)+ ".orig")
+
+    if(!(ficIn.exists && ficIn.canRead)) { 
+      println("Can't process " + ficIn.getCanonicalPath() )
+      sys.exit(1)
+    }
+
+    println("Process : " + ficIn.getCanonicalPath())
+
+    val in:BufferedReader = new BufferedReader(new FileReader(ficIn));
+    val out:PrintWriter = new PrintWriter(new BufferedWriter(new FileWriter(ficOut)));
+    
+    val ficLenght = ficIn.length.intValue
+    val inArray:Array[Char] = Array.ofDim(ficLenght)
+    in.read(inArray, 0, ficLenght)
+    val str = new String(inArray)
+
+    //Remove headers
+    val startFile = str.indexOf("package ")
+    out.write(entete.toCharArray() )
+    out.write(inArray, startFile, ficLenght-startFile)
+    out.close
+    in.close
+    
+    ficIn.renameTo(ficOrig)
+    ficOut.renameTo(ficIn)
+    ficOrig.delete
+    println("   Done")
+  }
+
+
+ val entete = 
+"""/****************************************************************************
  * Copyright Fabien Sartor 
  * Contributors: Fabien Sartor (fabien.sartor@gmail.com)
+ *               http://fasar.fr
  *  
- * This software is a computer program whose purpose to compate two 
- * files.
+ * This software is a computer program whose purpose to compute differences 
+ * between two files.
  *
- */
-/**
+ ****************************************************************************
+ *
  *  This software is governed by the CeCILL license under French law and
  *  abiding by the rules of distribution of free software.  You can  use, 
  *  modify and/ or redistribute the software under the terms of the CeCILL
@@ -32,74 +77,10 @@
  *  
  *  The fact that you are presently reading this means that you have had
  *  knowledge of the CeCILL license and that you accept its terms. 
- * 
- */
-package fsart.diffTools.model
-
-/**
  *
- * User: fabien
- * Date: 04/05/12
- * Time: 09:30
- *
+ ****************************************************************************
  */
 
-abstract class CsvData[E] {
-  def headers:List[String];
-
-  def array:List[List[E]];
-
-  def separator:String;
-
-  //lazy because val are initialised before abstract field are herited from inner class
-  lazy val getKeys: List[E] = {
-    (for (line <- array)
-    yield {
-      line(0)
-    }).toList
-  }
-
-
-    // get duplicated key and number of there apparition
-  def getDuplicatedKeys: Map[E, Int] = {
-    val res =
-      (getKeys.collect {
-        case key if (getKeys.count {
-          _ == key
-        } > 1) =>
-          key
-      }).toList
-
-    var mapRes = Map.empty[E, Int]
-    for (key <- res) {
-      mapRes += (key -> (mapRes.getOrElse(key, 0) + 1))
-    }
-    mapRes
-  }
-
-    // get duplicated lines and number of there apparition
-  def getKeysOfDuplicatedLines: Map[E, Int] = {
-    val res =
-      (array.collect {
-        case line
-          if (array.count {
-            x => x.toList == line.toList
-          } > 1) =>
-          line
-      }).toList
-
-    var mapRes = Map.empty[E, Int]
-    for (lineArr <- res) {
-      mapRes += (lineArr(0) -> (mapRes.getOrElse(lineArr(0), 0) + 1))
-    }
-    mapRes
-  }
-
-  def getLinesOfKey(key: E): List[List[E]] = {
-    array.collect {
-      case lineF2 if (lineF2(0) == key) => lineF2
-    }
-  }
-
-
+"""
 }
+

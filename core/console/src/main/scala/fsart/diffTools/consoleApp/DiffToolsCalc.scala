@@ -1,12 +1,13 @@
-/**
+/****************************************************************************
  * Copyright Fabien Sartor 
  * Contributors: Fabien Sartor (fabien.sartor@gmail.com)
+ *               http://fasar.fr
  *  
- * This software is a computer program whose purpose to compate two 
- * files.
+ * This software is a computer program whose purpose to compute differences 
+ * between two files.
  *
- */
-/**
+ ****************************************************************************
+ *
  *  This software is governed by the CeCILL license under French law and
  *  abiding by the rules of distribution of free software.  You can  use, 
  *  modify and/ or redistribute the software under the terms of the CeCILL
@@ -32,25 +33,30 @@
  *  
  *  The fact that you are presently reading this means that you have had
  *  knowledge of the CeCILL license and that you accept its terms. 
- * 
+ *
+ ****************************************************************************
  */
+
 package fsart.diffTools.consoleApp
 
 import org.apache.commons.logging.{Log, LogFactory}
-import java.util.Properties
 import annotation.tailrec
 import io.Source
 import name.fraser.neil.plaintext.diff_match_patch
 import scala.collection.JavaConversions._
 import java.net.URL
 import java.io._
-import fsart.diffTools.model.CsvFactory
-import fsart.diffTools.model.helper.CsvTools
-import fsart.diffTools.helper.{CsvView, HtmlPages}
+import fsart.diffTools.csvAlgo.CsvTools
+import fsart.diffTools.CsvBuilder.CsvFactory
+import fsart.diffTools.csvAlgo.CsvTools
+import fsart.diffTools.view.CsvView
+import fsart.diffTools.helper.HtmlPages
+import fsart.diffTools.view.CsvView
 import fsart.diffTools.helper.Impl.{CsvExcelView, CsvHtmlView}
-import fsart.helper.{TextTools, Loader}
+import fsart.helper.Loader
 import fsart.diffTools.converter.ToCSV
-
+import fsart.diffTools.csvModel.CsvData
+import java.util.{Calendar, Date, Properties}
 
 
 object DiffToolsCalc {
@@ -77,6 +83,8 @@ object DiffToolsCalc {
     val firstLineAsHeader =
       prop.getProperty("firstLineIsHeader", System.getProperty("firstLineIsHeader", "true")) == "true"
 
+    val dateInit = Calendar.getInstance.getTimeInMillis
+
     val outFic = getOutFic(prop)
     val out = new FileOutputStream(outFic)
     val tbOutFic = outFic.getName.split('.')
@@ -99,97 +107,57 @@ object DiffToolsCalc {
     testFile(file1URL)
     testFile(file2URL)
 
-    val csv1 =
+    val datas1:List[List[String]] =
     if(file1Type == "xls") {
       val toCsv = new ToCSV()
       toCsv.openWorkbook(file1URL)
       var sheetName = getSheetName(file1String)
       toCsv.convertToCSV(sheetName)
-      CsvFactory.getCsvData(toCsv.getCsvData.map{_.toList}.toList, firstLineAsHeader)
+      toCsv.getCsvData.map{_.toList}.toList
     } else {
-      CsvFactory.getCsvFile(file1URL, firstLineAsHeader)
+      val buff = Source.fromURL(file1URL)
+      buff.getLines().map{_.split(";").toList}.toList
     }
-    val csv2 =
+    val datas2 =
     if(file2Type == "xls") {
       val toCsv = new ToCSV()
       toCsv.openWorkbook(file2URL)
       var sheetName = getSheetName(file2String)
       toCsv.convertToCSV(sheetName)
-      CsvFactory.getCsvData(toCsv.getCsvData.map{_.toList}.toList, firstLineAsHeader)
+      toCsv.getCsvData.map{_.toList}.toList
     } else {
-      CsvFactory.getCsvFile(file2URL, firstLineAsHeader)
+      val buff = Source.fromURL(file2URL)
+      buff.getLines().map{_.split(";").toList}.toList
     }
 
+    //get duplicated keys and duplicated lines
 
-//
-//
-//    log.debug("Process duplicate lines in file1")
-//    val dupLineF1 = csv1.getDuplicatedKeys
-//    if (dupLineF1.size > 0) {
-//      println("Duplicated lines in file1 are ")
-//    }
-//    for ((key, nbDup) <- dupLineF1.toList.sortWith {
-//      (elem1, elem2) => elem1._1 < elem2._1
-//    }) {
-//      print("   ")
-//      print(key + "   duplicated " + nbDup + " times")
-//      val distinctLines = csv1.getLinesOfKey(key).distinct
-//      if (distinctLines.size > 1) {
-//        print(" with " + distinctLines.size + " different lines")
-//      }
-//      print("\n")
-//      for (line <- distinctLines) {
-//        println("     " + line.mkString(csv1.separator))
-//      }
-//      if (distinctLines.size >= 2)
-//        println("  Differences are : ")
-//      for (line <- distinctLines.drop(1)) {
-//        val resDiffs = TextTools.diffText(distinctLines(0).mkString(csv1.separator), line.mkString(csv1.separator))
-//        println(TextTools.toHtml(resDiffs))
-//      }
-//
-//    }
-//
-//
-//
-//
-//    log.debug("Process duplicate lines in file2")
-//    val dupLineF2 = csv2.getDuplicatedKeys
-//    if (dupLineF2.size > 0)
-//      println("Duplicated lines in file2 are ")
-//    for ((key, nbDup) <- dupLineF2.toList.sortWith {
-//      (elem1, elem2) => elem1._1 < elem2._1
-//    }) {
-//      print("   ")
-//      print(key + "   duplicated " + nbDup + " times")
-//      val distinctLines2 = csv2.getLinesOfKey(key).distinct
-//      if (distinctLines2.size > 1) {
-//        print(" with " + distinctLines2.size + " different lines")
-//      }
-//      print("\n")
-//      for (line <- distinctLines2) {
-//        println("     " + line.mkString(csv2.separator))
-//      }
-//      if (distinctLines2.size >= 2)
-//        println("  Differences are : ")
-//      for (line <- distinctLines2.drop(1)) {
-//        val resDiffs = TextTools.diffText(distinctLines2(0).mkString(csv1.separator), line.mkString(csv1.separator))
-//        println(TextTools.toHtml(resDiffs))
-//      }
-//    }
+    val dateInitFile = Calendar.getInstance.getTimeInMillis
+    log.debug("It takes " + (dateInitFile - dateInitFile) + " secondes to open files")
 
+    import fsart.diffTools.CsvDsl.CsvBuilderDsl._
+    val csv1 = datas1 toCsv() firstLineAsHeader(firstLineAsHeader)
+    val csv2 = datas2 toCsv() firstLineAsHeader(firstLineAsHeader)
+
+    val dateGenerateCsvData = Calendar.getInstance.getTimeInMillis
+    log.debug("It takes " + (dateGenerateCsvData - dateInitFile) + " secondes to create csv datas")
+
+    import fsart.diffTools.CsvDsl.CsvRulesDsl._
     log.debug("Generate differences between two files")
-    val csvDiff = CsvTools.getDifferenceLines(csv1, csv2)
-    val csvAdd = CsvTools.getAddedLines(csv1, csv2)
-    val csvSuppr = CsvTools.getASupprimedLines(csv1, csv2)
 
+    val csvDiff:DiffData = modificationsMade by csv2 withRef csv1
+    val csvAdd:DiffData = additionsMade by csv2 withRef csv1
+    val csvSuppr:DiffData = suppressionsMade by csv2 withRef csv1
+    val csvRes =  csvDiff concatWith csvSuppr concatWith csvAdd
 
-    val csvRes = CsvTools.concat(CsvTools.concat(csvDiff, csvSuppr ), csvAdd)
+    val dateGenerateCsvDiffData = Calendar.getInstance.getTimeInMillis
+    log.debug("It takes " + (dateGenerateCsvDiffData - dateGenerateCsvData) + " secondes to generate differences")
+
     if(extOutFic == "html") {
       log.debug("Generate the html output at "  + outFic.getCanonicalPath)
       val htmlPage = CsvHtmlView.getView(csvRes)
       out.write(htmlPage)
-    }else if (extOutFic == "xls") {
+    } else if (extOutFic == "xls") {
       log.debug("Generate the excel output at " + outFic.getCanonicalPath)
       val excelView = new CsvExcelView
       val excelData = excelView.getView(csvRes)
@@ -198,8 +166,17 @@ object DiffToolsCalc {
       log.error("No output selected")
     }
 
-    out.close
+    val dateOutputData = Calendar.getInstance.getTimeInMillis
+    log.debug("It takes " + (dateOutputData - dateGenerateCsvDiffData) + " secondes to generate output")
 
+    out.close
+    val dateEnd = Calendar.getInstance.getTimeInMillis
+
+    log.debug("It takes " + (dateInitFile - dateInit) + " secondes to init files")
+    log.debug("It takes " + (dateGenerateCsvData - dateInitFile) + " secondes to create csv datas")
+    log.debug("It takes " + (dateGenerateCsvDiffData - dateGenerateCsvData) + " secondes to generate differences")
+    log.debug("It takes " + (dateOutputData - dateGenerateCsvDiffData) + " secondes to generate output in memory")
+    log.debug("It takes " + (dateEnd - dateOutputData) + " secondes to write datas in file")
   }
 
 

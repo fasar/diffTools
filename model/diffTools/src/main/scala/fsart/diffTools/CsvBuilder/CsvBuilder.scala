@@ -1,12 +1,13 @@
-/**
+/****************************************************************************
  * Copyright Fabien Sartor 
  * Contributors: Fabien Sartor (fabien.sartor@gmail.com)
+ *               http://fasar.fr
  *  
- * This software is a computer program whose purpose to compate two 
- * files.
+ * This software is a computer program whose purpose to compute differences 
+ * between two files.
  *
- */
-/**
+ ****************************************************************************
+ *
  *  This software is governed by the CeCILL license under French law and
  *  abiding by the rules of distribution of free software.  You can  use, 
  *  modify and/ or redistribute the software under the terms of the CeCILL
@@ -32,25 +33,70 @@
  *  
  *  The fact that you are presently reading this means that you have had
  *  knowledge of the CeCILL license and that you accept its terms. 
- * 
+ *
+ ****************************************************************************
  */
-package fsart.diffTools.helper
 
-import fsart.diffTools.model.CsvData
-import name.fraser.neil.plaintext.diff_match_patch.Diff
-import name.fraser.neil.plaintext.diff_match_patch
+package fsart.diffTools.CsvBuilder
+
+import fsart.diffTools.csvModel.{CsvDataImpl, CsvData}
+
 
 /**
  *
  * User: fabien
  * Date: 07/05/12
- * Time: 23:53
+ * Time: 17:28
  *
  */
 
-trait CsvView {
+class CsvBuilder(var separator: String = ";") {
+  myObj =>
 
-  def getView(csv:CsvData[List[diff_match_patch.Diff]]): Array[Byte];
+  var headers: List[String] = List.empty
+
+  private var array: List[List[String]] = List.empty
+
+  def appendLine(line: String) {
+    val split: List[String] = line.split(separator).toList
+    array :+= split
+  }
+
+  def appendLines(lines: List[String], firstLineAsHeader: Boolean = true) {
+    if (firstLineAsHeader) {
+      appendLinesWithHeaders(lines)
+    } else {
+      appendLinesWithoutHeaders(lines)
+    }
+  }
+
+  def appendLinesWithoutHeaders(lines: List[String]) {
+    for (line <- lines) {
+      appendLine(line)
+    }
+  }
+
+  def appendLinesWithHeaders(lines: List[String]) {
+    setHeaders(lines(0))
+    for (line <- lines.drop(1)) {
+      appendLine(line)
+    }
+  }
+
+  def setHeaders(line: String) {
+    headers = line.split(separator).toList
+  }
 
 
+  def getCvsData(): CsvData[String] = {
+    val nbMaxCol = array.foldLeft(0) {
+      (nbCol, elem) => scala.math.max(nbCol, elem.size)
+    }
+    val resArray = array.map {
+      elem => elem ++ List.fill[String](nbMaxCol - elem.size) {
+        ""
+      }
+    }
+    CsvDataImpl [String](resArray, myObj.headers, myObj.separator)
+  }
 }

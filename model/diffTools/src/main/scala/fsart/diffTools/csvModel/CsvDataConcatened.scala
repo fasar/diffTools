@@ -37,27 +37,26 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.consoleApp
+package fsart.diffTools.csvModel
 
-/**
- *
- * User: fabien
- * Date: 28/04/12
- * Time: 15:07
- *
- */
 
-class DiffToolsApplicationException(message: String, cause: Throwable) extends Exception(message, cause)  {
-  def this(s: String) {
-    this(s, null)
-  }
+trait CsvDataConcatened[E] extends CsvData[E] {
 
-  def this(cause: Throwable) {
-    this("", cause)
-  }
+  val semantics: CsvData[E]
 
-  def this() {
-    this("", null)
-  }
+  def headers:List[String] = semantics.headers
 
+  def separator:String = semantics.separator
+
+  def getKeys = semantics.getKeys
+  def getDuplicatedKeys_map = semantics.getDuplicatedKeys_map
+  def getDuplicatedKeys = semantics.getDuplicatedKeys
+  def getKeysOfDuplicatedLines_map = semantics.getKeysOfDuplicatedLines_map
+  def getDuplicatedLines = semantics.getDuplicatedLines
+  def getLinesOfKey(key: CsvKey[E]) = semantics.getLinesOfKey(key)
+}
+
+
+case class CsvDataConcatenedImpl[E](val semantics: CsvData[E], csvConcatened: CsvData[E]) extends CsvDataConcatened[E] {
+  override def array = semantics.array ++ csvConcatened.array
 }

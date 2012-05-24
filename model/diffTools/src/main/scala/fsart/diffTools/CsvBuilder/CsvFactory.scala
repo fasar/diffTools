@@ -37,27 +37,56 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.consoleApp
+package fsart.diffTools.CsvBuilder
+
+import java.net.URL
+import java.io.File
+import io.Source
+import fsart.helper.Loader
+import fsart.diffTools.csvModel.{CsvDataImpl, CsvDataFirstLineAsHeaderImpl, CsvData}
 
 /**
  *
  * User: fabien
- * Date: 28/04/12
- * Time: 15:07
+ * Date: 04/05/12
+ * Time: 09:34
  *
  */
 
-class DiffToolsApplicationException(message: String, cause: Throwable) extends Exception(message, cause)  {
-  def this(s: String) {
-    this(s, null)
+object CsvFactory {
+
+  def getCsvFile(file: String, firstLineAsHeader: Boolean): CsvData[String] = {
+    //val file1URL = Loader.getFile(file)
+    val bufSrc: Source = Source.fromString(file)
+    getCsvFile(bufSrc, firstLineAsHeader)
   }
 
-  def this(cause: Throwable) {
-    this("", cause)
+  def getCsvFile(file: URL, firstLineAsHeader: Boolean): CsvData[String] = {
+    val bufSrc: Source = Source.fromURL(file)
+    getCsvFile(bufSrc, firstLineAsHeader)
   }
 
-  def this() {
-    this("", null)
+  def getCsvFile(file: File, firstLineAsHeader: Boolean): CsvData[String] = {
+    val bufSrc: Source = Source.fromFile(file)
+    getCsvFile(bufSrc, firstLineAsHeader)
   }
 
+  def getCsvFile(src: Source, firstLineAsHeader: Boolean): CsvData[String] = {
+    val lines = src.getLines.toList
+    val builder = new CsvBuilder
+    builder.appendLines(lines, firstLineAsHeader)
+    builder.getCvsData()
+  }
+
+  def getCsvData(data: List[List[String]], firstLineAsHeader: Boolean): CsvData[String] = {
+    var header: List[String] = null
+    var datas: List[List[String]] = data
+
+    if (datas.size > 0 && firstLineAsHeader) {
+      header = datas(0)
+      datas = datas.drop(1)
+    }
+
+    CsvDataImpl [String](datas, header, ";")
+  }
 }

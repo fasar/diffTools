@@ -37,27 +37,23 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.consoleApp
+package fsart.diffTools.view
+
+import fsart.diffTools.csvModel.CsvData
+import name.fraser.neil.plaintext.diff_match_patch.Diff
+import name.fraser.neil.plaintext.diff_match_patch
 
 /**
  *
  * User: fabien
- * Date: 28/04/12
- * Time: 15:07
+ * Date: 07/05/12
+ * Time: 23:53
  *
  */
 
-class DiffToolsApplicationException(message: String, cause: Throwable) extends Exception(message, cause)  {
-  def this(s: String) {
-    this(s, null)
-  }
+trait CsvView {
 
-  def this(cause: Throwable) {
-    this("", cause)
-  }
+  def getView(csv: CsvData[List[diff_match_patch.Diff]]): Array[Byte];
 
-  def this() {
-    this("", null)
-  }
 
 }

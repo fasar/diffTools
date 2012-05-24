@@ -37,27 +37,18 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.consoleApp
+package fsart.diffTools.csvModel
 
 /**
  *
  * User: fabien
- * Date: 28/04/12
- * Time: 15:07
+ * Date: 31/05/12
+ * Time: 12:07
  *
  */
 
-class DiffToolsApplicationException(message: String, cause: Throwable) extends Exception(message, cause)  {
-  def this(s: String) {
-    this(s, null)
-  }
-
-  def this(cause: Throwable) {
-    this("", cause)
-  }
-
-  def this() {
-    this("", null)
-  }
-
+class CsvDataColNumberException(message: String, cause: Throwable) extends Exception(message, cause) {
+  def this(s: String) { this(s, null) }
+  def this(cause: Throwable) { this("", cause) }
+  def this() { this("", null) }
 }

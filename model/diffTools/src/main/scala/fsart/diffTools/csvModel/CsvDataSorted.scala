@@ -37,27 +37,64 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.consoleApp
+package fsart.diffTools.csvModel
+
+import collection.immutable.Queue
 
 /**
  *
  * User: fabien
- * Date: 28/04/12
- * Time: 15:07
+ * Date: 23/05/12
+ * Time: 14:24
  *
  */
 
-class DiffToolsApplicationException(message: String, cause: Throwable) extends Exception(message, cause)  {
-  def this(s: String) {
-    this(s, null)
+abstract class CsvDataSorted[E <% Ordered[E]] extends CsvData[E] {
+
+  val semantics: CsvData[E]
+
+  val sortCol:List[Int]
+
+  def headers:List[String] = semantics.headers
+
+  def separator:String = semantics.separator
+
+  override def array = {
+    sortList(semantics.array, sortCol)
   }
 
-  def this(cause: Throwable) {
-    this("", cause)
+  private def sortList[E <% Ordered[E]](array:List[List[E]], sortCol:List[Int]): List[List[E]] = {
+    array.sortWith(
+      (elem1:List[E], elem2:List[E]) =>
+        sortCol.foldRight(true) {
+          (numElem, ret) =>
+            if(ret == false) ret else { elem1(numElem) <=  elem2(numElem) }
+        }
+    )
   }
 
-  def this() {
-    this("", null)
+
+  def getKeys = semantics.getKeys
+  def getDuplicatedKeys_map = semantics.getDuplicatedKeys_map
+  def getDuplicatedKeys = semantics.getDuplicatedKeys
+  def getKeysOfDuplicatedLines_map = semantics.getKeysOfDuplicatedLines_map
+  def getDuplicatedLines = semantics.getDuplicatedLines
+  def getLinesOfKey(key: CsvKey[E]) = semantics.getLinesOfKey(key)
+}
+
+
+case class CsvDataSortedImpl[E](val semantics: CsvData[E], val sortCol:List[Int])
+                               (implicit orderer: E => Ordered[E])
+  extends CsvDataSorted[E] {
+
+  {
+    if(!semantics.isEmpty) {
+      val sizeLine = semantics.array(0).size
+      val colIdCantReach = sortCol.collect{ case colId if colId >= sizeLine => colId }
+      if(colIdCantReach.size > 0) {
+        throw new CsvDataColNumberException("Col id(s) " + colIdCantReach.mkString(",") + " can't be reached to sort")
+      }
+    }
   }
 
 }

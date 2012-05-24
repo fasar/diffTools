@@ -1,12 +1,13 @@
-/**
+/****************************************************************************
  * Copyright Fabien Sartor 
  * Contributors: Fabien Sartor (fabien.sartor@gmail.com)
+ *               http://fasar.fr
  *  
- * This software is a computer program whose purpose to compate two 
- * files.
+ * This software is a computer program whose purpose to compute differences 
+ * between two files.
  *
- */
-/**
+ ****************************************************************************
+ *
  *  This software is governed by the CeCILL license under French law and
  *  abiding by the rules of distribution of free software.  You can  use, 
  *  modify and/ or redistribute the software under the terms of the CeCILL
@@ -32,13 +33,17 @@
  *  
  *  The fact that you are presently reading this means that you have had
  *  knowledge of the CeCILL license and that you accept its terms. 
- * 
+ *
+ ****************************************************************************
  */
-package fsart.diffTools.model
+
+package fsart.diffTools.csvBuilder
 
 import org.apache.commons.logging.{LogFactory, Log}
 import org.junit.Test
 import org.junit.Assert._
+import fsart.diffTools.CsvBuilder.CsvBuilder
+import fsart.diffTools.csvModel.CsvData
 
 /**
  *
@@ -54,7 +59,7 @@ class CsvBuilderTest {
   @Test
   def csvFile_test1 {
     val cvsBuilder = new CsvBuilder()
-    var csv:CsvData[String] = cvsBuilder.getCvsData
+    var csv: CsvData[String] = cvsBuilder.getCvsData
     assertTrue(csv.array.size == 0)
 
     cvsBuilder.appendLine("1;2;3;4")
@@ -77,12 +82,13 @@ class CsvBuilderTest {
     assertTrue(csv.array(1).size == 5)
     assertTrue(csv.array(2).size == 5)
   }
+
   @Test
   def csvFile_test2 {
     val cvsBuilder = new CsvBuilder()
     cvsBuilder.setHeaders("a;b;c;d")
 
-    var csv:CsvData[String] = cvsBuilder.getCvsData
+    var csv: CsvData[String] = cvsBuilder.getCvsData
     assertTrue(csv.array.size == 0)
     assertTrue(csv.headers == List("a", "b", "c", "d"))
   }
