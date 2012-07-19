@@ -42,8 +42,8 @@ call :add_cpath "%_APP_HOME%\conf"
 
 set _PROPS=-Dapp.home="%_APP_HOME%" -Denv.emacs="%EMACS%" -Dscala.usejavacp=true -Dlog4j.configuration="\guilog4j.conf"
 
-rem echo "%_JAVACMD%" %_JAVA_OPTS% %_PROPS% -cp "%_TOOL_CLASSPATH%" fsart.diffTools.gui.DiffToolsGui  %*
-"%_JAVACMD%" %_JAVA_OPTS% %_PROPS% -cp "%_TOOL_CLASSPATH%" fsart.diffTools.gui.DiffToolsGui  %*
+rem echo "%_JAVACMD%" %_JAVA_OPTS% %_PROPS% -cp "%_TOOL_CLASSPATH%" fsart.diffTools.consoleApp.DiffTools  %*
+"%_JAVACMD%" %_JAVA_OPTS% %_PROPS% -cp "%_TOOL_CLASSPATH%" fsart.diffTools.consoleApp.DiffTools  %*
 goto end
 
 rem ##########################################################################

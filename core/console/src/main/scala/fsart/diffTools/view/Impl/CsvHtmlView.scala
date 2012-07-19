@@ -37,7 +37,7 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.helper.Impl
+package fsart.diffTools.view.Impl
 
 import fsart.diffTools.csvModel.CsvData
 import fsart.diffTools.view.CsvView

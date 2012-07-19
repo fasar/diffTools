@@ -1,16 +1,17 @@
 
 
-Sortir les lignes duppliqué d'un fichier et de l'autre.
+Sortir les lignes dupliquées d'un fichier et de l'autre.
 
 Faire la doc.
 
 Mettre plus de tests unitaires.
 
-Faire une meilleur gestion de fichiers avec les extensions.
+Faire une meilleure gestion de fichiers avec les extensions.
 Par exemple getTypeOfFile se retrouve 3 fois.
 
 Revoir la gestion des fichiers d'entrées et de sortie.
 
+Revoir la sortie en double colonnes. Il existe un bug dans les headers.
 
 DSL.
         https://github.com/jruby/jruby/wiki/RedBridge#wiki-Download

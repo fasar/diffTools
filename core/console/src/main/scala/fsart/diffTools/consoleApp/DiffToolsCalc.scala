@@ -52,7 +52,7 @@ import fsart.diffTools.csvAlgo.CsvTools
 import fsart.diffTools.view.CsvView
 import fsart.diffTools.helper.HtmlPages
 import fsart.diffTools.view.CsvView
-import fsart.diffTools.helper.Impl.{CsvExcelView, CsvHtmlView}
+import fsart.diffTools.view.Impl.{CsvExcelView, CsvHtmlView, CsvExcelDoubleCellView}
 import fsart.helper.Loader
 import fsart.diffTools.converter.ToCSV
 import fsart.diffTools.csvModel.CsvData
@@ -97,12 +97,14 @@ object DiffToolsCalc {
 
     val file1String = prop.getProperty("file1")
     val file1Type = getType(file1String)
-    val file1URL = getFile(file1String)
+    val file1URL = getFileUrl(file1String)
     val file2String = prop.getProperty("file2")
     val file2Type = getType(file2String)
-    val file2URL = getFile(file2String)
-    log.trace("file 1 is " + file1URL)
-    log.trace("file 2 is " + file2URL)
+    val file2URL = getFileUrl(file2String)
+    log.trace("file 1 property is " + file1String)
+    log.trace("file 1 url is " + file1URL)
+    log.trace("file 2 property  is " + file2String)
+    log.trace("file 2 url is " + file2URL)
 
     testFile(file1URL)
     testFile(file2URL)
@@ -159,7 +161,7 @@ object DiffToolsCalc {
       out.write(htmlPage)
     } else if (extOutFic == "xls") {
       log.debug("Generate the excel output at " + outFic.getCanonicalPath)
-      val excelView = new CsvExcelView
+      val excelView = new CsvExcelDoubleCellView // CsvExcelView
       val excelData = excelView.getView(csvRes)
       out.write(excelData)
     } else {
@@ -301,21 +303,37 @@ object DiffToolsCalc {
 
   private def testFile(fileURL:URL) {
     if (fileURL == null) {
-      System.err.println("Can't get file1 " + fileURL.getFile)
+      System.err.println("Can't get file")
       usage(Array(""))
-      throw new DiffToolsApplicationException("Can't get file1 " + fileURL.getFile)
+      throw new DiffToolsApplicationException("Can't get file")
     }
   }
 
 
-  private def getFile(str:String):URL = {
-    val file = str.split(':')(0)
+  private def getFileUrl(str:String):URL = {
+
+    val file = getFilePath(str)
     Loader.getFile(file)
   }
 
+  private def getFilePath(str:String):String = {
+    val p1 = """^(.:\\.*):([^:])*$""".r
+    val p2 = """^(.:\\.*)$""".r
+    val p3 = """^(.*):([^:]*)$""".r
+    str match {
+      case p1(file, sheet) =>
+        file
+      case p2(file) =>
+        file
+      case p3(file, sheet) =>
+        file
+      case file =>
+        file
+    }
+  }
 
   private def getType(str:String): String = {
-    val file = str.split(':')(0)
+    val file = getFilePath(str)
     val tbFic = file.split('.')
     val extFic =
       if(tbFic.size>1) {
@@ -329,7 +347,7 @@ object DiffToolsCalc {
   private def getSheetName(str:String): String = {
     val sep = str.split(':')
     if(sep.size >= 2 ) {
-      sep(1)
+      sep(sep.size-1)
     } else {
       null
     }

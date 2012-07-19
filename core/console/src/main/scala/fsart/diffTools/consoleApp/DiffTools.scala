@@ -43,7 +43,7 @@ import org.apache.commons.logging.{Log, LogFactory}
 
 
 
-object DiffTools
+  object DiffTools
 {
   private val log:Log = LogFactory.getLog(this.getClass)
 

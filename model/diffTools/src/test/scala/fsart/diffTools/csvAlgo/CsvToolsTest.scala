@@ -51,4 +51,8 @@ class CsvToolsTest {
   val data1 = List(List(4,5,6,7), List(2,3,4,5), List(1,2,3,4), List(2,3,4,5)).map{_.map{_.toString}}
   val data2 = List(List(4,5,6,7), List(2,3,4,5), List(1,2,3,4), List(2,3,4,5)).map{_.map{_.toString}}
 
+  @Test
+  def truefunction {
+    assertTrue(true)
+  }
 }

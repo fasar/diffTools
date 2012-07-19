@@ -37,7 +37,7 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.helper.Impl
+package fsart.diffTools.view.Impl
 
 import fsart.diffTools.csvModel.CsvData
 import name.fraser.neil.plaintext.diff_match_patch
@@ -56,6 +56,10 @@ import collection.immutable.Queue
  * User: fabien
  * Date: 08/05/12
  * Time: 17:21
+ *
+ * Get a Excel sheet with modified data in the same cell.
+ * If a data change, the origin is in the first line of the cell and the modified data
+ * is in a second line of the cell.
  *
  */
 

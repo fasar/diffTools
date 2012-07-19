@@ -49,6 +49,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Vector;
@@ -89,7 +90,7 @@ public class DiffToolsMainPanel {
     private Log log = LogFactory.getLog(this.getClass());
 
     public DiffToolsMainPanel() {
-        outputField.setText(System.getProperty("user.dir") + "/output.xls");
+        outputField.setText(System.getProperty("user.dir") + File.separator +"output.xls");
 
         browseButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {

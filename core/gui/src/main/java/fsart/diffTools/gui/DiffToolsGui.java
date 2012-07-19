@@ -41,6 +41,7 @@ package fsart.diffTools.gui;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.spi.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
