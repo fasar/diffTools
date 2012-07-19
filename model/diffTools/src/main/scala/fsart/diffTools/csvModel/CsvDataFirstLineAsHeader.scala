@@ -56,7 +56,14 @@ trait CsvDataFirstLineAsHeader[E] extends CsvData[E] {
 
   def headers = semantics.array(0) map {_.toString}
 
-  def getKeys = semantics.getKeys
+  //lazy because val are initialised before abstract field inherits from inner class
+  override lazy val getKeys: List[CsvKey[E]] = {
+    (for (line <- array)
+    yield {
+      CsvKeySimple.getKeyOfLine(line)
+    }).toList
+  }
+
   def getDuplicatedKeys_map = semantics.getDuplicatedKeys_map
   def getDuplicatedKeys = semantics.getDuplicatedKeys
   def getKeysOfDuplicatedLines_map = semantics.getKeysOfDuplicatedLines_map

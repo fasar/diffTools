@@ -47,16 +47,13 @@ import scala.collection.JavaConversions._
 import java.net.URL
 import java.io._
 import fsart.diffTools.csvAlgo.CsvTools
-import fsart.diffTools.CsvBuilder.CsvFactory
-import fsart.diffTools.csvAlgo.CsvTools
-import fsart.diffTools.view.CsvView
 import fsart.diffTools.helper.HtmlPages
-import fsart.diffTools.view.CsvView
-import fsart.diffTools.view.Impl.{CsvExcelView, CsvHtmlView, CsvExcelDoubleCellView}
 import fsart.helper.Loader
 import fsart.diffTools.converter.ToCSV
 import fsart.diffTools.csvModel.CsvData
 import java.util.{Calendar, Date, Properties}
+import fsart.diffTools.Translate.Impl.{NextToEachOtherTranslator, OneAboveOtherTranslator, OneLineTranslator}
+import fsart.diffTools.outputDriver.Impl._
 
 
 object DiffToolsCalc {
@@ -138,8 +135,9 @@ object DiffToolsCalc {
     log.debug("It takes " + (dateInitFile - dateInitFile) + " secondes to open files")
 
     import fsart.diffTools.CsvDsl.CsvBuilderDsl._
-    val csv1 = datas1 toCsv() firstLineAsHeader(firstLineAsHeader)
-    val csv2 = datas2 toCsv() firstLineAsHeader(firstLineAsHeader)
+    val csv1 = datas1 toCsv() firstLineAsHeader(true)//(firstLineAsHeader)
+    val csv2 = datas2 toCsv() firstLineAsHeader(true)//(firstLineAsHeader)
+
 
     val dateGenerateCsvData = Calendar.getInstance.getTimeInMillis
     log.debug("It takes " + (dateGenerateCsvData - dateInitFile) + " secondes to create csv datas")
@@ -155,18 +153,24 @@ object DiffToolsCalc {
     val dateGenerateCsvDiffData = Calendar.getInstance.getTimeInMillis
     log.debug("It takes " + (dateGenerateCsvDiffData - dateGenerateCsvData) + " secondes to generate differences")
 
-    if(extOutFic == "html") {
-      log.debug("Generate the html output at "  + outFic.getCanonicalPath)
-      val htmlPage = CsvHtmlView.getView(csvRes)
-      out.write(htmlPage)
-    } else if (extOutFic == "xls") {
-      log.debug("Generate the excel output at " + outFic.getCanonicalPath)
-      val excelView = new CsvExcelDoubleCellView // CsvExcelView
-      val excelData = excelView.getView(csvRes)
-      out.write(excelData)
-    } else {
-      log.error("No output selected")
-    }
+    //Start an other way
+    //val trans = new OneLineTranslator
+    //val trans = new OneAboveOtherTranslator
+    val trans = new NextToEachOtherTranslator
+    val myres = trans.translate(csvRes)
+    val outputDriver =
+      if(extOutFic == "xls" || prop.getProperty("outputType").equalsIgnoreCase("excel")) {
+        log.debug("Generate the excel output at " + outFic.getCanonicalPath)
+        new CsvExcelView2
+      } else {
+        log.debug("Generate the html output at "  + outFic.getCanonicalPath)
+        new CsvHtmlView2
+      }
+    //val excelOutput =
+    outputDriver.addCsvTable("sheet1", myres)
+    val excelData = outputDriver.getData()
+    out.write(excelData)
+
 
     val dateOutputData = Calendar.getInstance.getTimeInMillis
     log.debug("It takes " + (dateOutputData - dateGenerateCsvDiffData) + " secondes to generate output")
@@ -252,8 +256,9 @@ object DiffToolsCalc {
     System.out.println("Usage :  [OPTION] file1 file2")
     System.out.println("Compare two cvs file\n")
     System.out.println("  -h, -help             print this message")
-    System.out.println("  -o, --output          output file (can be file.html or file.xls)")
+    System.out.println("  -o, --output [FILE]   output file (can be file.html or file.xls)")
     System.out.println("                         if the output is not set, it uses 'outputDefault' in properties file" )
+    System.out.println("  -t, --type [TYPE]     type of output file (can be excel, html)")
     System.out.println("  -nh, --noheaders      if csv files doesn't have headers")
     System.out.println("  -h, --headers         if csv files have headers")
     System.out.println("                         if the header is not set, it uses 'firstLineIsHeader' in properties file")
@@ -279,6 +284,12 @@ object DiffToolsCalc {
           parseCmdRec(tail, prop)
         case "--output" :: path :: tail =>
           prop.setProperty("output", path)
+          parseCmdRec(tail, prop)
+        case "-t" :: ouputType :: tail =>
+          prop.setProperty("outputType", ouputType)
+          parseCmdRec(tail, prop)
+        case "--type" :: ouputType :: tail =>
+          prop.setProperty("outputType", ouputType)
           parseCmdRec(tail, prop)
         case "-nh" :: path :: tail =>
           prop.setProperty("firstLineIsHeader", "false")

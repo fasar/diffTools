@@ -91,6 +91,7 @@ object CsvTools {
           }).toList
         res
       }
+
     CsvDataImpl[List[diff_match_patch.Diff]](listDiffLines, newDatas.headers,newDatas.separator)
 
   }
@@ -105,8 +106,17 @@ object CsvTools {
 
   // Get lines with keys supprimed in newDatas based on the baseDatas version
   def getSupprimedLines(newDatas: CsvData[String], baseDatas: CsvData[String]): CsvData[List[diff_match_patch.Diff]] = {
-    log.debug("Generate list of supprimed lines in file1")
     val listSupprimedLines = getAppendedLines(baseDatas, newDatas)
+    for (lines <- listSupprimedLines;
+         elem <- lines;
+         diff <- elem ) {
+      diff.operation match {
+        case diff_match_patch.Operation.INSERT =>
+          diff.operation = diff_match_patch.Operation.DELETE
+        case diff_match_patch.Operation.DELETE =>
+          diff.operation = diff_match_patch.Operation.INSERT
+      }
+    }
     CsvDataImpl[List[diff_match_patch.Diff]](listSupprimedLines, newDatas.headers,newDatas.separator)
   }
 
@@ -120,7 +130,7 @@ object CsvTools {
            if (!baseDatas.getKeys.contains(key1))
       )
       yield {
-        log.debug("  " + key1 + " is not in a  ")
+        log.debug("  " + key1 + " is not in both file ")
         val res =
           (for (elem1:String <- line1)
           yield {

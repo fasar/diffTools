@@ -75,7 +75,7 @@ trait CsvData[E] {
 
 case class CsvDataImpl[E](val array:List[List[E]], val headers:List[String], val separator:String = ";") extends CsvData[E] {
 
-  //lazy because otherwise, val are initialised before abstract field inherits from inner class
+  //lazy because val are initialised before abstract field inherits from inner class
   override lazy val getKeys: List[CsvKey[E]] = {
     (for (line <- array)
     yield {
