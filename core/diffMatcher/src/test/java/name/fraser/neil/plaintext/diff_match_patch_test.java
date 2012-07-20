@@ -435,7 +435,7 @@ public class diff_match_patch_test {
 
   @Test
   public void testDiffXIndex() {
-    // Translate a location in text1 to text2.
+    // translate a location in text1 to text2.
     LinkedList<Diff> diffs = diffList(new Diff(DELETE, "a"), new Diff(INSERT, "1234"), new Diff(EQUAL, "xyz"));
     Assert.assertEquals("diff_xIndex: Translation on equality.", 5, dmp.diff_xIndex(diffs, 2));
 

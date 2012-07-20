@@ -92,12 +92,6 @@ class Jsr223Test {
 
   @Test
   def testScalaScript {
-
-
-    trait T{
-      def foo:String
-    }
-
       val srcA =
         """
   println("Hello World from srcA")
@@ -106,7 +100,8 @@ class Jsr223Test {
       val srcB = """ O.foo """
 
       val srcC = """
-  class A {
+  import fsart.lib.scriptEngine.T
+  class A extends T{
     def foo = "Hello World from srcC"
     override def toString = "this is A in a src"
   }
@@ -125,8 +120,10 @@ class Jsr223Test {
       interpreter.interpret(srcA)
 
       interpreter.bindValue("O", O)
-      interpreter.interpret(srcB)
 
+      interpreter.interpret(srcB)
+      //interpreter.bind("Trululu", classOf[Trululu])
+      //interpreter.bind("T", classOf[T])
       interpreter.compileString(srcC)
 
       val classA = interpreter.classLoader.findClass("A")
@@ -138,14 +135,18 @@ class Jsr223Test {
 
       println(myinstance)
 
-      //this still throws an classCastException
-      // -> myinstance.asInstanceOf[T].foo
-      //but everything else works
-
-
+      myinstance.asInstanceOf[T].foo
   }
 }
 
 object O{
-      def foo = println("Hello World in object O")
-    }
+  def foo = println("Hello World in object O")
+}
+
+class Trululu(val str:String) {
+  def pipo { println(str) }
+}
+
+trait T{
+  def foo:String
+}

@@ -1,6 +1,6 @@
-package fsart.diffTools.Translate.Impl
+package fsart.diffTools.translate.impl
 
-import fsart.diffTools.Translate.Translator
+import fsart.diffTools.translate.Translator
 import name.fraser.neil.plaintext.diff_match_patch
 import fsart.diffTools.csvModel.{CsvDataImpl, CsvData}
 import collection.immutable.Queue

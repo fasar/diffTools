@@ -50,7 +50,12 @@ package fsart.diffTools.consoleApp
 object DiffToolsLauncher extends App {
 
   override def main(args: Array[String]):Unit={
-    DiffTools.main(Array("file1"))
+    DiffTools.main(
+      Array(
+        "-o", "/tmp/output.xls",
+        "/home/fabien/work/sandbox/Projects/diffTools/diffTools-src/core/console/src/test/resources/units1.xls:Unit",
+        "/home/fabien/work/sandbox/Projects/diffTools/diffTools-src/core/console/src/test/resources/units2.xls:Unit")
+    )
   }
 
 

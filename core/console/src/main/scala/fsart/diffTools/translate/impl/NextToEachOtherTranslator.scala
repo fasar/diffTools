@@ -1,6 +1,6 @@
-package fsart.diffTools.Translate.Impl
+package fsart.diffTools.translate.impl
 
-import fsart.diffTools.Translate.Translator
+import fsart.diffTools.translate.Translator
 import name.fraser.neil.plaintext.diff_match_patch
 import fsart.diffTools.csvModel.{CsvDataImpl, CsvData}
 import collection.immutable.Queue
@@ -16,7 +16,7 @@ import org.apache.commons.logging.{LogFactory, Log}
  *
  */
 
-class OneAboveOtherTranslator extends Translator {
+class NextToEachOtherTranslator extends Translator {
   private val log: Log = LogFactory.getLog(this.getClass)
 
 
@@ -27,8 +27,10 @@ class OneAboveOtherTranslator extends Translator {
       var line: Queue[List[FormattedText]] = Queue.empty
       for (cell <- lines) {
         if (cell.size > 0 ) {
-          line :+= toFormattedText(cell)
+          line :+= getReferenceData(cell)
+          line :+= getModifiedData(cell)
         } else {
+          line :+= List(FormattedText("", TextKind.Normal))
           line :+= List(FormattedText("", TextKind.Normal))
         }
       }
@@ -37,12 +39,14 @@ class OneAboveOtherTranslator extends Translator {
     val array1: List[List[List[FormattedText]]] = array.map {
       _.toList
     }.toList
-    val res = CsvDataImpl[List[FormattedText]](array1, csv.headers, csv.separator)
+
+    val headers = csv.headers.flatMap{List(_, "")}
+    val res = CsvDataImpl[List[FormattedText]](array1, headers, csv.separator)
     res
 
   }
 
-  private def toFormattedText(diffs: List[diff_match_patch.Diff]): List[FormattedText] = {
+  private def getReferenceData(diffs: List[diff_match_patch.Diff]): List[FormattedText] = {
     var res: Queue[FormattedText] = Queue.empty
     var operation = 0
     var resSuppr: Queue[FormattedText] = Queue.empty
@@ -62,18 +66,35 @@ class OneAboveOtherTranslator extends Translator {
       }
     }
 
-    if(resSuppr.size == 0 && resAdded == 0) {
-      List(FormattedText("", TextKind.Normal))
-    } else if(operation == 0) {
-      resSuppr.toList
-    } else if(resAdded.size == 0 ) {
-      resSuppr.toList
-    } else if(resSuppr.size == 0 ) {
-      resAdded.toList
-    } else {
-      resSuppr.toList ++ List(FormattedText("\n", TextKind.Normal)) ++ resAdded.toList
-    }
+    resSuppr.toList
+
   }
 
+    private def getModifiedData(diffs: List[diff_match_patch.Diff]): List[FormattedText] = {
+    var res: Queue[FormattedText] = Queue.empty
+    var operation = 0
+    var resSuppr: Queue[FormattedText] = Queue.empty
+    var resAdded: Queue[FormattedText] = Queue.empty
+    for (aDiff <- diffs) {
+      val text: String = aDiff.text
+      aDiff.operation match {
+        case Operation.INSERT =>
+          resAdded :+= FormattedText(aDiff.text, TextKind.Add)
+          operation += 1
+        case Operation.DELETE =>
+          resSuppr :+= FormattedText(aDiff.text, TextKind.Suppress)
+          operation += 1
+        case Operation.EQUAL =>
+          resSuppr :+= FormattedText(aDiff.text, TextKind.Normal)
+          resAdded :+= FormattedText(aDiff.text, TextKind.Normal)
+      }
+    }
+
+    if(operation == 0) {
+      List(FormattedText("", TextKind.Normal))
+    } else {
+      resAdded.toList
+    }
+  }
 
 }

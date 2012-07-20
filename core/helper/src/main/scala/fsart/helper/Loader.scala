@@ -73,21 +73,21 @@ object Loader {
         if(url != null) {
           return url;
         }
-  	  }
+      }
     } catch {
       case t:IllegalAccessException  =>
         log.warn(TSTR, t);
       case t:InvocationTargetException =>
         if (t.getTargetException().isInstanceOf[InterruptedException]
-                || t.getTargetException().isInstanceOf[InterruptedIOException] ) {
-            Thread.currentThread().interrupt();
+          || t.getTargetException().isInstanceOf[InterruptedIOException] ) {
+          Thread.currentThread().interrupt();
         }
         log.warn(TSTR, t);
       case t:Throwable =>
-      //
-      //  can't be InterruptedException or InterruptedIOException
-      //    since not declared, must be error or RuntimeError.
-      log.warn(TSTR, t);
+        //
+        //  can't be InterruptedException or InterruptedIOException
+        //    since not declared, must be error or RuntimeError.
+        log.warn(TSTR, t);
     }
 
     // Last ditch attempt: get the resource from the class path. It

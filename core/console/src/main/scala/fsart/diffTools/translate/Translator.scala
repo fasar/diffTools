@@ -1,4 +1,4 @@
-package fsart.diffTools.Translate
+package fsart.diffTools.translate
 
 import fsart.diffTools.csvModel.CsvData
 import name.fraser.neil.plaintext.diff_match_patch

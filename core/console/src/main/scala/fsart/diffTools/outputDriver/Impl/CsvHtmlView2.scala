@@ -70,7 +70,8 @@ class CsvHtmlView2 extends CsvView2 {
       htmlPage.body.append(" <thead>\n  <TR>\n")
       for (elem <- csv.headers) {
         htmlPage.body.append("  <TD>")
-        htmlPage.appendToBodyEscapeChar(elem)
+        //htmlPage.appendToBodyEscapeChar(elem)
+        htmlPage.body.append(TextTools.escapeHTML(elem).replace("\n", "<br>"))
         htmlPage.body.append("</TD>\n")
       }
       htmlPage.body.append("  </TR>\n </thead>\n")
@@ -97,7 +98,7 @@ class CsvHtmlView2 extends CsvView2 {
   def toHtml(diffs: List[FormattedText]): String = {
     val html: StringBuilder = new StringBuilder
     for (aDiff <- diffs) {
-      val text: String = TextTools.escapeHTML(aDiff.text)
+      val text: String = TextTools.escapeHTML(aDiff.text).replace("\n", "<br>")
       aDiff.kind match {
         case TextKind.Add =>
           html.append("<ins style=\"background:#e6ffe6;\">").append(text).append("</ins>")
