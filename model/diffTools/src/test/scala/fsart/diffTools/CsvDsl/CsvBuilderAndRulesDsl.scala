@@ -55,8 +55,8 @@ import fsart.diffTools.csvModel.CsvDataSpecialKey
 class CsvBuilderAndRulesDsl {
 
 
-  private val datasA = List(List(4,4,4,4), List(2,2,2,2), List(1,1,1,1), List(1,1,1,1),  List(5,5,5,5),  List(8,8,8,8)).map{_.map{_.toString}}
-  private val datasB = List(List(4,5,4,5), List(2,3,3,3), List(1,1,1,1), List(1,2,1,1),  List(5,6,6,6),  List(7,7,7,7)).map{_.map{_.toString}}
+  private val dataA = List(List(4,4,4,4), List(2,2,2,2), List(1,1,1,1), List(1,1,1,1),  List(5,5,5,5),  List(8,8,8,8)).map{_.map{_.toString}}
+  private val dataB = List(List(4,5,4,5), List(2,3,3,3), List(1,1,1,1), List(1,2,1,1),  List(5,6,6,6),  List(7,7,7,7)).map{_.map{_.toString}}
 
 
   @Test
@@ -64,11 +64,11 @@ class CsvBuilderAndRulesDsl {
     import CsvBuilderDsl._
     import CsvRulesDsl._
 
-    val csv3 = datasB toCsv() withKeysCol (0,2)
+    val csv3 = dataB toCsv() withKeysCol (0,2)
     println("class name : " + csv3.getClass.getName)
     assertTrue(csv3.isInstanceOf[CsvDataSpecialKey[_]])
 
-    val csv1 = datasA toCsv() withKeysCol (0,2) ignoreDuplicatedLines()
+    val csv1 = dataA toCsv() withKeysCol (0,2) ignoreDuplicatedLines()
     val csv2 = csv3 ignoreDuplicatedLines()
 
     var res2 = modificationsMade by csv2 withRef csv1

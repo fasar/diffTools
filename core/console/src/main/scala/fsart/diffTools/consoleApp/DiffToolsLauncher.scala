@@ -53,6 +53,7 @@ object DiffToolsLauncher extends App {
     DiffTools.main(
       Array(
         "-o", "/tmp/output.xls",
+        "-s","test1.dts",
         "/home/fabien/work/sandbox/Projects/diffTools/diffTools-src/core/console/src/test/resources/units1.xls:Unit",
         "/home/fabien/work/sandbox/Projects/diffTools/diffTools-src/core/console/src/test/resources/units2.xls:Unit")
     )

@@ -59,13 +59,13 @@ object CsvTools {
   }
 
 
-  // Get the difference between datas from version baseDatas to the new version newDatas
+  // Get the difference between data from version baseDatas to the new version newDatas
   def getDifferenceLines(newDatas: CsvData[String], baseDatas: CsvData[String]): CsvData[List[diff_match_patch.Diff]] = {
     getDifferenceLinesWithMapedDatas(newDatas, baseDatas, List.empty)
   }
 
 
-  // Get the difference between datas from version baseDatas to the new version newDatas
+  // Get the difference between data from version baseDatas to the new version newDatas
   // The mappedDatas is a list of couple you want to considere as the same values.
   def getDifferenceLinesWithMapedDatas(newDatas: CsvData[String],
                                        baseDatas: CsvData[String],

@@ -25,7 +25,7 @@ import scala.collection.JavaConversions._
  */
 object TranslatorDescriptor {
 
-  def getTranslatorName:java.util.List[String] = {
+  def getTranslatorsNames:java.util.List[String] = {
     List("One line", "One above other", "Next to each other")
   }
 

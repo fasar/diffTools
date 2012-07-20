@@ -80,13 +80,13 @@ object CsvFactory {
 
   def getCsvData(data: List[List[String]], firstLineAsHeader: Boolean): CsvData[String] = {
     var header: List[String] = null
-    var datas: List[List[String]] = data
+    var dataRes: List[List[String]] = data
 
-    if (datas.size > 0 && firstLineAsHeader) {
-      header = datas(0)
-      datas = datas.drop(1)
+    if (dataRes.size > 0 && firstLineAsHeader) {
+      header = dataRes(0)
+      dataRes = dataRes.drop(1)
     }
 
-    CsvDataImpl [String](datas, header, ";")
+    CsvDataImpl [String](dataRes, header, ";")
   }
 }

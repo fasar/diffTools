@@ -56,19 +56,19 @@ import fsart.diffTools.csvModel.{CsvKey, CsvKeySpecial, CsvDataSpecialKey, CsvDa
 class CsvBuilderDslTesT {
   private val log: Log = LogFactory.getLog(this.getClass)
 
-  private val datas = List(List(4,5,6,7), List(2,3,4,5), List(1,2,3,4), List(2,3,4,5)).map{_.map{_.toString}}
+  private val data = List(List(4,5,6,7), List(2,3,4,5), List(1,2,3,4), List(2,3,4,5)).map{_.map{_.toString}}
 
   @Test
   def createCsvData{
     import CsvBuilderDsl._
 
-    val csv1:CsvData[String] = datas toCsv()
+    val csv1:CsvData[String] = data toCsv()
     val csv2 = csv1 sortedByCol (1,2,3)
     val csv3 = csv2 ignoreDuplicatedLines
     val csv4 = csv3 firstLineAsData
     val csv5 = csv3 firstLineAsHeader
 
-    val csvAll = datas toCsv() firstLineAsHeader() withKeysCol (1,2) ignoreDuplicatedLines() sortedByCol (2)
+    val csvAll = data toCsv() firstLineAsHeader() withKeysCol (1,2) ignoreDuplicatedLines() sortedByCol (2)
 
   }
 
@@ -76,8 +76,8 @@ class CsvBuilderDslTesT {
   def concatCsvData{
     import CsvBuilderDsl._
 
-    val csv1:CsvData[String] = datas toCsv() firstLineAsHeader
-    val csv2 = datas toCsv()
+    val csv1:CsvData[String] = data toCsv() firstLineAsHeader
+    val csv2 = data toCsv()
     val res = csv1 concatWith csv2
     assertTrue(res.array.size == 7)
 
@@ -87,10 +87,10 @@ class CsvBuilderDslTesT {
   def createIngoredDuplicatedLinesCsvData{
     import CsvBuilderDsl._
 
-    val csv1:CsvData[String] = datas toCsv()
+    val csv1:CsvData[String] = data toCsv()
     assertTrue(csv1.array.size == 4)
 
-    val csv2 = datas toCsv()  ignoreDuplicatedLines()
+    val csv2 = data toCsv()  ignoreDuplicatedLines()
     assertTrue(csv2.array.size == 3)
   }
 
@@ -98,10 +98,10 @@ class CsvBuilderDslTesT {
   def sortedLinesCsvData{
     import CsvBuilderDsl._
 
-    val csv1:CsvData[String] = datas toCsv()
+    val csv1:CsvData[String] = data toCsv()
     assertTrue(csv1.array.size == 4)
 
-    val csv2 = datas toCsv() sortedByCol (0)
+    val csv2 = data toCsv() sortedByCol (0)
     assertTrue(csv2.array.size == 4)
     assertTrue(csv2.array(0)(0) == "1")
     assertTrue(csv2.array(1)(0) == "2")
@@ -113,10 +113,10 @@ class CsvBuilderDslTesT {
   def firstLineAsHeaderCsvData{
     import CsvBuilderDsl._
 
-    val csv1:CsvData[String] = datas toCsv()
+    val csv1:CsvData[String] = data toCsv()
     assertTrue(csv1.array.size == 4)
 
-    val csv2 = datas toCsv() firstLineAsHeader()
+    val csv2 = data toCsv() firstLineAsHeader()
     assertTrue(csv2.array.size == 3)
     assertTrue(csv2.headers(0) == "4")
     assertTrue(csv2.headers(1) == "5")
@@ -129,9 +129,9 @@ class CsvBuilderDslTesT {
   def keysEqualsCsvData{
     import CsvBuilderDsl._
 
-    val csv1 = datas toCsv()
+    val csv1 = data toCsv()
     assertTrue(csv1.array.size == 4)
-    val csv2 = datas toCsv()
+    val csv2 = data toCsv()
 
     val key1 = csv1.getKeys(1)
     val key2 = csv2.getKeys(3)
@@ -146,7 +146,7 @@ class CsvBuilderDslTesT {
   def specialKeysCsvDataGetLines{
     import CsvBuilderDsl._
 
-    val csv1:CsvData[String] = datas toCsv() withKeysCol (0,1)
+    val csv1:CsvData[String] = data toCsv() withKeysCol (0,1)
     assertTrue(csv1.array.size == 4)
 
     val key1 = csv1.getKeys(0)
@@ -160,31 +160,31 @@ class CsvBuilderDslTesT {
   @Test(expected = classOf[CsvDataColNumberException])
   def testErrorWhenDefineKeyColMoreThanColDatas {
     import CsvBuilderDsl._
-    val csv1:CsvData[String] = datas toCsv() withKeysCol (78, 1, 44)
+    val csv1:CsvData[String] = data toCsv() withKeysCol (78, 1, 44)
   }
 
   @Test(expected = classOf[CsvDataColNumberException])
   def testErrorWhenDefineSortedColMoreThanColDatas {
     import CsvBuilderDsl._
-    val csv1:CsvData[String] = datas toCsv() sortedByCol(78, 1, 44)
+    val csv1:CsvData[String] = data toCsv() sortedByCol(78, 1, 44)
   }
 
   @Test
   def emptyDataCsvData{
-    val datas2:List[List[String]] = List(List.empty[String])
+    val data2:List[List[String]] = List(List.empty[String])
     import CsvBuilderDsl._
 
-    val csv1:CsvData[String] = datas2 toCsv()
+    val csv1:CsvData[String] = data2 toCsv()
     assertTrue(csv1.isEmpty)
 
-    val csv2:CsvData[String] = datas2 toCsv() firstLineAsHeader()
+    val csv2:CsvData[String] = data2 toCsv() firstLineAsHeader()
     assertTrue(csv2.isEmpty)
     assertTrue(csv2.headers.size==0)
 
 
-    val csv3 = datas toCsv() withKeysCol (1,2)
-    val csv4 = datas toCsv() ignoreDuplicatedLines()
-    val csv5 = datas toCsv() sortedByCol (2)
+    val csv3 = data toCsv() withKeysCol (1,2)
+    val csv4 = data toCsv() ignoreDuplicatedLines()
+    val csv5 = data toCsv() sortedByCol (2)
 
   }
 

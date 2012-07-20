@@ -55,6 +55,7 @@ import java.util.{Calendar, Date, Properties}
 import fsart.diffTools.translate.impl.{NextToEachOtherTranslator, OneAboveOtherTranslator, OneLineTranslator}
 import fsart.diffTools.outputDriver.Impl._
 import fsart.diffTools.translate.TranslatorDescriptor
+import fsart.diffTools.script.{ScriptDescriptor, InputOutputData, Interpreter}
 
 
 object DiffToolsCalc {
@@ -87,13 +88,6 @@ object DiffToolsCalc {
     val outFic = getOutFic(prop)
     val out = new FileOutputStream(outFic)
     val extOutFic = getType(outFic.getCanonicalPath)
-//    val tbOutFic = outFic.getName.split('.')
-//    val extOutFic =
-//      if(tbOutFic.size>1) {
-//        tbOutFic(tbOutFic.size - 1).toLowerCase
-//      } else {
-//        "html"
-//      }
 
     val file1String = prop.getProperty("file1")
     val file1Type = getType(file1String)
@@ -109,7 +103,7 @@ object DiffToolsCalc {
     testFile(file1URL)
     testFile(file2URL)
 
-    val datas1:List[List[String]] =
+    val data1:List[List[String]] =
     if(file1Type == "xls") {
       val toCsv = new ToCSV()
       toCsv.openWorkbook(file1URL)
@@ -120,7 +114,7 @@ object DiffToolsCalc {
       val buff = Source.fromURL(file1URL)
       buff.getLines().map{_.split(";").toList}.toList
     }
-    val datas2 =
+    val data2 =
     if(file2Type == "xls") {
       val toCsv = new ToCSV()
       toCsv.openWorkbook(file2URL)
@@ -132,39 +126,18 @@ object DiffToolsCalc {
       buff.getLines().map{_.split(";").toList}.toList
     }
 
-    //get duplicated keys and duplicated lines
 
     val dateInitFile = Calendar.getInstance.getTimeInMillis
     log.debug("It takes " + (dateInitFile - dateInitFile) + " secondes to open files")
 
-    import fsart.diffTools.CsvDsl.CsvBuilderDsl._
-    val csv1:CsvData[String] = datas1 toCsv() firstLineAsHeader(true)//(firstLineAsHeader)
-    val csv2:CsvData[String] = datas2 toCsv() firstLineAsHeader(true)//(firstLineAsHeader)
+// ==== New way
 
-    val dateGenerateCsvData = Calendar.getInstance.getTimeInMillis
-    log.debug("It takes " + (dateGenerateCsvData - dateInitFile) + " secondes to create csv datas")
-
-    import fsart.diffTools.CsvDsl.CsvRulesDsl._
-    log.debug("Generate differences between two files")
-
-    val csvDiff:DiffData = modificationsMade by csv2 withRef csv1
-    val csvAdd:DiffData = additionsMade by csv2 withRef csv1
-    val csvSuppr:DiffData = suppressionsMade by csv2 withRef csv1
-    val csvRes =  csvDiff concatWith csvSuppr concatWith csvAdd
-
-    val dateGenerateCsvDiffData = Calendar.getInstance.getTimeInMillis
-    log.debug("It takes " + (dateGenerateCsvDiffData - dateGenerateCsvData) + " secondes to generate differences")
-
-
-
-    //val trans = new OneLineTranslator
-    //val trans = new OneAboveOtherTranslator
-    //val trans = new NextToEachOtherTranslator
+    // Create Translator
     val kindView = prop.getProperty("kindView", System.getProperty("kindView", "OneLine"))
     log.debug("Output view is : " + kindView)
     val trans = TranslatorDescriptor.getTranslator(kindView)
 
-    val myres = trans.translate(csvRes)
+    // Create Output Driver
     val outputDriver =
       if(extOutFic == "xls" || prop.getProperty("outputType", "").equalsIgnoreCase("excel")) {
         log.debug("Generate the excel output at " + outFic.getCanonicalPath)
@@ -173,23 +146,80 @@ object DiffToolsCalc {
         log.debug("Generate the html output at "  + outFic.getCanonicalPath)
         new CsvHtmlView2
       }
-    //val excelOutput =
-    outputDriver.addCsvTable("sheet1", myres)
+
+    // Select Script
+    val scriptName = prop.getProperty("scriptName", System.getProperty("scriptName", "default"))
+    val scriptEngine = ScriptDescriptor.getScriptEngine(scriptName)
+
+    // Create structure data to run the script engine
+    val ioData = new InputOutputData(data1, data2, trans, outputDriver, out)
+    scriptEngine.process(ioData)
+
+    val dateInitInterpreter = Calendar.getInstance.getTimeInMillis
+
+
+
+
+    // Write data in file
     val excelData = outputDriver.getData()
     out.write(excelData)
 
 
+// ==== ORIGIN
+//    import fsart.diffTools.CsvDsl.CsvBuilderDsl._
+//    val csv1:CsvData[String] = data1 toCsv() firstLineAsHeader(true)//(firstLineAsHeader)
+//    val csv2:CsvData[String] = data2 toCsv() firstLineAsHeader(true)//(firstLineAsHeader)
+//
+//    val dateGenerateCsvData = Calendar.getInstance.getTimeInMillis
+//    log.debug("It takes " + (dateGenerateCsvData - dateInitFile) + " secondes to create csv data")
+//
+//    import fsart.diffTools.CsvDsl.CsvRulesDsl._
+//    log.debug("Generate differences between two files")
+//
+//    val csvDiff:DiffData = modificationsMade by csv2 withRef csv1
+//    val csvAdd:DiffData = additionsMade by csv2 withRef csv1
+//    val csvSuppr:DiffData = suppressionsMade by csv2 withRef csv1
+//    val csvRes =  csvDiff concatWith csvSuppr concatWith csvAdd
+//
+//    val dateGenerateCsvDiffData = Calendar.getInstance.getTimeInMillis
+//    log.debug("It takes " + (dateGenerateCsvDiffData - dateGenerateCsvData) + " secondes to generate differences")
+//
+//
+//    val kindView = prop.getProperty("kindView", System.getProperty("kindView", "OneLine"))
+//    log.debug("Output view is : " + kindView)
+//    val trans = TranslatorDescriptor.getTranslator(kindView)
+//
+//
+//    val outputDriver =
+//      if(extOutFic == "xls" || prop.getProperty("outputType", "").equalsIgnoreCase("excel")) {
+//        log.debug("Generate the excel output at " + outFic.getCanonicalPath)
+//        new CsvExcelView2
+//      } else {
+//        log.debug("Generate the html output at "  + outFic.getCanonicalPath)
+//        new CsvHtmlView2
+//      }
+//
+//    val myres = trans.translate(csvRes)
+//    outputDriver.addCsvTable("Comparison1", myres)
+//    val excelData = outputDriver.getData()
+//    out.write(excelData)
+
+
     val dateOutputData = Calendar.getInstance.getTimeInMillis
-    log.debug("It takes " + (dateOutputData - dateGenerateCsvDiffData) + " secondes to generate output")
+    //log.debug("It takes " + (dateOutputData - dateGenerateCsvDiffData) + " secondes to generate output")
+    log.debug("It takes " + (dateOutputData - dateInitFile) + " secondes to generate output")
 
     out.close
     val dateEnd = Calendar.getInstance.getTimeInMillis
 
     log.debug("It takes " + (dateInitFile - dateInit) + " secondes to init files")
-    log.debug("It takes " + (dateGenerateCsvData - dateInitFile) + " secondes to create csv datas")
-    log.debug("It takes " + (dateGenerateCsvDiffData - dateGenerateCsvData) + " secondes to generate differences")
-    log.debug("It takes " + (dateOutputData - dateGenerateCsvDiffData) + " secondes to generate output in memory")
-    log.debug("It takes " + (dateEnd - dateOutputData) + " secondes to write datas in file")
+    //log.debug("It takes " + (dateGenerateCsvData - dateInitFile) + " secondes to create csv data")
+    //log.debug("It takes " + (dateGenerateCsvDiffData - dateGenerateCsvData) + " secondes to generate differences")
+    //log.debug("It takes " + (dateOutputData - dateGenerateCsvDiffData) + " secondes to generate output in memory")
+    log.debug("It takes " + (dateInitInterpreter - dateInit) + " secondes to create interpreter")
+    log.debug("It takes " + (dateOutputData - dateInitInterpreter) + " secondes to generate output in memory")
+    log.debug("It takes " + (dateEnd - dateOutputData) + " secondes to write data in file")
+    log.debug("It takes " + (dateEnd - dateInitFile) + " secondes do the job")
   }
 
 
@@ -269,8 +299,9 @@ object DiffToolsCalc {
     System.out.println("                         if the output is not set, it uses 'outputDefault' in properties file" )
     System.out.println("  -t, --type [TYPE]     type of output file (can be excel, html)")
     System.out.println("  -s, --script [File]   script file to use to get an other behaviour")
+    System.out.println("                         can be " + ScriptDescriptor.getScriptsNames().mkString("(\"", "\", \"", "\")"))
     System.out.println("  -v, --view [View]     kind of view")
-    System.out.println("                         can be " + TranslatorDescriptor.getTranslatorName.mkString("(\"", "\", \"", "\")"))
+    System.out.println("                         can be " + TranslatorDescriptor.getTranslatorsNames.mkString("(\"", "\", \"", "\")"))
     System.out.println("  -nh, --noheaders      if csv files doesn't have headers")
     System.out.println("  -h, --headers         if csv files have headers")
     System.out.println("                         if the header is not set, it uses 'firstLineIsHeader' in properties file")
@@ -309,11 +340,11 @@ object DiffToolsCalc {
         case "--view" :: kindView :: tail =>
           prop.setProperty("kindView", kindView)
           parseCmdRec(tail, prop)
-        case "-s" :: scriptFile :: tail =>
-          prop.setProperty("scriptFile", scriptFile)
+        case "-s" :: scriptName :: tail =>
+          prop.setProperty("scriptName", scriptName)
           parseCmdRec(tail, prop)
-        case "--script" :: scriptFile :: tail =>
-          prop.setProperty("scriptFile", scriptFile)
+        case "--script" :: scriptName :: tail =>
+          prop.setProperty("scriptName", scriptName)
           parseCmdRec(tail, prop)
         case "-nh" :: path :: tail =>
           prop.setProperty("firstLineIsHeader", "false")

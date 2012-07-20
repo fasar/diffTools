@@ -122,6 +122,19 @@ class Jsr223Test {
       interpreter.bindValue("O", O)
 
       interpreter.interpret(srcB)
+
+      val func1 = new Function1[String, Unit] {
+        def apply(i1:String): Unit = {
+          O.bar(i1)
+        }
+      }
+      interpreter.bindValue("Obar", func1 )
+      interpreter.interpret("Obar(\"pipo\")")
+      //This thing below doesn't work
+//      val OBar2 = O.bar(_)
+//      interpreter.bindValue("Obar2", OBar2)
+//      interpreter.interpret("Obar2(\"pipo\")")
+
       //interpreter.bind("Trululu", classOf[Trululu])
       //interpreter.bind("T", classOf[T])
       interpreter.compileString(srcC)
@@ -141,6 +154,7 @@ class Jsr223Test {
 
 object O{
   def foo = println("Hello World in object O")
+  def bar(tmp:String) = println("Hello World in object O with : " + tmp)
 }
 
 class Trululu(val str:String) {
