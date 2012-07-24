@@ -37,107 +37,66 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.CsvDsl
+package fsart.diffTools.csvBuilder
 
-import java.lang.reflect.Method
-import fsart.diffTools.csvAlgo.CsvTools
-import name.fraser.neil.plaintext.diff_match_patch
-import name.fraser.neil.plaintext.diff_match_patch.Operation
 import fsart.diffTools.csvModel.{CsvDataImpl, CsvData}
+
 
 /**
  *
  * User: fabien
- * Date: 22/05/12
- * Time: 15:32
+ * Date: 07/05/12
+ * Time: 17:28
  *
  */
 
-object CsvRulesDsl {
+class CsvBuilder(var separator: String = ";") {
+  myObj =>
 
-  type Data = CsvData[String]
+  var headers: List[String] = List.empty
 
-  object duplicatedLines {
-    def of(data: Data): Data = {
-      data.getDuplicatedLines
+  private var array: List[List[String]] = List.empty
+
+  def appendLine(line: String) {
+    val split: List[String] = line.split(separator).toList
+    array :+= split
+  }
+
+  def appendLines(lines: List[String], firstLineAsHeader: Boolean = true) {
+    if (firstLineAsHeader) {
+      appendLinesWithHeaders(lines)
+    } else {
+      appendLinesWithoutHeaders(lines)
     }
   }
 
-  object duplicatedKeys {
-    def of(data: Data): Data = {
-      data.getDuplicatedKeys
+  def appendLinesWithoutHeaders(lines: List[String]) {
+    for (line <- lines) {
+      appendLine(line)
     }
   }
 
-
-  type Invoker = (Method, Data)
-  type Couple = (Method, Data, Data)
-  type DiffData = CsvData[List[diff_match_patch.Diff]]
-
-
-
-  class InvokerHelper(invoker: Invoker) {
-    val method = invoker._1
-    val dataA = invoker._2
-
-    def withRef(dataRef: Data): Couple = {
-      (method, dataA, dataRef)
+  def appendLinesWithHeaders(lines: List[String]) {
+    setHeaders(lines(0))
+    for (line <- lines.drop(1)) {
+      appendLine(line)
     }
   }
 
-
-  implicit def data2InvokerHelper(data1: Invoker) = new InvokerHelper(data1)
-  implicit def invokeCouple(couple:Couple): DiffData = {
-    val method = couple._1
-    val dataNew = couple._2
-    val dataRef = couple._3
-    val res = method.invoke(CsvTools, dataNew, dataRef)
-    res.asInstanceOf[DiffData]
+  def setHeaders(line: String) {
+    headers = line.split(separator).toList
   }
 
 
-
-  object additionsMade {
-    val cls = CsvTools.getClass
-
-    def by(data: Data): Invoker = {
-      (cls.getMethod("getAddedLines", classOf[CsvData[String]], classOf[CsvData[String]]), data)
+  def getCvsData(): CsvData[String] = {
+    val nbMaxCol = array.foldLeft(0) {
+      (nbCol, elem) => scala.math.max(nbCol, elem.size)
     }
-  }
-
-
-
-  object suppressionsMade {
-    val cls = CsvTools.getClass
-
-    def by(data: Data): Invoker = {
-      (cls.getMethod("getSupprimedLines", classOf[CsvData[String]], classOf[CsvData[String]]), data)
+    val resArray = array.map {
+      elem => elem ++ List.fill[String](nbMaxCol - elem.size) {
+        ""
+      }
     }
+    CsvDataImpl [String](resArray, myObj.headers, myObj.separator)
   }
-
-
-
-  object modificationsMade {
-    val cls = CsvTools.getClass
-
-    def by(data: Data): Invoker = {
-      (cls.getMethod("getDifferenceLines", classOf[CsvData[String]], classOf[CsvData[String]]), data)
-    }
-  }
-
-
-
-  class DiffDataHelper(couple:Couple) {
-    val method = couple._1
-    val dataA = couple._2
-    val dataB = couple._3
-
-    def mapValuesDuringComparison(mapVals:List[(String, String)]): DiffData = {
-      CsvTools.getDifferenceLinesWithMapedDatas(dataA, dataB, mapVals)
-    }
-  }
-
-  implicit def couple2diffDataHelper(data:Couple) = new DiffDataHelper(data)
-
-
 }

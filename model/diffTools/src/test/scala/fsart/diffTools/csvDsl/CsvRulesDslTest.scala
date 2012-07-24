@@ -37,7 +37,7 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.CsvDsl
+package fsart.diffTools.csvDsl
 
 /**
  *
@@ -52,7 +52,7 @@ import org.junit.Test
 import org.junit.Assert._
 import name.fraser.neil.plaintext._
 import name.fraser.neil.plaintext.diff_match_patch.Operation
-import fsart.diffTools.CsvBuilder.CsvBuilder
+import fsart.diffTools.csvBuilder.CsvBuilder
 import fsart.diffTools.csvModel.CsvData
 
 

@@ -1,8 +1,8 @@
 package fsart.diffTools.script.scriptEngineImpl
 
 import fsart.diffTools.script.{Interpreter, ScriptEngine, InputOutputData}
-import fsart.diffTools.CsvDsl.CsvBuilderDsl._
-import fsart.diffTools.CsvDsl.CsvRulesDsl._
+import fsart.diffTools.csvDsl.CsvBuilderDsl._
+import fsart.diffTools.csvDsl.CsvRulesDsl._
 
 /**
  *

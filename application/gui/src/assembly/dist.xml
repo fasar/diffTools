@@ -39,23 +39,40 @@
     </dependencySets>
 
     <fileSets>
-        <fileSet>
-            <directory>src/main/resources</directory>
-            <outputDirectory></outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>src/main/resources/bin</directory>
-            <outputDirectory>bin</outputDirectory>
-            <fileMode>0755</fileMode>
-        </fileSet>
-        <fileSet>
-            <directory>src/main/resources/conf</directory>
-            <includes>
-                <include>*.properties</include>
-                <include>*.xml</include>
-            </includes>
-            <outputDirectory>conf</outputDirectory>
-        </fileSet>
+      <fileSet>
+        <directory>src/main/resources</directory>
+        <outputDirectory></outputDirectory>
+      </fileSet>
+      <fileSet>
+        <directory>src/main/resources/bin</directory>
+        <outputDirectory>bin</outputDirectory>
+        <fileMode>0755</fileMode>
+      </fileSet>
+      <fileSet>
+        <directory>src/main/resources/conf</directory>
+        <includes>
+          <include>*.properties</include>
+          <include>*.xml</include>
+        </includes>
+        <outputDirectory>conf</outputDirectory>
+      </fileSet>
+      <fileSet>
+        <directory>src/main/resources/</directory>
+        <includes>
+          <include>*.dts</include>
+        </includes>
+        <outputDirectory>scripts</outputDirectory>
+      </fileSet>
+      <fileSet>
+        <directory>${basedir}</directory>
+        <includes>
+          <include>*.txt</include>
+        </includes>
+        <excludes>
+          <exclude>README.txt</exclude>
+          <exclude>NOTICE.txt</exclude>
+        </excludes>
+      </fileSet>
     </fileSets>
 
 </assembly>

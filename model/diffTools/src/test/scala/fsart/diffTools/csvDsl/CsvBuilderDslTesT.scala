@@ -37,11 +37,11 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.CsvDsl
+package fsart.diffTools.csvDsl
 
 import org.apache.commons.logging.{LogFactory, Log}
 import org.junit.Test
-import fsart.diffTools.CsvBuilder.CsvBuilder
+import fsart.diffTools.csvBuilder.CsvBuilder
 import org.junit.Assert._
 import fsart.diffTools.csvModel.{CsvKey, CsvKeySpecial, CsvDataSpecialKey, CsvData, CsvDataColNumberException}
 

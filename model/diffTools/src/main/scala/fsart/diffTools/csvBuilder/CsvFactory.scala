@@ -37,62 +37,56 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.CsvDsl
+package fsart.diffTools.csvBuilder
 
-import fsart.diffTools.csvModel._
+import java.net.URL
+import java.io.File
+import io.Source
+import fsart.helper.Loader
+import fsart.diffTools.csvModel.{CsvDataImpl, CsvDataFirstLineAsHeaderImpl, CsvData}
 
+/**
+ *
+ * User: fabien
+ * Date: 04/05/12
+ * Time: 09:34
+ *
+ */
 
+object CsvFactory {
 
-object CsvBuilderDsl {
-
-  type Data[E] = List[List[E]]
-  type Res[E] = CsvData[E]
-
-  class DataHelper[E](val data:Data[E]) {
-    def toCsv(): Res[E] = {
-      new CsvDataImpl[E] (data, null,null)
-    }
+  def getCsvFile(file: String, firstLineAsHeader: Boolean): CsvData[String] = {
+    //val file1URL = Loader.getFile(file)
+    val bufSrc: Source = Source.fromString(file)
+    getCsvFile(bufSrc, firstLineAsHeader)
   }
 
-
-  class ResHelper[E](val res:Res[E]) {
-    def ignoreDuplicatedLines(): Res[E] = {
-      CsvDataIgnoreDuplicatedImpl[E](res)
-    }
-
-    def firstLineAsHeader(): Res[E] = {
-      firstLineAsHeader(true)
-    }
-
-    def firstLineAsHeader(isFirstLineAsHeader:Boolean = true): Res[E] = {
-      if(isFirstLineAsHeader) {
-        CsvDataFirstLineAsHeaderImpl[E](res)
-      }else { res }
-    }
-
-    def firstLineAsData(): Res[E] = {
-      res
-    }
-
-    def withKeysCol( cols:Int* ): Res[E] = {
-      CsvDataSpecialKeyImpl[E](res, cols.toList)
-    }
-
-    def concatWith( toAdd:Res[E]) : Res[E] = {
-      CsvDataConcatenedImpl[E](res, toAdd)
-    }
+  def getCsvFile(file: URL, firstLineAsHeader: Boolean): CsvData[String] = {
+    val bufSrc: Source = Source.fromURL(file)
+    getCsvFile(bufSrc, firstLineAsHeader)
   }
 
-  class ResSortedHelper[E <% Ordered[E]](val res:Res[E]) {
-    def sortedByCol( cols:Int* ): Res[E] = {
-      CsvDataSortedImpl[E](res, cols.toList)
-    }
+  def getCsvFile(file: File, firstLineAsHeader: Boolean): CsvData[String] = {
+    val bufSrc: Source = Source.fromFile(file)
+    getCsvFile(bufSrc, firstLineAsHeader)
   }
 
+  def getCsvFile(src: Source, firstLineAsHeader: Boolean): CsvData[String] = {
+    val lines = src.getLines.toList
+    val builder = new CsvBuilder
+    builder.appendLines(lines, firstLineAsHeader)
+    builder.getCvsData()
+  }
 
-  implicit def Data2DataHelper[E](value: Data[E]) = new DataHelper(value)
-  implicit def Res2ResHelper[E](value:Res[E]) = new ResHelper(value)
-  implicit def Res2ResSortedHelper[E <% Ordered[E]](value:Res[E]) = new ResSortedHelper(value)
+  def getCsvData(data: List[List[String]], firstLineAsHeader: Boolean): CsvData[String] = {
+    var header: List[String] = null
+    var dataRes: List[List[String]] = data
 
+    if (dataRes.size > 0 && firstLineAsHeader) {
+      header = dataRes(0)
+      dataRes = dataRes.drop(1)
+    }
 
+    CsvDataImpl [String](dataRes, header, ";")
+  }
 }

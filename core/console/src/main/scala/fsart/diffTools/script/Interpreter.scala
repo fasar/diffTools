@@ -41,8 +41,8 @@ class Interpreter(val ioData:InputOutputData) {
       inter.bindValue("outputDriver", ioData.outputDriver)
       inter.bindValue("translator", ioData.translator)
 
-      inter.addImports("fsart.diffTools.CsvDsl.CsvBuilderDsl._")
-      inter.addImports("fsart.diffTools.CsvDsl.CsvRulesDsl._")
+      inter.addImports("fsart.diffTools.csvDsl.CsvBuilderDsl._")
+      inter.addImports("fsart.diffTools.csvDsl.CsvRulesDsl._")
     }
 
     inter

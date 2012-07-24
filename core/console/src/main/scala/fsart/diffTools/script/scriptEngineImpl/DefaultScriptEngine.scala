@@ -27,14 +27,14 @@ object DefaultScriptEngine extends ScriptEngine {
 
     val dateInitFile = Calendar.getInstance.getTimeInMillis
 
-    import fsart.diffTools.CsvDsl.CsvBuilderDsl._
+    import fsart.diffTools.csvDsl.CsvBuilderDsl._
     val csv1:CsvData[String] = data1 toCsv() firstLineAsHeader(true)//(firstLineAsHeader)
     val csv2:CsvData[String] = data2 toCsv() firstLineAsHeader(true)//(firstLineAsHeader)
 
     val dateGenerateCsvData = Calendar.getInstance.getTimeInMillis
     log.debug("It takes " + (dateGenerateCsvData - dateInitFile) + " secondes to create csv data")
 
-    import fsart.diffTools.CsvDsl.CsvRulesDsl._
+    import fsart.diffTools.csvDsl.CsvRulesDsl._
     log.debug("Generate differences between two files")
 
     val csvDiff:DiffData = modificationsMade by csv2 withRef csv1

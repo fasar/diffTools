@@ -1,7 +1,7 @@
 
 import fsart.diffTools.csvModel.CsvData
-import fsart.diffTools.CsvDsl.CsvBuilderDsl._
-import fsart.diffTools.CsvDsl.CsvRulesDsl._
+import fsart.diffTools.csvDsl.CsvBuilderDsl._
+import fsart.diffTools.csvDsl.CsvRulesDsl._
 
 
 val csv1:CsvData[String] = data1.toCsv().firstLineAsHeader(true) //(firstLineAsHeader)

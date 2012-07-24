@@ -127,7 +127,7 @@ fi
   -Dapp.home="$APP_HOME" \
   -Denv.emacs="$EMACS" \
   $CYGWIN_JLINE_TERMINAL \
-  fsart.diffTools.consoleApp.DiffTools"$@"
+  fsart.diffTools.consoleApp.DiffTools "$@"
 
 # record the exit status lest it be overwritten:
 # then reenable echo and propagate the code.

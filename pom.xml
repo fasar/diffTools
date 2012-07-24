@@ -26,6 +26,7 @@
         <module>core/diffMatcher</module>
         <module>core/scriptEngine</module>
         <module>application/gui</module>
+        <module>runner</module>
         <module>thirdParty/apachepoi</module>
     </modules>
 

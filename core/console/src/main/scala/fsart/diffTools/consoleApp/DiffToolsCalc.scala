@@ -75,6 +75,7 @@ object DiffToolsCalc {
 
     args foreach {
       case "-h" => usage(args); System.exit(0)
+      case "--help" => usage(args); System.exit(0)
       case _ =>
     }
 
@@ -90,19 +91,22 @@ object DiffToolsCalc {
     val extOutFic = getType(outFic.getCanonicalPath)
 
     val file1String = prop.getProperty("file1")
-    val file1Type = getType(file1String)
-    val file1URL = getFileUrl(file1String)
     val file2String = prop.getProperty("file2")
-    val file2Type = getType(file2String)
-    val file2URL = getFileUrl(file2String)
     log.trace("file 1 property is " + file1String)
-    log.trace("file 1 url is " + file1URL)
     log.trace("file 2 property  is " + file2String)
+
+    val file1URL = getFileUrl(file1String)
+    val file2URL = getFileUrl(file2String)
+    log.trace("file 1 url is " + file1URL)
     log.trace("file 2 url is " + file2URL)
 
     testFile(file1URL)
     testFile(file2URL)
 
+    val file1Type = getType(file1String)
+    val file2Type = getType(file2String)
+
+    // Read data from input files
     val data1:List[List[String]] =
     if(file1Type == "xls") {
       val toCsv = new ToCSV()
@@ -130,7 +134,6 @@ object DiffToolsCalc {
     val dateInitFile = Calendar.getInstance.getTimeInMillis
     log.debug("It takes " + (dateInitFile - dateInitFile) + " secondes to open files")
 
-// ==== New way
 
     // Create Translator
     val kindView = prop.getProperty("kindView", System.getProperty("kindView", "OneLine"))
@@ -158,51 +161,9 @@ object DiffToolsCalc {
     val dateInitInterpreter = Calendar.getInstance.getTimeInMillis
 
 
-
-
     // Write data in file
     val excelData = outputDriver.getData()
     out.write(excelData)
-
-
-// ==== ORIGIN
-//    import fsart.diffTools.CsvDsl.CsvBuilderDsl._
-//    val csv1:CsvData[String] = data1 toCsv() firstLineAsHeader(true)//(firstLineAsHeader)
-//    val csv2:CsvData[String] = data2 toCsv() firstLineAsHeader(true)//(firstLineAsHeader)
-//
-//    val dateGenerateCsvData = Calendar.getInstance.getTimeInMillis
-//    log.debug("It takes " + (dateGenerateCsvData - dateInitFile) + " secondes to create csv data")
-//
-//    import fsart.diffTools.CsvDsl.CsvRulesDsl._
-//    log.debug("Generate differences between two files")
-//
-//    val csvDiff:DiffData = modificationsMade by csv2 withRef csv1
-//    val csvAdd:DiffData = additionsMade by csv2 withRef csv1
-//    val csvSuppr:DiffData = suppressionsMade by csv2 withRef csv1
-//    val csvRes =  csvDiff concatWith csvSuppr concatWith csvAdd
-//
-//    val dateGenerateCsvDiffData = Calendar.getInstance.getTimeInMillis
-//    log.debug("It takes " + (dateGenerateCsvDiffData - dateGenerateCsvData) + " secondes to generate differences")
-//
-//
-//    val kindView = prop.getProperty("kindView", System.getProperty("kindView", "OneLine"))
-//    log.debug("Output view is : " + kindView)
-//    val trans = TranslatorDescriptor.getTranslator(kindView)
-//
-//
-//    val outputDriver =
-//      if(extOutFic == "xls" || prop.getProperty("outputType", "").equalsIgnoreCase("excel")) {
-//        log.debug("Generate the excel output at " + outFic.getCanonicalPath)
-//        new CsvExcelView2
-//      } else {
-//        log.debug("Generate the html output at "  + outFic.getCanonicalPath)
-//        new CsvHtmlView2
-//      }
-//
-//    val myres = trans.translate(csvRes)
-//    outputDriver.addCsvTable("Comparison1", myres)
-//    val excelData = outputDriver.getData()
-//    out.write(excelData)
 
 
     val dateOutputData = Calendar.getInstance.getTimeInMillis
@@ -297,14 +258,10 @@ object DiffToolsCalc {
     System.out.println("  -h, -help             print this message")
     System.out.println("  -o, --output [FILE]   output file (can be file.html or file.xls)")
     System.out.println("                         if the output is not set, it uses 'outputDefault' in properties file" )
-    System.out.println("  -t, --type [TYPE]     type of output file (can be excel, html)")
-    System.out.println("  -s, --script [File]   script file to use to get an other behaviour")
+    System.out.println("  -s, --script [File]   script file to use to get another behaviour")
     System.out.println("                         can be " + ScriptDescriptor.getScriptsNames().mkString("(\"", "\", \"", "\")"))
     System.out.println("  -v, --view [View]     kind of view")
     System.out.println("                         can be " + TranslatorDescriptor.getTranslatorsNames.mkString("(\"", "\", \"", "\")"))
-    System.out.println("  -nh, --noheaders      if csv files doesn't have headers")
-    System.out.println("  -h, --headers         if csv files have headers")
-    System.out.println("                         if the header is not set, it uses 'firstLineIsHeader' in properties file")
     System.out.println("   ")
     System.out.println(" fileX   in case of csv file, put the path of the file ")
     System.out.println("         in case of xls file, put the path of the file and add double dots and the sheet name")
@@ -346,18 +303,6 @@ object DiffToolsCalc {
         case "--script" :: scriptName :: tail =>
           prop.setProperty("scriptName", scriptName)
           parseCmdRec(tail, prop)
-        case "-nh" :: path :: tail =>
-          prop.setProperty("firstLineIsHeader", "false")
-          parseCmdRec(tail, prop)
-        case "--noheaders" :: path :: tail =>
-          prop.setProperty("firstLineIsHeader", "false")
-          parseCmdRec(tail, prop)
-        case "-h" :: path :: tail =>
-          prop.setProperty("firstLineIsHeader", "true")
-          parseCmdRec(tail, prop)
-        case "--headers" :: path :: tail =>
-          prop.setProperty("firstLineIsHeader", "true")
-          parseCmdRec(tail, prop)
         case x :: tail =>
           parseCmdRec(tail, prop)
         case Nil => prop
@@ -372,6 +317,11 @@ object DiffToolsCalc {
       System.err.println("Can't get file")
       usage(Array(""))
       throw new DiffToolsApplicationException("Can't get file")
+    } else {
+      val file = new File(fileURL.getFile)
+      if(!(file.isFile && file.canRead)) {
+        throw new DiffToolsApplicationException("Can't get file : " + fileURL.getFile )
+      }
     }
   }
 

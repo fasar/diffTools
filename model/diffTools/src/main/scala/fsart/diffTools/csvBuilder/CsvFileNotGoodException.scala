@@ -37,56 +37,26 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.CsvBuilder
-
-import java.net.URL
-import java.io.File
-import io.Source
-import fsart.helper.Loader
-import fsart.diffTools.csvModel.{CsvDataImpl, CsvDataFirstLineAsHeaderImpl, CsvData}
+package fsart.diffTools.csvBuilder
 
 /**
  *
  * User: fabien
- * Date: 04/05/12
- * Time: 09:34
+ * Date: 23/04/12
+ * Time: 19:36
  *
  */
 
-object CsvFactory {
-
-  def getCsvFile(file: String, firstLineAsHeader: Boolean): CsvData[String] = {
-    //val file1URL = Loader.getFile(file)
-    val bufSrc: Source = Source.fromString(file)
-    getCsvFile(bufSrc, firstLineAsHeader)
+class CsvFileNotGoodException(message: String, cause: Throwable) extends Exception(message, cause) {
+  def this(s: String) {
+    this(s, null)
   }
 
-  def getCsvFile(file: URL, firstLineAsHeader: Boolean): CsvData[String] = {
-    val bufSrc: Source = Source.fromURL(file)
-    getCsvFile(bufSrc, firstLineAsHeader)
+  def this(cause: Throwable) {
+    this("", cause)
   }
 
-  def getCsvFile(file: File, firstLineAsHeader: Boolean): CsvData[String] = {
-    val bufSrc: Source = Source.fromFile(file)
-    getCsvFile(bufSrc, firstLineAsHeader)
-  }
-
-  def getCsvFile(src: Source, firstLineAsHeader: Boolean): CsvData[String] = {
-    val lines = src.getLines.toList
-    val builder = new CsvBuilder
-    builder.appendLines(lines, firstLineAsHeader)
-    builder.getCvsData()
-  }
-
-  def getCsvData(data: List[List[String]], firstLineAsHeader: Boolean): CsvData[String] = {
-    var header: List[String] = null
-    var dataRes: List[List[String]] = data
-
-    if (dataRes.size > 0 && firstLineAsHeader) {
-      header = dataRes(0)
-      dataRes = dataRes.drop(1)
-    }
-
-    CsvDataImpl [String](dataRes, header, ";")
+  def this() {
+    this("", null)
   }
 }

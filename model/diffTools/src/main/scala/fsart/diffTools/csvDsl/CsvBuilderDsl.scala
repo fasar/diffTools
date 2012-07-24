@@ -37,52 +37,62 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.CsvDsl
+package fsart.diffTools.csvDsl
 
-import org.junit.Test
-import org.junit.Assert._
-import fsart.diffTools.CsvDsl.CsvRulesDsl.modificationsMade
-import fsart.diffTools.csvModel.CsvDataSpecialKey
-
-/**
- *
- * User: fabien
- * Date: 25/05/12
- * Time: 11:03
- *
- */
-
-class CsvBuilderAndRulesDsl {
-
-
-  private val dataA = List(List(4,4,4,4), List(2,2,2,2), List(1,1,1,1), List(1,1,1,1),  List(5,5,5,5),  List(8,8,8,8)).map{_.map{_.toString}}
-  private val dataB = List(List(4,5,4,5), List(2,3,3,3), List(1,1,1,1), List(1,2,1,1),  List(5,6,6,6),  List(7,7,7,7)).map{_.map{_.toString}}
-
-
-  @Test
-  def modifiedWithMultipleColAsKeyTest {
-    import CsvBuilderDsl._
-    import CsvRulesDsl._
-
-    val csv3 = dataB toCsv() withKeysCol (0,2)
-    println("class name : " + csv3.getClass.getName)
-    assertTrue(csv3.isInstanceOf[CsvDataSpecialKey[_]])
-
-    val csv1 = dataA toCsv() withKeysCol (0,2) ignoreDuplicatedLines()
-    val csv2 = csv3 ignoreDuplicatedLines()
-
-    var res2 = modificationsMade by csv2 withRef csv1
-
-    var res = modificationsMade by csv2 withRef csv1 mapValuesDuringComparison (
-      List(
-      ("10", "11")
-    ))
-    println("tb : " + res)
-    assertTrue(res.array.size > 0)
+import fsart.diffTools.csvModel._
 
 
 
+object CsvBuilderDsl {
+
+  type Data[E] = List[List[E]]
+  type Res[E] = CsvData[E]
+
+  class DataHelper[E](val data:Data[E]) {
+    def toCsv(): Res[E] = {
+      new CsvDataImpl[E] (data, null,null)
+    }
   }
+
+
+  class ResHelper[E](val res:Res[E]) {
+    def ignoreDuplicatedLines(): Res[E] = {
+      CsvDataIgnoreDuplicatedImpl[E](res)
+    }
+
+    def firstLineAsHeader(): Res[E] = {
+      firstLineAsHeader(true)
+    }
+
+    def firstLineAsHeader(isFirstLineAsHeader:Boolean = true): Res[E] = {
+      if(isFirstLineAsHeader) {
+        CsvDataFirstLineAsHeaderImpl[E](res)
+      }else { res }
+    }
+
+    def firstLineAsData(): Res[E] = {
+      res
+    }
+
+    def withKeysCol( cols:Int* ): Res[E] = {
+      CsvDataSpecialKeyImpl[E](res, cols.toList)
+    }
+
+    def concatWith( toAdd:Res[E]) : Res[E] = {
+      CsvDataConcatenedImpl[E](res, toAdd)
+    }
+  }
+
+  class ResSortedHelper[E <% Ordered[E]](val res:Res[E]) {
+    def sortedByCol( cols:Int* ): Res[E] = {
+      CsvDataSortedImpl[E](res, cols.toList)
+    }
+  }
+
+
+  implicit def Data2DataHelper[E](value: Data[E]) = new DataHelper(value)
+  implicit def Res2ResHelper[E](value:Res[E]) = new ResHelper(value)
+  implicit def Res2ResSortedHelper[E <% Ordered[E]](value:Res[E]) = new ResSortedHelper(value)
 
 
 }

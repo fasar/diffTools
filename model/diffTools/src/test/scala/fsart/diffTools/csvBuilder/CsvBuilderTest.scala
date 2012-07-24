@@ -42,7 +42,7 @@ package fsart.diffTools.csvBuilder
 import org.apache.commons.logging.{LogFactory, Log}
 import org.junit.Test
 import org.junit.Assert._
-import fsart.diffTools.CsvBuilder.CsvBuilder
+import fsart.diffTools.csvBuilder.CsvBuilder
 import fsart.diffTools.csvModel.CsvData
 
 /**

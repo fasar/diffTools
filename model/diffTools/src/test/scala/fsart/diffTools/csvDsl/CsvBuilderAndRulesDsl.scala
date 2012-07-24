@@ -37,26 +37,52 @@
  ****************************************************************************
  */
 
-package fsart.diffTools.CsvBuilder
+package fsart.diffTools.csvDsl
+
+import org.junit.Test
+import org.junit.Assert._
+import fsart.diffTools.csvDsl.CsvRulesDsl.modificationsMade
+import fsart.diffTools.csvModel.CsvDataSpecialKey
 
 /**
  *
  * User: fabien
- * Date: 23/04/12
- * Time: 19:36
+ * Date: 25/05/12
+ * Time: 11:03
  *
  */
 
-class CsvFileNotGoodException(message: String, cause: Throwable) extends Exception(message, cause) {
-  def this(s: String) {
-    this(s, null)
+class CsvBuilderAndRulesDsl {
+
+
+  private val dataA = List(List(4,4,4,4), List(2,2,2,2), List(1,1,1,1), List(1,1,1,1),  List(5,5,5,5),  List(8,8,8,8)).map{_.map{_.toString}}
+  private val dataB = List(List(4,5,4,5), List(2,3,3,3), List(1,1,1,1), List(1,2,1,1),  List(5,6,6,6),  List(7,7,7,7)).map{_.map{_.toString}}
+
+
+  @Test
+  def modifiedWithMultipleColAsKeyTest {
+    import CsvBuilderDsl._
+    import CsvRulesDsl._
+
+    val csv3 = dataB toCsv() withKeysCol (0,2)
+    println("class name : " + csv3.getClass.getName)
+    assertTrue(csv3.isInstanceOf[CsvDataSpecialKey[_]])
+
+    val csv1 = dataA toCsv() withKeysCol (0,2) ignoreDuplicatedLines()
+    val csv2 = csv3 ignoreDuplicatedLines()
+
+    var res2 = modificationsMade by csv2 withRef csv1
+
+    var res = modificationsMade by csv2 withRef csv1 mapValuesDuringComparison (
+      List(
+      ("10", "11")
+    ))
+    println("tb : " + res)
+    assertTrue(res.array.size > 0)
+
+
+
   }
 
-  def this(cause: Throwable) {
-    this("", cause)
-  }
 
-  def this() {
-    this("", null)
-  }
 }

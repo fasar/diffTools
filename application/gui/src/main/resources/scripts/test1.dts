@@ -1,0 +1,17 @@
+
+import fsart.diffTools.csvModel.CsvData
+import fsart.diffTools.csvDsl.CsvBuilderDsl._
+import fsart.diffTools.csvDsl.CsvRulesDsl._
+
+
+val csv1:CsvData[String] = data1.toCsv().firstLineAsHeader(true) //(firstLineAsHeader)
+val csv2:CsvData[String] = data2.toCsv().firstLineAsHeader(true) //(firstLineAsHeader)
+
+val csvDiff:DiffData = modificationsMade by csv2 withRef csv1
+val csvAdd:DiffData = additionsMade by csv2 withRef csv1
+val csvSuppr:DiffData = suppressionsMade by csv2 withRef csv1
+val csvRes =  csvDiff concatWith csvSuppr concatWith csvAdd
+
+val myres = translator.translate(csvRes)
+outputDriver.addCsvTable("Cmp", myres)
+
