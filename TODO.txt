@@ -9,9 +9,9 @@ Mettre plus de tests unitaires.
 Faire une meilleure gestion de fichiers avec les extensions.
 Par exemple getTypeOfFile se retrouve 3 fois.
 
-Revoir la gestion des fichiers d'entrées et de sortie.
+Faire des drivers d'entrées pour gerer plus de fichiers plus simplement.
 
-Revoir la sortie en double colonnes. Il existe un bug dans les headers.
+Faire une gestion si jamais c'est le même fichier en entrée.
 
 DSL.
         https://github.com/jruby/jruby/wiki/RedBridge#wiki-Download

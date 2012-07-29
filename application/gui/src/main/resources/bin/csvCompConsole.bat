@@ -39,6 +39,7 @@ if "%_TOOL_CLASSPATH%"=="" (
 )
 
 call :add_cpath "%_APP_HOME%\conf"
+call :add_cpath "%_APP_HOME%\"
 
 set _PROPS=-Dapp.home="%_APP_HOME%" -Denv.emacs="%EMACS%" -Dscala.usejavacp=true -Dlog4j.configuration="\guilog4j.conf"
 

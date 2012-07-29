@@ -122,7 +122,7 @@ fi
   -Dlog4j.configuration="guilog4j.conf" \
   $JAVA_OPTS \
   "${java_args[@]}" \
-  ${CPSELECT}${TOOL_CLASSPATH}:${APP_HOME}"/conf/" \
+  ${CPSELECT}${TOOL_CLASSPATH}:${APP_HOME}"/conf/":${APP_HOME}"/" \
   -Dscala.usejavacp=true \
   -Dapp.home="$APP_HOME" \
   -Denv.emacs="$EMACS" \
