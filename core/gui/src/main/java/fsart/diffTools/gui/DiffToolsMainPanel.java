@@ -94,7 +94,14 @@ public class DiffToolsMainPanel {
     private Log log = LogFactory.getLog(this.getClass());
 
     public DiffToolsMainPanel() {
-        outputField.setText(System.getProperty("user.dir") + File.separator +"output.xls");
+        String baseDir = System.getProperty("user.dir", "");
+        if(!baseDir.equals("")) {
+            baseDir = baseDir + File.separator;
+        } else {
+            baseDir = "";
+        }
+
+        outputField.setText( baseDir + "output.xls");
         appendViewInList(listOutputView);
         appendScriptInList(listScriptFiles);
 
@@ -164,7 +171,6 @@ public class DiffToolsMainPanel {
                 }
             }
         });
-
     }
 
     private void launchDiffTools(String[] args) {
@@ -311,6 +317,10 @@ public class DiffToolsMainPanel {
         comparedFileTxt.setMinimumSize(new Dimension(50, 27));
         comparedFileTxt.setPreferredSize(new Dimension(100, 27));
         panel2.add(comparedFileTxt, cc.xy(3, 9, CellConstraints.FILL, CellConstraints.DEFAULT));
+        outputField = new JTextField();
+        outputField.setMinimumSize(new Dimension(50,27));
+        outputField.setPreferredSize(new Dimension(100,27));
+        panel2.add(outputField, cc.xy(3, 15, CellConstraints.FILL, CellConstraints.DEFAULT));
     }
 
     /**
