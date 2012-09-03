@@ -318,7 +318,7 @@ public class DiffToolsMainPanel {
         comparedFileTxt.setPreferredSize(new Dimension(100, 27));
         panel2.add(comparedFileTxt, cc.xy(3, 9, CellConstraints.FILL, CellConstraints.DEFAULT));
         outputField = new JTextField();
-        outputField.setMinimumSize(new Dimension(50,27));
+        outputField.setMinimumSize(new Dimension(50, 27));
         outputField.setPreferredSize(new Dimension(100,27));
         panel2.add(outputField, cc.xy(3, 15, CellConstraints.FILL, CellConstraints.DEFAULT));
     }

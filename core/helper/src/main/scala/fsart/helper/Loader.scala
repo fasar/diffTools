@@ -41,9 +41,9 @@ package fsart.helper
 
 
 import java.lang.reflect.{Method, InvocationTargetException}
-import java.net.URL
 import org.apache.commons.logging.{LogFactory, Log}
 import java.io.{File, InterruptedIOException}
+import java.net.{URI, URL}
 
 object Loader {
 
@@ -100,13 +100,13 @@ object Loader {
   }
 
 
-  def getFile(filePath:String): URL = {
+  def getFileURL(filePath:String): URI = {
     val resUri = getResource(filePath)
     if(resUri == null) {
       try {
         val fic = new File(filePath)
         if(fic!=null && fic.exists()) {
-          fic.toURI.toURL
+          fic.toURI
         } else {
           null
         }
@@ -116,7 +116,7 @@ object Loader {
           null
       }
     } else {
-      resUri
+      resUri.toURI
     }
   }
 

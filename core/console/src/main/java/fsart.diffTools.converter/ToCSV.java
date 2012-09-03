@@ -33,6 +33,7 @@ import java.io.BufferedWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -392,10 +393,10 @@ public class ToCSV {
     }
 
 
-    public void openWorkbook(URL file) throws Exception {
+    public void openWorkbook(URI file) throws Exception {
         FileInputStream fis = null;
         try {
-            File fic = new File(file.toURI());
+            File fic = new File(file);
             fis = new FileInputStream(fic);
 
             // Open the workbook and then create the FormulaEvaluator and

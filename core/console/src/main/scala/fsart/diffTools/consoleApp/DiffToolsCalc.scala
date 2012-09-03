@@ -44,7 +44,6 @@ import annotation.tailrec
 import io.Source
 import name.fraser.neil.plaintext.diff_match_patch
 import scala.collection.JavaConversions._
-import java.net.URL
 import java.io._
 import fsart.diffTools.csvAlgo.CsvTools
 import fsart.diffTools.helper.HtmlPages
@@ -56,6 +55,7 @@ import fsart.diffTools.translate.impl.{NextToEachOtherTranslator, OneAboveOtherT
 import fsart.diffTools.outputDriver.Impl._
 import fsart.diffTools.translate.TranslatorDescriptor
 import fsart.diffTools.script.{ScriptDescriptor, InputOutputData, Interpreter}
+import java.net.{URI, URL}
 
 
 object DiffToolsCalc {
@@ -95,8 +95,8 @@ object DiffToolsCalc {
     log.trace("file 1 property is " + file1String)
     log.trace("file 2 property  is " + file2String)
 
-    val file1URL = getFileUrl(file1String)
-    val file2URL = getFileUrl(file2String)
+    val file1URL = getFileURI(file1String)
+    val file2URL = getFileURI(file2String)
     log.trace("file 1 url is " + file1URL)
     log.trace("file 2 url is " + file2URL)
 
@@ -115,7 +115,7 @@ object DiffToolsCalc {
       toCsv.convertToCSV(sheetName)
       toCsv.getCsvData.map{_.toList}.toList
     } else {
-      val buff = Source.fromURL(file1URL)
+      val buff = Source.fromURI(file1URL)
       buff.getLines().map{_.split(";").toList}.toList
     }
     val data2 =
@@ -126,7 +126,7 @@ object DiffToolsCalc {
       toCsv.convertToCSV(sheetName)
       toCsv.getCsvData.map{_.toList}.toList
     } else {
-      val buff = Source.fromURL(file2URL)
+      val buff = Source.fromURI(file2URL)
       buff.getLines().map{_.split(";").toList}.toList
     }
 
@@ -312,24 +312,24 @@ object DiffToolsCalc {
   }
 
 
-  private def testFile(fileURL:URL) {
-    if (fileURL == null) {
+  private def testFile(fileURI:URI) {
+    if (fileURI == null) {
       System.err.println("Can't get file")
       usage(Array(""))
       throw new DiffToolsApplicationException("Can't get file")
     } else {
-      val file = new File(fileURL.getFile)
-      if(!(file.isFile && file.canRead)) {
-        throw new DiffToolsApplicationException("Can't get file : " + fileURL.getFile )
+      val file = new File(fileURI)
+      if(file==null || !(file.isFile && file.canRead)) {
+        throw new DiffToolsApplicationException("Can't get file : " + fileURI.getPath )
       }
     }
   }
 
 
-  private def getFileUrl(str:String):URL = {
+  private def getFileURI(str:String):URI = {
 
     val file = getFilePath(str)
-    Loader.getFile(file)
+    Loader.getFileURL(file)
   }
 
   private def getFilePath(str:String):String = {
