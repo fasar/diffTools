@@ -33,6 +33,7 @@ import java.io.BufferedWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -133,6 +134,8 @@ import java.util.ArrayList;
 public class ToCSV {
 
     private Workbook workbook = null;
+    public Workbook getWorkbook() {return workbook;}
+    
     private ArrayList<ArrayList<String>> csvData = null;
     public ArrayList<ArrayList<String>> getCsvData() {return csvData;}
 
@@ -392,7 +395,43 @@ public class ToCSV {
         }
     }
 
+    /**
+     * Open an Excel workbook ready for conversion.
+     *
+     * @param file An instance of the InputStream class that encapsulates a handle
+     *        to a valid Excel workbook. Note that the workbook can be by
+     *        either binary (.xls) or SpreadsheetML (.xlsx) format.
+     * @throws java.io.IOException Thrown if a problem occurs by the file system.
+     */
+    public void openWorkbook(InputStream fis) throws IOException {
+        try {
+            System.out.println("Opening workbook in input stream");
 
+
+            // Open the workbook and then create the FormulaEvaluator and
+            // DataFormatter instances that will be needed to, respectively,
+            // force evaluation of forumlae found by cells and create a
+            // formatted String encapsulating the cells contents.
+            this.workbook = new HSSFWorkbook(fis);
+            this.evaluator = this.workbook.getCreationHelper().createFormulaEvaluator();
+            this.formatter = new DataFormatter(true);
+        }
+        finally {
+            if(fis != null) {
+                fis.close();
+            }
+        }
+    }
+    
+    /**
+     * Open an Excel workbook ready for conversion.
+     *
+     * @param file An instance of the URL class that point on a file 
+     *        to a valid Excel workbook. Note that the workbook can be by
+     *        either binary (.xls) or SpreadsheetML (.xlsx) format.
+     * @throws java.io.FileNotFoundException Thrown if the file cannot be located.
+     * @throws java.io.IOException Thrown if a problem occurs by the file system.
+     */
     public void openWorkbook(URI file) throws Exception {
         FileInputStream fis = null;
         try {
@@ -413,6 +452,7 @@ public class ToCSV {
             }
         }
     }
+    
     /**
      * Called to convert the contents of the currently opened workbook into
      * a CSV file.

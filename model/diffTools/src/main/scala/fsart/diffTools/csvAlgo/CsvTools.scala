@@ -104,7 +104,7 @@ object CsvTools {
   }
 
 
-  // Get lines with keys supprimed in newDatas based on the baseDatas version
+  // Get lines with keys suppressed in newDatas based on the baseDatas version
   def getSupprimedLines(newDatas: CsvData[String], baseDatas: CsvData[String]): CsvData[List[diff_match_patch.Diff]] = {
     val listSupprimedLines = getAppendedLines(baseDatas, newDatas)
     for (lines <- listSupprimedLines;

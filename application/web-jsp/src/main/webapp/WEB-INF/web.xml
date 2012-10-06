@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+    <welcome-file-list>
+        <welcome-file>selectSheets</welcome-file>
+    </welcome-file-list>
+    
+    
+<!-- 	<servlet>
+		<servlet-name>index</servlet-name>
+		<jsp-file>/index.jsp</jsp-file>
+		<init-param>
+			<param-name>hello</param-name>
+			<param-value>test</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>index</servlet-name>
+		<url-pattern>/index</url-pattern>
+	</servlet-mapping> -->
+	<servlet>
+		<servlet-name>selectSheets</servlet-name>
+		<jsp-file>/selectSheets.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>selectSheets</servlet-name>
+		<url-pattern>/selectSheets</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>selectSheets</servlet-name>
+		<url-pattern>/index</url-pattern>
+	</servlet-mapping>
+	
+   
+    
+  	<servlet>
+		<servlet-name>xlsToCsv</servlet-name>
+		<servlet-class>fsart.diffTools.webApp.XlsToCsv</servlet-class>
+	</servlet>
+   <servlet-mapping>
+		<servlet-name>xlsToCsv</servlet-name>
+		<url-pattern>/xlsToCsv</url-pattern>
+	</servlet-mapping>
+	
+	
+    <servlet>
+        <servlet-name>RazDatastore</servlet-name>
+        <servlet-class>
+            fsart.diffTools.webApp.RazDatastore
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RazDatastore</servlet-name>
+        <url-pattern>/razDatastore</url-pattern>
+    </servlet-mapping>
+
+
+	
+
+	
+	
+
+
+	<servlet>
+		<servlet-name>compareFiles</servlet-name>
+		<servlet-class>fsart.diffTools.webApp.CompareFiles</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>compareFiles</servlet-name>
+		<url-pattern>/compareFiles</url-pattern>
+	</servlet-mapping>
+
+    
+ <!--  admin part -->
+<!--  <servlet>
+  <servlet-name>SystemServiceServlet</servlet-name>
+  <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
+  <init-param>
+   <param-name>services</param-name>
+   <param-value/>
+  </init-param>
+ </servlet>
+ <servlet-mapping>
+  <servlet-name>SystemServiceServlet</servlet-name>
+  <url-pattern>/_ah/spi/*</url-pattern>
+ </servlet-mapping> -->
+ <servlet>
+  <servlet-name>SystemServiceServlet</servlet-name>
+  <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
+  <init-param>
+   <param-name>services</param-name>
+   <param-value/>
+  </init-param>
+ </servlet>
+ 
+ <servlet-mapping>
+  <servlet-name>SystemServiceServlet</servlet-name>
+  <url-pattern>/_ah/spi/*</url-pattern>
+ </servlet-mapping>
+
+ 
+</web-app>

@@ -24,3 +24,6 @@ target/
 *.iml
 .settings/
 
+# web app
+war/
+.cache

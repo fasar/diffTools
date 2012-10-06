@@ -40,6 +40,7 @@
 package fsart.helper
 
 import name.fraser.neil.plaintext.diff_match_patch
+import name.fraser.neil.plaintext.diff_match_patch.Diff
 import name.fraser.neil.plaintext.diff_match_patch.Operation
 
 
@@ -51,7 +52,8 @@ object TextTools {
 
   def toHtml(diffs: List[diff_match_patch.Diff]): String = {
     val html: StringBuilder = new StringBuilder
-    for (aDiff <- diffs) {
+    for (abDiff:diff_match_patch.Diff <- diffs) {
+      val aDiff:Diff = abDiff
       val text: String = escapeHTML(aDiff.text)
       aDiff.operation match {
         case Operation.INSERT =>
